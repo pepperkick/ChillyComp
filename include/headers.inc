@@ -4,17 +4,17 @@
 #include <tf2_stocks>
 #include <match>
 
-#include <rolling/roll>
-#include <rolling/fight>
-#include <rolling/pick>
-#include <rolling/utils>
+#include <roll>
+#include <fight>
+#include <pick>
+#include <utils>
 
-#include <rolling/hud>
-#include <rolling/player>
+#include <hud>
+#include <player>
 
-#include <rolling/mode/spec-roll>
-#include <rolling/mode/captain>
+#include <mode/spec-roll>
+#include <mode/captain>
 
-#include <rolling/fight/melee>
+#include <fight/melee>
 
-#include <rolling/pick/playermenu>
+#include <pick/playermenu>
