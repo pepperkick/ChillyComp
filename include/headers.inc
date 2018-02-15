@@ -1,6 +1,7 @@
 // Core Includes
 #include <sourcemod>
 #include <sdkhooks>
+#include <morecolors>
 #include <tf2>
 #include <tf2_stocks>
 #include <match>
@@ -25,3 +26,6 @@
 
 // Pick Module Includes
 #include <pick/playermenu>
+
+#undef REQUIRE_PLUGIN
+#include <updater>

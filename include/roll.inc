@@ -5,9 +5,9 @@
             RolliComplete
 */
 
-int        g_iLastPlayerCount                = 0;        //Last count of Players before recheck for new Players
+int    g_iLastPlayerCount   = 0;        //Last count of Players before recheck for new Players
 
-Handle    g_hcPlayerCountTimer = INVALID_HANDLE;
+Handle g_hcPlayerCountTimer = INVALID_HANDLE;
 
 RollingStart() {
     DebugLog("Started Rolling");
@@ -59,6 +59,18 @@ public Action:RollingConditions(client, String:arg[]) {
     }
 }
 
+RollingCheckPlayer(client) {
+    int l_iMode = GetConVarInt(g_hcRollMode);
+
+    if (l_iMode == 1) {
+        SpecRollCheckPlayer(client);
+    } else if (l_iMode == 2) {
+        CapRollCheckPlaye(client);
+    } else {
+        DebugLog("Unknown Rolling Mode! Please check if mode variable is set properly.");
+    }
+}
+
 OnRollingComplete(RolledPlayers) {
     DebugLog("Rolling Complete");
 
@@ -96,6 +108,12 @@ public Action:Timer_CheckPlayerCount(Handle timer) {
     return Plugin_Continue;
 }
 
+public Handle_RollModeChange(Handle:convar, const String:oldValue[], const String:newValue[]) {
+    DebugLog("Rolling mode has changed!");
+
+    RollingReset();
+}
+
 public Action:Command_JoinTeam(client, const String:command[], argc) {
     char arg[128];
     GetCmdArg(1, arg, sizeof(arg));
@@ -104,10 +122,4 @@ public Action:Command_JoinTeam(client, const String:command[], argc) {
 
 public Action:Command_JoinSpec(client, const String:command[], argc) {
     return RollingConditions(client, "spectate");
-}
-
-public Handle_RollModeChange(Handle:convar, const String:oldValue[], const String:newValue[]) {
-    DebugLog("Rolling mode has changed!");
-
-    RollingReset();
 }

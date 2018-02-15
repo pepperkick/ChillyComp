@@ -39,6 +39,8 @@ public PickPanelHandler(Menu:menu, MenuAction:action, param1, param2) {
     if (action == MenuAction_Select) {
         char clientId[128];
 
+        //TODO: Add confirm menu.
+
         menu.GetItem(param2, clientId, sizeof(clientId));
         int client = StringToInt(clientId, 10);
 

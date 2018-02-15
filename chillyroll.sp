@@ -1,12 +1,13 @@
-#define PLUGIN_VERSION  "3.0.2"
+#define PLUGIN_VERSION  "3.0.5"
+#define UPDATE_URL      "http://cdn.chillypunch.com/chillyroll.updater.txt"
+#define TAG             "CHILLY-ROLL"
+#define COLOR_TAG       "{orange}"
 #define TEAM_NIL 0
 #define TEAM_RED 2
 #define TEAM_BLU 3
 #define TEAM_SPC 4
 #define MAX_PLAYERS 24
 #define DEBUG
-
-Handle g_hPlayerPicked                    = INVALID_HANDLE;
 
 //=========================================================================
 //        P L U G I N S         V A R I A B L E S
@@ -51,6 +52,8 @@ bool      g_bAutoDisable                  = false;    //Has the rolling disabled
 //        T E A M P I C K     V A R I A B L E S
 //========================================================================
 
+Handle    g_hPlayerPicked                 = INVALID_HANDLE;
+
 int       g_iPlayerCount                  = 0;
 int       g_iBluTeamLeader                = -1;        //Leader of BLU Team
 int       g_iRedTeamLeader                = -1;        //Leader of RED Team
@@ -86,9 +89,9 @@ int       g_iTeamLimitSize                = 0;                //Team Limit Size 
 public Plugin:myinfo = {
     name = "ChillyRoll",
     author = "PepperKick",
-    description = "",
+    description = "A plugin made to make rolling process of PuGs easier",
     version = PLUGIN_VERSION,
-    url = ""
+    url = "http://chillypunch.com"
 }
 
 #include <headers>
@@ -111,6 +114,9 @@ public OnPluginStart() {
         "ChillyRoll Plugin Version",
         FCVAR_SPONLY | FCVAR_REPLICATED | FCVAR_NOTIFY
     );
+
+    if (LibraryExists("updater"))
+        Updater_AddPlugin(UPDATE_URL)
 
     //Initialize Plus One Block List
     g_hcPlusOnePlayerID = CreateArray(32);
@@ -138,36 +144,40 @@ public OnPluginStart() {
 //=========================================================================
 
 //=========================================================================
-//        E V E N T                F U N C T I O N S     S T A R T
+//        E V E N T     F U N C T I O N S     S T A R T
 
 //============================================
 //    OnClientDisconnect
 //        Executed when a client disconnets
 //============================================
 
-/*
 public OnClientDisconnect(client) {
     if(g_bRollingPick && (client == g_iBluTeamLeader || client == g_iRedTeamLeader)) {
         //If a team leader leaves while picking is going on
-        SetHudText("A team leader has left the game during rolling, Rolling Canceled");
+
+        new String:hudmsg[128];
+        Format(hudmsg, sizeof(hudmsg), "%T", "Rolling-Canceled-HUD", LANG_SERVER);
+
+        HudSetText(hudmsg);
+        CPrintToChatAll("%s[%s] %t", COLOR_TAG, TAG, "Rolling-Canceled-MSG-LeaderLeft");
+
         RollingReset();                        //Reset Rolling
-    } else if((g_bRollingSequence || g_bRollingPick) && g_hPlayerCounted[client] && g_iPlayerCounter < (GetConVarInt(g_hcTeamSize) * 2)) {
+
+        return;
+    } else if((g_bRollingSequence || g_bRollingPick) && RollingCheckPlayer(client) && g_iPlayerCounter < (GetConVarInt(g_hcTeamSize) * 2)) {
         //If a player leaves while either rolling sequence or team picking is going on and there are not enough players
-        SetHudText("A player has left the game during rolling, Rolling Canceled");
+
+        new String:hudmsg[128];
+        Format(hudmsg, sizeof(hudmsg), "%T", "Rolling-Canceled-HUD", LANG_SERVER);
+
+        HudSetText(hudmsg);
+        CPrintToChatAll("%s[%s] %t", COLOR_TAG, TAG, "Rolling-Canceled-MSG-PlayerLeft");
+
         RollingReset();                        //Reset Rolling
 
         return;
     }
-
-    g_hPlayerCounted[client] = false;        //Set false for player counted
-
-    if(g_iPickingTeam = TEAM_BLU) {
-        RollingMenu(g_iRedTeamLeader);
-    } else {
-        RollingMenu(g_iBluTeamLeader);
-    }
 }
-*/
 
 //============================================
 //    OnAllPluginsLoaded
@@ -206,7 +216,7 @@ public OnMapStart() {
 //        Executed when roll completed
 //============================================
 
-public void    OnRollComplete() {
+public void OnRollComplete() {
     if(FindConVar("sm_teamlimit_version") != INVALID_HANDLE) {
         DebugLog("Reset team limit size", g_iTeamLimitSize);
 
@@ -259,12 +269,12 @@ EndMatch(bool:endedMidgame) {
     DebugLog("Match Ended");
 }
 
-//        E V E N T                F U N C T I O N S     E N D
+//        E V E N T     F U N C T I O N S     E N D
 //=========================================================================
 
 
 //=========================================================================
-//        R O L L I N G              F U N C T I O N S     S T A R T
+//        R O L L I N G     F U N C T I O N S     S T A R T
 
 public bool RollAutoEnable() {
     if(g_bAutoDisable) {
@@ -284,7 +294,19 @@ public bool RollAutoEnable() {
     return false;
 }
 
-//        R O L L I N G              F U N C T I O N S     E N D
+//        R O L L I N G     F U N C T I O N S     E N D
+//=========================================================================
+
+
+//=========================================================================
+//         U P D A T E R   F U N C T I O N S    S T A R T
+
+public OnLibraryAdded(const String:name[]) {
+    if (StrEqual(name, "updater"))
+        Updater_AddPlugin(UPDATE_URL)
+}
+
+//       U P D A T E R   F U N C T I O N S     E N D
 //=========================================================================
 
 public DebugLog(const char[] myString, any ...) {

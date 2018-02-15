@@ -50,25 +50,30 @@ public Action:CapRollTeamConditions(client, team) {
 
     if (g_iCapRollPreRollDone) {
         if (CountPlayersInTeam() >= 2) {
+            CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Rolling-Condition-CaptainDecided");
             PrintToChat(client, "[ChillyRoll] The leaders are decided!");
 
             return Plugin_Handled;
         } else if (team == TEAM_BLU && GetArrayCell(g_hPlayerPicked, client) == TEAM_RED) {
-            PrintToChat(client, "[ChillyRoll] You are picked by RED team!");
+            CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Rolling-Condition-PickedByOtherTeam", "{red}RED", "{blue}BLU");
 
             return Plugin_Handled;
         } else if (team == TEAM_RED && GetArrayCell(g_hPlayerPicked, client) == TEAM_BLU) {
-            PrintToChat(client, "[ChillyRoll] You are picked by BLU team!");
+            CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Rolling-Condition-PickedByOtherTeam", "{blue}BLU", "{red}RED");
 
             return Plugin_Handled;
         } else if ((team == TEAM_BLU || team == TEAM_RED) && GetArrayCell(g_hPlayerPicked, client) == 0) {
-            PrintToChat(client, "[ChillyRoll] Wait until you are picked!");
+            CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Rolling-Condition-WaitForPick")
 
             return Plugin_Handled;
         }
     }
 
     return Plugin_Continue;
+}
+
+CapRollCheckPlaye(client) {
+    return g_bCapRollPlayer[client];
 }
 
 public Action:Timer_CapRollCheckCounter(Handle timer) {

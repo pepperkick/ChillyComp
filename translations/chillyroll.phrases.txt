@@ -1,0 +1,79 @@
+"Phrases"
+{
+    "Rolling-Canceled-HUD"
+    {
+        "en"        "Rolling Canceled"
+    }
+
+    "Rolling-Canceled-MSG-LeaderLeft"
+    {
+        "en"        "{white}A team leader has left the game, Rolling has been canceled"
+    }
+
+    "Rolling-Canceled-MSG-PlayerLeft"
+    {
+        "en"        "{white}A rolled player has left the game and there are not enough rolled players, Rolling has been canceled"
+    }
+
+    "Rolling-Ready-HUD"
+    {
+        "en"        "Get Ready to Roll"
+    }
+
+    "Rolling-Ready-MSG"
+    {
+        "en"        "{white}Pre-Rolling has started, Get ready to join spectators when '{green}ROLL{white}' message appears.\nIf you are in spectator, you can still join a team to roll."
+    }
+
+    "Rolling-Ready-HUD"
+    {
+        "en"        "ROLL!"
+    }
+
+    "Rolling-Ready-MSG"
+    {
+        "en"        "{white}Rolling has started, join spectators NOW!\nLast 2 players who don't join spectators will become the team captains."
+    }
+
+    "Rolling-Condition-Success"
+    {
+        "en"        "{green}You have successfully rolled."
+    }
+
+    "Rolling-Condition-Last2Blocked"
+    {
+        "en"        "{orange}Last 2 players cannot join spectators."
+    }
+
+    "Rolling-Condition-PickedByOtherTeam"
+    {
+        "#foramt"   "{1:s} {2:s}"
+        "en"        "{orange}You cannot join {2}{orange} team as you are picked by {1}{orange} team."
+    }
+
+    "Rolling-Condition-WaitForPick"
+    {
+        "en"        "{orange}You have to wait until you are picked before joining a team."
+    }
+
+    "Rolling-Condition-WaitForPick"
+    {
+        "en"        "{orange}Please wait until you are picked by a team captain before joining a team."
+    }
+
+    "Rolling-Condition-CannotJoinSpec"
+    {
+        "en"        "{orange}You cannot join spectators yet."
+    }
+
+    "Rolling-Condition-CaptainDecided"
+    {
+        "en"        "{orange}The captains have been decided, you cannot join now."
+    }
+
+    "Picking-Picked"
+    {
+        "#foramt"   "{1:s}"
+        "en"        "{green}You were picked by {1}{green} team"
+    }
+}

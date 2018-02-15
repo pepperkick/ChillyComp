@@ -34,8 +34,12 @@ public SpecRollStart(Handle:CountedPlayers) {
     //Sets the timer to say the "ROLL!" message in HUD
     CreateTimer(GetRandomInt(4, 9) + 0.0, Timer_PrintToHud);
 
-    //Sets HUD message roll ready
-    HudSetText("Ready to roll!\nJoin Spec when 'ROLL' appears");
+    //Message roll ready
+    new String:hudmsg[128];
+    Format(hudmsg, sizeof(hudmsg), "%T", "Rolling-Ready-HUD", LANG_SERVER);
+
+    HudSetText(hudmsg);
+    CPrintToChatAll("%s[%s] %t", COLOR_TAG, TAG, "Rolling-Ready-MSG")
 }
 
 SpecRollReset() {
@@ -56,6 +60,10 @@ SpecRollReset() {
     DebugLog("Reset Spec Roll");
 }
 
+SpecRollCheckPlayer(client) {
+    return g_bSpecRollPlayer[client];
+}
+
 //============================================
 //    SpecRollTeamConditions
 //        Checks the team join conditions
@@ -72,31 +80,31 @@ public Action:SpecRollTeamConditions(client, team) {
             if (CountPlayersInTeam() > 2) {
                 g_bSpecRollPlayer[client] = true;
 
-                PrintToChat(client, "[ChillyRoll] You have successfully rolled");
+                CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Rolling-Condition-Success");
 
                 return Plugin_Continue;
             } else {
-                PrintToChat(client, "[ChillyRoll] Last 2 players cannot join spectators!");
+                CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Rolling-Condition-Last2Blocked");
 
                 return Plugin_Handled;
             }
         } else if (team == TEAM_BLU && GetArrayCell(g_hPlayerPicked, client) == TEAM_RED) {
-            PrintToChat(client, "[ChillyRoll] You are picked by RED team!");
+            CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Rolling-Condition-PickedByOtherTeam", "{red}RED", "{blue}BLU");
 
             return Plugin_Handled;
         } else if (team == TEAM_RED && GetArrayCell(g_hPlayerPicked, client) == TEAM_BLU) {
-            PrintToChat(client, "[ChillyRoll] You are picked by BLU team!");
+            CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Rolling-Condition-PickedByOtherTeam", "{blue}BLU", "{red}RED");
 
             return Plugin_Handled;
         } else if ((team == TEAM_BLU || team == TEAM_RED) && GetArrayCell(g_hPlayerPicked, client) == 0) {
-            PrintToChat(client, "[ChillyRoll] Wait until you are picked!");
+            CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Rolling-Condition-WaitForPick");
 
             return Plugin_Handled;
         }
     } else {
         if(GetArrayCell(g_bSpecRollCount, client)) {
             if (team == TEAM_SPC) {
-                PrintToChat(client, "[ChillyRoll] You cannot join spec yet!");
+                CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Rolling-Condition-CannotJoinSpec");
 
                 return Plugin_Handled;
             }
@@ -109,7 +117,11 @@ public Action:SpecRollTeamConditions(client, team) {
 public Action:Timer_PrintToHud(Handle timer) {
     g_iSpecRollPreRollDone = true;
     CreateTimer(0.1, Timer_SpecRollCheckCounter,  _, TIMER_REPEAT);
-    HudSetText("ROLL!\nJoin Spec Now!");
+    new String:hudmsg[128];
+    Format(hudmsg, sizeof(hudmsg), "%T", "Rolling-Start-HUD", LANG_SERVER);
+
+    HudSetText(hudmsg);
+    CPrintToChatAll("%s[%s] %t", COLOR_TAG, TAG, "Rolling-Start-MSG")
 }
 
 public Action:Timer_SpecRollCheckCounter(Handle timer) {
