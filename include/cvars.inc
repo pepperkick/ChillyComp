@@ -17,6 +17,15 @@ public CreateCvars() {
             FCVAR_DONTRECORD
         );
 
+    // Auto start eolling ConVar
+    g_hcAutoStart =
+        CreateConVar(
+            "sm_rolling_autostart",
+            "0",
+            "0=Disable auto start, 1=Enable auto start",
+            FCVAR_NOTIFY | FCVAR_DONTRECORD
+        );
+
     //On Complete Config ConVar
     g_hcOnCompleteConfig =
         CreateConVar(

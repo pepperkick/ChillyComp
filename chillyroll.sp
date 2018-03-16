@@ -1,4 +1,4 @@
-#define PLUGIN_VERSION  "3.0.5"
+#define PLUGIN_VERSION  "3.0.6.1"
 #define UPDATE_URL      "http://cdn.chillypunch.com/chillyroll.updater.txt"
 #define TAG             "CHILLY-ROLL"
 #define COLOR_TAG       "{orange}"
@@ -21,6 +21,7 @@ Handle    g_hcPlayerPenaltyTime           = INVALID_HANDLE;    //CVar to store n
 Handle    g_hcDebuggingEnable             = INVALID_HANDLE;    //CVar to check if debugging logs is enabled
 Handle    g_hcMapTime                     = INVALID_HANDLE;    //CVar to store the map time limit
 Handle    g_hcRollMode                    = INVALID_HANDLE;    //CVar to store the rolling mode
+Handle    g_hcAutoStart                   = INVALID_HANDLE;    //CVar to check if rolling is auto enabled
 
 Handle    g_hoHud                         = INVALID_HANDLE;    //Handle for HUD text display
 Handle    g_hoAdminMenu                   = INVALID_HANDLE;    //Handle for Custom Admin Menu
@@ -106,6 +107,7 @@ public OnPluginStart() {
     DebugLog("Loaded Translation Files");
 
     //Set CVars
+    CreateCvars();
 
     //Plugin Version ConVar
     CreateConVar(
@@ -128,6 +130,8 @@ public OnPluginStart() {
     //Set CommandListeners
     AddCommandListener(Command_JoinTeam, "jointeam");    //Attach Listener to "jointeam" command
     AddCommandListener(Command_JoinSpec, "spectate");    //Attach Listener to "spectate" command
+
+    RegAdminCmd("startroll", Command_StartRolling, ADMFLAG_BAN, "Start rolling process");
 
     //Match Function
     Match_OnPluginStart();
@@ -267,6 +271,20 @@ ResetMatch() {
 
 EndMatch(bool:endedMidgame) {
     DebugLog("Match Ended");
+}
+
+public Action:Command_StartRolling(client, args) {
+    int l_iAutoStartMode = GetConVarInt(g_hcAutoStart);
+
+    if (l_iAutoStartMode == 1) {
+        CPrintToChat(client, "%s[%s] {{orange}}Rolling is set to auto enable, you cannot start manually.", COLOR_TAG, TAG);
+
+        return Plugin_Continue;
+    }
+
+    DebugLog("Recieved Command to Start Rolling Process");
+
+    RollingStart();
 }
 
 //        E V E N T     F U N C T I O N S     E N D

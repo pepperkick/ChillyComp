@@ -91,6 +91,7 @@ public Action:Timer_CheckPlayerCount(Handle timer) {
     if (GetConVarInt(g_hcEnabled) == 0) return Plugin_Continue;
 
     int l_iPlayerCounter = CountPlayersInTeam();
+    int l_iAutoStartMode = GetConVarInt(g_hcAutoStart);
 
     #if defined DEBUG
         if(g_iLastPlayerCount != l_iPlayerCounter) {
@@ -99,10 +100,14 @@ public Action:Timer_CheckPlayerCount(Handle timer) {
         }
     #endif
 
-    if(l_iPlayerCounter >= (GetConVarInt(g_hcTeamSize) * 2)) {
-        RollingStart();
+    if (l_iAutoStartMode == 0) {
+        return Plugin_Continue;
+    } else if (l_iAutoStartMode == 1) {
+        if(l_iPlayerCounter >= (GetConVarInt(g_hcTeamSize) * 2)) {
+            RollingStart();
 
-        return Plugin_Stop;
+            return Plugin_Stop;
+        }
     }
 
     return Plugin_Continue;
