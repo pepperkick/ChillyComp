@@ -23,7 +23,7 @@ CapRollStart(Handle:CountedPlayers) {
 }
 
 CapRollReset() {
-    g_iCapRollPreRollDone     = false;
+    g_iCapRollPreRollDone = false;
 
     for(int i = 0; i < MAX_PLAYERS; i++) {
         g_bCapRollPlayer[i] = false;
@@ -72,7 +72,7 @@ public Action:CapRollTeamConditions(client, team) {
     return Plugin_Continue;
 }
 
-CapRollCheckPlaye(client) {
+CapRollCheckPlayer(client) {
     return g_bCapRollPlayer[client];
 }
 

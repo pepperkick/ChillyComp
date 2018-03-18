@@ -25,12 +25,12 @@
         "en"        "{white}Pre-Rolling has started, Get ready to join spectators when '{green}ROLL{white}' message appears.\nIf you are in spectator, you can still join a team to roll."
     }
 
-    "Rolling-Ready-HUD"
+    "Rolling-Start-HUD"
     {
         "en"        "ROLL!"
     }
 
-    "Rolling-Ready-MSG"
+    "Rolling-Start-MSG"
     {
         "en"        "{white}Rolling has started, join spectators NOW!\nLast 2 players who don't join spectators will become the team captains."
     }

@@ -12,6 +12,8 @@ FightingStart(RolledPlayers) {
     g_bRollingSequence = 2;
     g_iFightRolledPlayers = RolledPlayers;
 
+    g_iRollStatus = 2;
+
     SetLeaders();
 
     if (l_iMode == 1) {

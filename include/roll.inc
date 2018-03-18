@@ -16,9 +16,13 @@ RollingStart() {
 
     if (GetConVarInt(g_hcEnabled) == 0) return;
 
-    g_bRollingSequence = 1;
+    g_bRollingSequence = true;
 
     Handle CountedPlayers = GetCountedPlayersArray();
+
+    g_iRollStatus = 1;
+
+    DebugLog("Rolling Mode is: %d", l_iMode);
 
     if (l_iMode == 1) {
         SpecRollStart(CountedPlayers);
@@ -50,12 +54,14 @@ public Action:RollingConditions(client, String:arg[]) {
 
     if (GetConVarInt(g_hcEnabled) == 0) return Plugin_Continue;
 
-    if(l_iMode == 1) {
-        return SpecRollTeamConditions(client, l_iTeam);
-    } else if(l_iMode == 2) {
-        return CapRollTeamConditions(client, l_iTeam);
-    } else {
-        return Plugin_Continue;
+    if(g_iRollStatus >= 1) {
+        if(l_iMode == 1) {
+            return SpecRollTeamConditions(client, l_iTeam);
+        } else if(l_iMode == 2) {
+            return CapRollTeamConditions(client, l_iTeam);
+        } else {
+            return Plugin_Continue;
+        }
     }
 }
 
@@ -65,7 +71,7 @@ RollingCheckPlayer(client) {
     if (l_iMode == 1) {
         SpecRollCheckPlayer(client);
     } else if (l_iMode == 2) {
-        CapRollCheckPlaye(client);
+        CapRollCheckPlayer(client);
     } else {
         DebugLog("Unknown Rolling Mode! Please check if mode variable is set properly.");
     }

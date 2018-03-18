@@ -1,4 +1,4 @@
-#define PLUGIN_VERSION  "3.0.6.1"
+#define PLUGIN_VERSION  "3.0.7"
 #define UPDATE_URL      "http://cdn.chillypunch.com/chillyroll.updater.txt"
 #define TAG             "CHILLY-ROLL"
 #define COLOR_TAG       "{orange}"
@@ -35,8 +35,8 @@ Handle    g_htRollMessage                 = INVALID_HANDLE;    //Timer to displa
 //=========================================================================
 
 int       g_iPlayerCounter                = 0;        //Number of Players in the RED or BLU team
-int       g_bRollingSequence              = 0;        //Has the Rolling Sequence started
 
+bool      g_bRollingSequence              = false;    //Has the Rolling Sequence started
 bool      g_bPlayerPenalty[MAX_PLAYERS]   = false;    //Dose Player has roll Penalty
 
 //=========================================================================
@@ -45,6 +45,8 @@ bool      g_bPlayerPenalty[MAX_PLAYERS]   = false;    //Dose Player has roll Pen
 
 int       g_iRollingSeconds               = 0;        //Number of seconds before roll starts
 int       g_iMapTimeLimit                 = 0;        //Map Time Limit from mp_timelimit
+int       g_iRollStatus                   = 0;        //Current status of rolling
+
 bool      g_bRollingPick                  = false;    //Has the Rolling Pick started
 bool      g_bCheckCounter                 = false;    //Has the timer to Check Counter started
 bool      g_bAutoDisable                  = false;    //Has the rolling disabled itself
@@ -132,6 +134,8 @@ public OnPluginStart() {
     AddCommandListener(Command_JoinSpec, "spectate");    //Attach Listener to "spectate" command
 
     RegAdminCmd("startroll", Command_StartRolling, ADMFLAG_BAN, "Start rolling process");
+    RegAdminCmd("restartpicking", Command_RestartPicking, ADMFLAG_BAN, "Restart the picking stage of rolling");
+    RegAdminCmd("rspicking",      Command_RestartPicking, ADMFLAG_BAN, "Restart the picking stage of rolling");
 
     //Match Function
     Match_OnPluginStart();

@@ -22,8 +22,7 @@ PickingStart(winner, loser, RolledPlayers) {
 
     g_iPickingTeam = GetClientTeam(g_iPickingWinner);
 
-    RegAdminCmd("restartpicking", Command_RestartPicking, ADMFLAG_BAN, "Restart the picking stage of rolling");
-    RegAdminCmd("rspicking",      Command_RestartPicking, ADMFLAG_BAN, "Restart the picking stage of rolling");
+    g_iRollStatus = 3;
 
     if(g_iPickingTeam == TEAM_RED) {
         HudSetColor(255, 127, 127);
@@ -43,8 +42,6 @@ OnPick(client) {
     int players = CountPlayersInTeam();
 
     DebugLog("Roll Count: %d, Players in team: %d", count, players);
-
-    if(count == 0 || players >= (GetConVarInt(g_hcTeamSize) * 2)) return PickingComplete();
 
     if(g_iPickingTeam == TEAM_BLU) {
         ChangeClientTeam(client, TEAM_BLU);
@@ -71,10 +68,20 @@ OnPick(client) {
 
         PickingShowPlayerMenu(g_iFightBluLeader, g_hPickRolledPlayers)
     }
+
+    if(count == 0 || players >= (GetConVarInt(g_hcTeamSize) * 2)) return PickingComplete();
 }
 
 PickingComplete() {
     DebugLog("Picking Complete");
+
+    g_hPickRolledPlayers = INVALID_HANDLE;
+    g_hIntitalPickRolledPlayers = INVALID_HANDLE;
+
+    g_iPickingTeam   = TEAM_NIL;
+    g_iPickingWinner = 0;
+    g_iPickingLoser  = 0;
+    g_iRollStatus    = 0;
 
     HudSetColor(0, 255, 0);
     HudSetText("Rolling Complete!");
