@@ -43,6 +43,8 @@ OnPick(client) {
 
     DebugLog("Roll Count: %d, Players in team: %d", count, players);
 
+    if(count == 0 || players >= (GetConVarInt(g_hcTeamSize) * 2)) return PickingComplete();
+
     if(g_iPickingTeam == TEAM_BLU) {
         ChangeClientTeam(client, TEAM_BLU);
         SetArrayCell(g_hPlayerPicked, client, TEAM_BLU);
@@ -68,8 +70,6 @@ OnPick(client) {
 
         PickingShowPlayerMenu(g_iFightBluLeader, g_hPickRolledPlayers)
     }
-
-    if(count == 0 || players >= (GetConVarInt(g_hcTeamSize) * 2)) return PickingComplete();
 }
 
 PickingComplete() {
@@ -82,6 +82,10 @@ PickingComplete() {
     g_iPickingWinner = 0;
     g_iPickingLoser  = 0;
     g_iRollStatus    = 0;
+
+    ResetPickMenuRetries();
+    ClearPlusOne();
+    RollingReset();
 
     HudSetColor(0, 255, 0);
     HudSetText("Rolling Complete!");

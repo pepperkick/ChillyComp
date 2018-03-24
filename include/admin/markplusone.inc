@@ -62,8 +62,14 @@ public MarkPlusOneHandler(Menu:menu, MenuAction:action, param1, param2) {
     }
 }
 
-isPlusOnePlayer(client) {
+IsPlusOnePlayer(client) {
     return g_bMarkedPlusOnePlayers[client];
+}
+
+ClearPlusOne() {
+    for (int i = 0; i < MaxClients; i++) {
+        g_bMarkedPlusOnePlayers[i] = false;
+    }
 }
 
 public Action:Command_MarkPlusOne(client, args) {

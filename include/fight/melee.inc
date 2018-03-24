@@ -6,7 +6,7 @@
 int g_iMeleeFightBluLeader = 0;
 int g_iMeleeFightRedLeader = 0;
 
-MeleeFightStart(redLeader, bluLeader) {
+MeleeFightStart(bluLeader, redLeader) {
     DebugLog("[MELEEFIGHT] Start Melee Fight Sequence");
 
     g_iMeleeFightBluLeader = bluLeader;
@@ -27,7 +27,16 @@ MeleeFightStart(redLeader, bluLeader) {
 
     HookEvent("player_death", event_Death);        //Hook Player Death Event
 
-    //TODO: Annouce captains in chat
+    HudSetColor(0, 255, 0);
+    HudSetText("Melee Fight as Medics!");
+
+    char bluLeaderName[1024];
+    char redLeaderName[1024];
+
+    GetClientName(bluLeader, bluLeaderName, sizeof(bluLeaderName));
+    GetClientName(redLeader, redLeaderName, sizeof(redLeaderName));
+
+    CPrintToChatAll("%s[%s] %t", COLOR_TAG, TAG, "Fight-Start-MSG", bluLeaderName, redLeaderName)
 }
 
 public Action:event_Death(Handle:event, const String:name[], bool:dontBroadcast) {

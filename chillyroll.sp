@@ -1,4 +1,4 @@
-#define PLUGIN_VERSION  "3.0.9"
+#define PLUGIN_VERSION  "3.0.9.7"
 #define UPDATE_URL      "http://cdn.chillypunch.com/chillyroll.updater.txt"
 #define TAG             "CHILLY-ROLL"
 #define COLOR_TAG       "{orange}"

@@ -1,8 +1,7 @@
-int g_iPickingMenuClient = -1;
+int retry[32] = 0;
 
 PickingShowPlayerMenu(client, players) {
     g_mPickMenu = new Menu(PickPanelHandler);
-    g_iPickingMenuClient = client;
 
     char clientId[128];
     char name[1024];
@@ -20,32 +19,38 @@ PickingShowPlayerMenu(client, players) {
         }
     #endif
 
-    int count = GetArrayTrueCount(players);
-
-    if(count == 0 || players >= (GetConVarInt(g_hcTeamSize) * 2)) return PickingComplete();
-
     for(int i = 0; i < GetArraySize(players); i++) {
         bool isRolled = GetArrayCell(players, i);       // Is player rolled
-        bool isPlusOne = isPlusOnePlayer(i);            // Is player plus one marked
+        bool isPlusOne = IsPlusOnePlayer(i);            // Is player plus one marked
 
-        DebugLog("[MENU] Player %d menu status %d %d", i, isRolled, isPlusOne);
+        if (!isPlusOne || !isRolled) continue;
 
-        if (!isRolled && !isPlusOne) continue;
+        DebugLog("[MENU] Player %d menu status %d", i, isPlusOne);
 
         GetClientName(i, name, sizeof(name));
         IntToString(i, clientId, sizeof(clientId));
 
-        if (isPlusOne) {
-            Format(itemName, sizeof(itemName), "%s (+1)", name);
+        Format(itemName, sizeof(itemName), "%s (+1)", name);
 
-            DebugLog("[MENU] Player %s added to menu as plus one", name);
+        DebugLog("[MENU] Player %s added to menu as plus one", name);
 
-            g_mPickMenu.InsertItem(0, clientId, itemName);
-        } else {
-            DebugLog("[MENU] Player %s added to menu", name);
+        g_mPickMenu.AddItem(clientId, itemName);
+    }
 
-            g_mPickMenu.AddItem(clientId, name);
-        }
+    for(int i = 0; i < GetArraySize(players); i++) {
+        bool isRolled = GetArrayCell(players, i);       // Is player rolled
+        bool isPlusOne = IsPlusOnePlayer(i);            // Is player plus one marked
+
+        if (!isRolled || isPlusOne) continue;
+
+        DebugLog("[MENU] Player %d menu status %d", i, isRolled);
+
+        GetClientName(i, name, sizeof(name));
+        IntToString(i, clientId, sizeof(clientId));
+
+        DebugLog("[MENU] Player %s added to menu", name);
+
+        g_mPickMenu.AddItem(clientId, name);
     }
 
     g_mPickMenu.ExitButton = false;
@@ -65,8 +70,18 @@ public PickPanelHandler(Menu:menu, MenuAction:action, param1, param2) {
     } else if (action == MenuAction_Cancel) {
         DebugLog("[ROLL] Client %d's menu was cancelled. Reason: %d", param1, param2);
 
-        if (param2 != 0 && g_iPickingMenuClient != -1) {
-            PickingShowPlayerMenu(g_iPickingMenuClient, g_hPickRolledPlayers);
+        if ((param2 != 0) && retry[param1] < 5) {
+            retry[param1]++;
+
+            PickingShowPlayerMenu(param1, g_hPickRolledPlayers);
+        } else {
+            DebugLog("[ROLL] Failed to show pick menu properly to client %d!", param1)
         }
+    }
+}
+
+ResetPickMenuRetries() {
+    for (int i = 0; i < MaxClients; i++) {
+        retry[i] = 0;
     }
 }
