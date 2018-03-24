@@ -17,7 +17,10 @@
 #include <cvars>
 #include <utils>
 
-// Mode Modules Includes
+// Admin Module Includes
+#include <admin/markplusone>
+
+// Mode Module Includes
 #include <mode/spec-roll>
 #include <mode/captain>
 

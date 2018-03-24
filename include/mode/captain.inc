@@ -35,7 +35,7 @@ CapRollReset() {
 CapMoveAllToSpec() {
     for(int i = 0; i < MAX_PLAYERS; i++) {
         if(IsClientProper(i)) {
-            ChangeClientTeam(i, TEAM_SPC);
+            TF2_ChangeClientTeam(i, TFTeam_Spectator);
             g_bCapRollPlayer[i] = true;
         }
     }

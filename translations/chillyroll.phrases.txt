@@ -74,6 +74,6 @@
     "Picking-Picked"
     {
         "#foramt"   "{1:s}"
-        "en"        "{green}You were picked by {1}{green} team"
+        "en"        "{green}You were picked by {1} {green} team"
     }
 }

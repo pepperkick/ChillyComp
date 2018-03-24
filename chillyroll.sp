@@ -1,11 +1,11 @@
-#define PLUGIN_VERSION  "3.0.7"
+#define PLUGIN_VERSION  "3.0.9"
 #define UPDATE_URL      "http://cdn.chillypunch.com/chillyroll.updater.txt"
 #define TAG             "CHILLY-ROLL"
 #define COLOR_TAG       "{orange}"
 #define TEAM_NIL 0
+#define TEAM_SPC 4
 #define TEAM_RED 2
 #define TEAM_BLU 3
-#define TEAM_SPC 4
 #define MAX_PLAYERS 24
 #define DEBUG
 
@@ -134,6 +134,7 @@ public OnPluginStart() {
     AddCommandListener(Command_JoinSpec, "spectate");    //Attach Listener to "spectate" command
 
     RegAdminCmd("startroll", Command_StartRolling, ADMFLAG_BAN, "Start rolling process");
+    RegAdminCmd("mark", Command_MarkPlusOne, ADMFLAG_BAN, "Mark a player as plus one");
     RegAdminCmd("restartpicking", Command_RestartPicking, ADMFLAG_BAN, "Restart the picking stage of rolling");
     RegAdminCmd("rspicking",      Command_RestartPicking, ADMFLAG_BAN, "Restart the picking stage of rolling");
 
