@@ -7,15 +7,9 @@
 #include <match>
 
 // Module Includes
-#include <roll>
-#include <fight>
-#include <pick>
-
-// Utils Includes
-#include <hud>
-#include <player>
-#include <cvars>
-#include <utils>
+#include <core/roll>
+#include <core/fight>
+#include <core/pick>
 
 // Admin Module Includes
 #include <admin/markplusone>
@@ -28,7 +22,14 @@
 #include <fight/melee>
 
 // Pick Module Includes
-#include <pick/playermenu>
+#include <pick/chat>
+#include <pick/menu>
+
+// Utils Includes
+#include <hud>
+#include <player>
+#include <cvars>
+#include <utils>
 
 #undef REQUIRE_PLUGIN
 #include <updater>

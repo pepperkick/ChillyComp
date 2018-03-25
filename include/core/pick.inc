@@ -9,7 +9,7 @@ int    g_iPickingTeam   = TEAM_NIL;
 int    g_iPickingWinner = 0;
 int    g_iPickingLoser  = 0;
 
-PickingStart(winner, loser, RolledPlayers) {
+void PickingStart(winner, loser, Handle RolledPlayers) {
     DebugLog("Started Picking");
 
     g_sPickMenuTitle = "Pick a Player";
@@ -22,7 +22,7 @@ PickingStart(winner, loser, RolledPlayers) {
 
     g_iPickingTeam = GetClientTeam(g_iPickingWinner);
 
-    g_iRollStatus = 3;
+    g_iRollStatus = STATE_PICKING;
 
     if(g_iPickingTeam == TEAM_RED) {
         HudSetColor(255, 127, 127);
@@ -32,10 +32,22 @@ PickingStart(winner, loser, RolledPlayers) {
         HudSetText("BLU Pick!");
     }
 
+    int count = GetArrayTrueCount(g_hPickRolledPlayers);
+    int players = CountPlayersInTeam();
+
+    DebugLog("Roll Count: %d, Players in team: %d", count, players);
+
+    if(count == 0 || players >= (GetConVarInt(g_hcTeamSize) * 2)) {
+        PickingComplete();
+
+        return;
+    }
+
     PickingShowPlayerMenu(g_iPickingWinner, g_hPickRolledPlayers);
+    SetChatPickClient(g_iPickingWinner);
 }
 
-OnPick(client) {
+void OnPick(client) {
     SetArrayCell(g_hPickRolledPlayers, client, false);
 
     int count = GetArrayTrueCount(g_hPickRolledPlayers);
@@ -43,36 +55,51 @@ OnPick(client) {
 
     DebugLog("Roll Count: %d, Players in team: %d", count, players);
 
-    if(count == 0 || players >= (GetConVarInt(g_hcTeamSize) * 2)) return PickingComplete();
+    if(count == 0 || players >= (GetConVarInt(g_hcTeamSize) * 2)) {
+        PickingComplete();
+
+        return;
+    }
+
+    char name[1024], formattedName[1024];
+    GetClientName(client, name, sizeof(name));
 
     if(g_iPickingTeam == TEAM_BLU) {
         ChangeClientTeam(client, TEAM_BLU);
         SetArrayCell(g_hPlayerPicked, client, TEAM_BLU);
 
-        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Picking-Picked", "{blue}BLU");
+        Format(formattedName, sizeof(formattedName), "{blue}%s", name);
+        CPrintToChat(g_iFightBluLeader, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Selected-ToLeader", formattedName)
+        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Selected-ToPlayer", "{blue}BLU");
 
         g_iPickingTeam = TEAM_RED;
 
-        HudSetColor(255, 127, 127);
+        HudSetColor(255, 0, 0);
         HudSetText("RED Pick!");
 
+        CPrintToChat(g_iFightRedLeader, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Turn");
         PickingShowPlayerMenu(g_iFightRedLeader, g_hPickRolledPlayers);
+        SetChatPickClient(g_iFightRedLeader);
     } else if(g_iPickingTeam == TEAM_RED) {
         ChangeClientTeam(client, TEAM_RED);
         SetArrayCell(g_hPlayerPicked, client, TEAM_RED);
 
-        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Picking-Picked", "{blue}RED");
+        Format(formattedName, sizeof(formattedName), "{red}%s", name);
+        CPrintToChat(g_iFightRedLeader, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Selected-ToLeader", formattedName)
+        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Selected-ToPlayer", "{red}BLU");
 
         g_iPickingTeam = TEAM_BLU;
 
-        HudSetColor(127, 127, 255);
+        HudSetColor(0, 0, 255);
         HudSetText("BLU Pick!");
 
-        PickingShowPlayerMenu(g_iFightBluLeader, g_hPickRolledPlayers)
+        CPrintToChat(g_iFightBluLeader, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Turn");
+        PickingShowPlayerMenu(g_iFightBluLeader, g_hPickRolledPlayers);
+        SetChatPickClient(g_iFightBluLeader);
     }
 }
 
-PickingComplete() {
+void PickingComplete() {
     DebugLog("Picking Complete");
 
     g_hPickRolledPlayers = INVALID_HANDLE;

@@ -1,4 +1,4 @@
-bool g_bMarkedPlusOnePlayers[32];
+bool g_bMarkedPlusOnePlayers[MAX_PLAYERS];
 
 int g_iServingMarkMenu = -1;
 
@@ -55,19 +55,15 @@ public MarkPlusOneHandler(Menu:menu, MenuAction:action, param1, param2) {
 
             g_iServingMarkMenu = -1;
 
-            g_mPlusOneMenu = INVALID_HANDLE;
+            delete g_mPlusOneMenu;
         }
 
         DebugLog("Client %d's mark menu was cancelled. Reason: %d", param1, param2);
     }
 }
 
-IsPlusOnePlayer(client) {
-    return g_bMarkedPlusOnePlayers[client];
-}
-
 ClearPlusOne() {
-    for (int i = 0; i < MaxClients; i++) {
+    for (int i = 0; i < MAX_PLAYERS; i++) {
         g_bMarkedPlusOnePlayers[i] = false;
     }
 }

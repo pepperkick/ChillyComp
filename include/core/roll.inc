@@ -20,7 +20,7 @@ RollingStart() {
 
     Handle CountedPlayers = GetCountedPlayersArray();
 
-    g_iRollStatus = 1;
+    g_iRollStatus = STATE_ROLLING;
 
     DebugLog("Rolling Mode is: %d", l_iMode);
 
@@ -63,6 +63,8 @@ public Action:RollingConditions(client, String:arg[]) {
             return Plugin_Continue;
         }
     }
+
+    return Plugin_Continue;
 }
 
 RollingCheckPlayer(client) {
@@ -77,7 +79,7 @@ RollingCheckPlayer(client) {
     }
 }
 
-OnRollingComplete(RolledPlayers) {
+OnRollingComplete(Handle RolledPlayers) {
     DebugLog("Rolling Complete");
 
     g_hcPlayerCountTimer = INVALID_HANDLE;
@@ -123,6 +125,22 @@ public Handle_RollModeChange(Handle:convar, const String:oldValue[], const Strin
     DebugLog("Rolling mode has changed!");
 
     RollingReset();
+}
+
+public Action:Command_StartRolling(client, args) {
+    int l_iAutoStartMode = GetConVarInt(g_hcAutoStart);
+
+    if (l_iAutoStartMode == 1) {
+        CPrintToChat(client, "%s[%s] {{orange}}Rolling is set to auto enable, you cannot start manually.", COLOR_TAG, TAG);
+
+        return Plugin_Continue;
+    }
+
+    DebugLog("Recieved Command to Start Rolling Process");
+
+    RollingStart();
+
+    return Plugin_Continue;
 }
 
 public Action:Command_JoinTeam(client, const String:command[], argc) {

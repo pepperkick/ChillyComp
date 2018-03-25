@@ -1,6 +1,6 @@
-int retry[32] = 0;
+int retry[MAX_PLAYERS] = 0;
 
-PickingShowPlayerMenu(client, players) {
+PickingShowPlayerMenu(client, Handle players) {
     g_mPickMenu = new Menu(PickPanelHandler);
 
     char clientId[128];
@@ -21,7 +21,7 @@ PickingShowPlayerMenu(client, players) {
 
     for(int i = 0; i < GetArraySize(players); i++) {
         bool isRolled = GetArrayCell(players, i);       // Is player rolled
-        bool isPlusOne = IsPlusOnePlayer(i);            // Is player plus one marked
+        bool isPlusOne = IsPlayerPlusOne(i);            // Is player plus one marked
 
         if (!isPlusOne || !isRolled) continue;
 
@@ -39,7 +39,7 @@ PickingShowPlayerMenu(client, players) {
 
     for(int i = 0; i < GetArraySize(players); i++) {
         bool isRolled = GetArrayCell(players, i);       // Is player rolled
-        bool isPlusOne = IsPlusOnePlayer(i);            // Is player plus one marked
+        bool isPlusOne = IsPlayerPlusOne(i);            // Is player plus one marked
 
         if (!isRolled || isPlusOne) continue;
 
@@ -70,18 +70,20 @@ public PickPanelHandler(Menu:menu, MenuAction:action, param1, param2) {
     } else if (action == MenuAction_Cancel) {
         DebugLog("[ROLL] Client %d's menu was cancelled. Reason: %d", param1, param2);
 
-        if ((param2 != 0) && retry[param1] < 5) {
+        if (param2 != -1 && retry[param1] < 5) {
             retry[param1]++;
 
             PickingShowPlayerMenu(param1, g_hPickRolledPlayers);
         } else {
             DebugLog("[ROLL] Failed to show pick menu properly to client %d!", param1)
+
+            CPrintToChat(param1, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Menu-FailedToShow");
         }
     }
 }
 
 ResetPickMenuRetries() {
-    for (int i = 0; i < MaxClients; i++) {
+    for (int i = 0; i < MAX_PLAYERS; i++) {
         retry[i] = 0;
     }
 }

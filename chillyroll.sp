@@ -1,12 +1,15 @@
-#define PLUGIN_VERSION  "3.0.9.7"
+#define PLUGIN_VERSION  "3.1.0"
 #define UPDATE_URL      "http://cdn.chillypunch.com/chillyroll.updater.txt"
-#define TAG             "CHILLY-ROLL"
+#define TAG             "ChillyPuG"
 #define COLOR_TAG       "{orange}"
 #define TEAM_NIL 0
-#define TEAM_SPC 4
 #define TEAM_RED 2
 #define TEAM_BLU 3
+#define TEAM_SPC 4
 #define MAX_PLAYERS 24
+#define STATE_ROLLING  1
+#define STATE_FIGHTING 2
+#define STATE_PICKING  3
 #define DEBUG
 
 //=========================================================================
@@ -22,6 +25,7 @@ Handle    g_hcDebuggingEnable             = INVALID_HANDLE;    //CVar to check i
 Handle    g_hcMapTime                     = INVALID_HANDLE;    //CVar to store the map time limit
 Handle    g_hcRollMode                    = INVALID_HANDLE;    //CVar to store the rolling mode
 Handle    g_hcAutoStart                   = INVALID_HANDLE;    //CVar to check if rolling is auto enabled
+Handle    g_hcFightHealth                 = INVALID_HANDLE;    //CVar to store health of captains during melee fight
 
 Handle    g_hoHud                         = INVALID_HANDLE;    //Handle for HUD text display
 Handle    g_hoAdminMenu                   = INVALID_HANDLE;    //Handle for Custom Admin Menu
@@ -94,7 +98,7 @@ public Plugin:myinfo = {
     author = "PepperKick",
     description = "A plugin made to make rolling process of PuGs easier",
     version = PLUGIN_VERSION,
-    url = "http://chillypunch.com"
+    url = ""
 }
 
 #include <headers>
@@ -111,14 +115,6 @@ public OnPluginStart() {
     //Set CVars
     CreateCvars();
 
-    //Plugin Version ConVar
-    CreateConVar(
-        "rolling_version",
-        PLUGIN_VERSION,
-        "ChillyRoll Plugin Version",
-        FCVAR_SPONLY | FCVAR_REPLICATED | FCVAR_NOTIFY
-    );
-
     if (LibraryExists("updater"))
         Updater_AddPlugin(UPDATE_URL)
 
@@ -133,8 +129,14 @@ public OnPluginStart() {
     AddCommandListener(Command_JoinTeam, "jointeam");    //Attach Listener to "jointeam" command
     AddCommandListener(Command_JoinSpec, "spectate");    //Attach Listener to "spectate" command
 
-    RegAdminCmd("startroll", Command_StartRolling, ADMFLAG_BAN, "Start rolling process");
-    RegAdminCmd("mark", Command_MarkPlusOne, ADMFLAG_BAN, "Mark a player as plus one");
+    // Set Console Commands
+    RegConsoleCmd("pick", Command_PickPlayer, "Pick player through chat during picking process");
+    RegConsoleCmd("p",    Command_PickPlayer, "Pick player through chat during picking process");
+    RegConsoleCmd("list", Command_PickList,   "Shows the list of rolled and plus one players during picking process");
+
+    // Set Admin Commands
+    RegAdminCmd("startroll",      Command_StartRolling,   ADMFLAG_BAN, "Start rolling process");
+    RegAdminCmd("mark",           Command_MarkPlusOne,    ADMFLAG_BAN, "Mark a player as plus one");
     RegAdminCmd("restartpicking", Command_RestartPicking, ADMFLAG_BAN, "Restart the picking stage of rolling");
     RegAdminCmd("rspicking",      Command_RestartPicking, ADMFLAG_BAN, "Restart the picking stage of rolling");
 
@@ -144,6 +146,7 @@ public OnPluginStart() {
     //Rest Rolling
     RollingReset();
 
+    // Attach cvar change hooks
     HookConVarChange(g_hcRollMode, Handle_RollModeChange);
 
     DebugLog("Loaded ChillyRoll plugin, Version %s", PLUGIN_VERSION);
@@ -210,14 +213,6 @@ public OnMapStart() {
     Match_OnMapStart();
 
     DebugLog("Map Started");
-
-    if(g_hcTeamLimitSize != INVALID_HANDLE && RollAutoEnable()) {
-        g_iTeamLimitSize = GetConVarInt(g_hcTeamLimitSize);
-
-        DebugLog("Found team limit size: %d", g_iTeamLimitSize);
-
-        SetConVarInt(g_hcTeamLimitSize, 12, false, false);
-    }
 }
 
 //============================================
@@ -245,6 +240,8 @@ public void OnMapEnd() {
     DebugLog("Map Ended");
 
     Match_OnMapEnd();
+
+    RollingReset();
 }
 
 //============================================
@@ -265,6 +262,8 @@ StartMatch() {
 
 ResetMatch() {
     DebugLog("Match Reset");
+
+    RollingReset();
 }
 
 //============================================
@@ -276,25 +275,12 @@ ResetMatch() {
 
 EndMatch(bool:endedMidgame) {
     DebugLog("Match Ended");
-}
 
-public Action:Command_StartRolling(client, args) {
-    int l_iAutoStartMode = GetConVarInt(g_hcAutoStart);
-
-    if (l_iAutoStartMode == 1) {
-        CPrintToChat(client, "%s[%s] {{orange}}Rolling is set to auto enable, you cannot start manually.", COLOR_TAG, TAG);
-
-        return Plugin_Continue;
-    }
-
-    DebugLog("Recieved Command to Start Rolling Process");
-
-    RollingStart();
+    RollingReset();
 }
 
 //        E V E N T     F U N C T I O N S     E N D
 //=========================================================================
-
 
 //=========================================================================
 //        R O L L I N G     F U N C T I O N S     S T A R T

@@ -1,4 +1,12 @@
 public CreateCvars() {
+    //Plugin Version ConVar
+    CreateConVar(
+        "rolling_version",
+        PLUGIN_VERSION,
+        "ChillyRoll Plugin Version",
+        FCVAR_SPONLY | FCVAR_REPLICATED | FCVAR_NOTIFY
+    );
+
     //Enabled ConVar
     g_hcEnabled =
         CreateConVar(
@@ -50,6 +58,15 @@ public CreateCvars() {
             "sm_rolling_penalty_time",
             "2",
             "Number of seconds of penalty",
+            FCVAR_DONTRECORD
+        );
+
+    //Melee Fight Health
+    g_hcFightHealth =
+        CreateConVar(
+            "sm_rolling_fight_health",
+            "150",
+            "Health of captains during melee fighting process (Default: 150)",
             FCVAR_DONTRECORD
         );
 

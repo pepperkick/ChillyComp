@@ -25,10 +25,14 @@ MeleeFightStart(bluLeader, redLeader) {
         SDKHooks_TakeDamage(bluLeader, bluLeader, bluLeader, 1000.0);
     }
 
-    HookEvent("player_death", event_Death);        //Hook Player Death Event
+    SetEntityHealth(redLeader, GetConVarInt(g_hcFightHealth))
+    SetEntityHealth(bluLeader, GetConVarInt(g_hcFightHealth))
+
+    HookEvent("player_death", Event_PlayerDeath);        // Hook Player Death Event
+    HookEvent("player_class", Event_PlayerClassChange);  // Hook Player Class Change Event
 
     HudSetColor(0, 255, 0);
-    HudSetText("Melee Fight as Medics!");
+    HudSetText("Fight as Medics!");
 
     char bluLeaderName[1024];
     char redLeaderName[1024];
@@ -39,10 +43,10 @@ MeleeFightStart(bluLeader, redLeader) {
     CPrintToChatAll("%s[%s] %t", COLOR_TAG, TAG, "Fight-Start-MSG", bluLeaderName, redLeaderName)
 }
 
-public Action:event_Death(Handle:event, const String:name[], bool:dontBroadcast) {
-    new killer     = GetClientOfUserId(GetEventInt(event, "attacker"));
-    new victim     = GetClientOfUserId(GetEventInt(event, "userid"));
-    new team     = GetClientTeam(killer);
+public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroadcast) {
+    new killer = GetClientOfUserId(GetEventInt(event, "attacker"));
+    new victim = GetClientOfUserId(GetEventInt(event, "userid"));
+    new team   = GetClientTeam(killer);
 
     if(victim == killer) {
         DebugLog("[MELEEFIGHT] Captain Died due to unknow reason, switching teams!");
@@ -56,5 +60,14 @@ public Action:event_Death(Handle:event, const String:name[], bool:dontBroadcast)
 
     DebugLog("[MELEEFIGHT] Killer: %d! Victim: %d! Team: %d!", killer, victim, team);
 
-    UnhookEvent("player_death", event_Death);
+    UnhookEvent("player_death", Event_PlayerDeath);
 }
+
+public Action:Event_PlayerClassChange(Handle:event, const String:name[], bool:dontBroadcast) {
+    new client = GetClientOfUserId(GetEventInt(event, "userid"));
+    new class = GetEventInt(event, "class");
+
+    if (class != TFClass_Medic) {
+        SDKHooks_TakeDamage(client, client, client, 1000.0);
+    }
+ }

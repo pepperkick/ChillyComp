@@ -71,15 +71,74 @@
         "en"        "{orange}The captains have been decided, you cannot join now."
     }
 
-    "Picking-Picked"
+    "Fight-Start-MSG"
+    {
+        "#format"   "{1:s} {2:s}"
+        "en"        "{green}Team captains are\n{blue}BLU: {1}\n{red}RED: {2}"
+    }
+
+    "Fight-Winner"
+    {
+        "en"        "{green}You have won and get to pick first!"
+    }
+
+    "Fight-Loser"
+    {
+        "en"        "{green}You have lost and get to pick second, better luck next time!"
+    }
+
+    "Pick-Turn"
+    {
+        "en"        "{green}It's your turn to pick!"
+    }
+
+    "Pick-Chat-Disabled"
+    {
+        "en"        "{orange}This command can only be used during picking process"
+    }
+
+    "Pick-Chat-NotUsable"
+    {
+        "en"        "{orange}Only current picker can use this command"
+    }
+
+    "Pick-Chat-NotFound"
+    {
+        "#format"   "{1:s}"
+        "en"        "{orange}No player found with the name or number {yellow}{1}\n{orange}You can use {green}!list {orange}command to show the list of players"
+    }
+
+    "Pick-Chat-ManyFound"
+    {
+        "#format"   "{1:s}"
+        "en"        "{orange}Too many players found with the name {yellow}{1}{orange}. Please be more specific or use player number from the list\n{orange}You can use {green}!list {orange}command to show the list of players"
+    }
+
+    "Pick-Chat-NotRolled"
+    {
+        "#format"   "{1:s}"
+        "en"        "{orange}The player {yellow}{1}{orange} has not rolled\n{orange}You can use {green}!list {orange}command to show the list of players"
+    }
+
+    "Pick-List-Heading"
+    {
+        "en"        "{green}Player List"
+    }
+
+    "Pick-Selected-ToLeader"
+    {
+        "#format"   "{1:s}"
+        "en"        "{green}You picked {1}"
+    }
+
+    "Pick-Selected-ToPlayer"
     {
         "#format"   "{1:s}"
         "en"        "{green}You were picked by {1} {green} team"
     }
 
-    "Fight-Start-MSG"
+    "Pick-Menu-FailedToShow"
     {
-        "#format"   "{1:s} {2:s}"
-        "en"        "{green}Team captains are\n{blue}BLU: {1}\n{red}RED: {2}"
+        "en"        "{darkred}Due to internal error the picking menu failed to show up. Please use {green}!list {darkred}and {green}!pick or !p <name> {darkred} commands to view players list and pick players"
     }
 }

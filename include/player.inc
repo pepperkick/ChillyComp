@@ -23,6 +23,14 @@ public bool IsClientProper(client) {
     return client != 0 ? IsClientInGame(client) && !IsFakeClient(client) : false;
 }
 
+public bool IsPlayerPlusOne(client) {
+    return g_bMarkedPlusOnePlayers[client];
+}
+
+public bool IsPlayerRolled(client) {
+    return GetArrayCell(g_hPickRolledPlayers, client);
+}
+
 public int GetArgTeam(char[] arg) {
     if (StrEqual(arg, "spectate", false))  return TEAM_SPC;
     if (StrEqual(arg, "spectator", false)) return TEAM_SPC;
