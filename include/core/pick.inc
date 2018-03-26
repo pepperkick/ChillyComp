@@ -55,14 +55,10 @@ void OnPick(client) {
 
     DebugLog("Roll Count: %d, Players in team: %d", count, players);
 
-    if(count == 0 || players >= (GetConVarInt(g_hcTeamSize) * 2)) {
-        PickingComplete();
-
-        return;
-    }
-
     char name[1024], formattedName[1024];
     GetClientName(client, name, sizeof(name));
+
+    CancelMenu(g_mPickMenu);
 
     if(g_iPickingTeam == TEAM_BLU) {
         ChangeClientTeam(client, TEAM_BLU);
@@ -71,6 +67,12 @@ void OnPick(client) {
         Format(formattedName, sizeof(formattedName), "{blue}%s", name);
         CPrintToChat(g_iFightBluLeader, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Selected-ToLeader", formattedName)
         CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Selected-ToPlayer", "{blue}BLU");
+
+        if(count == 0 || players >= (GetConVarInt(g_hcTeamSize) * 2)) {
+            PickingComplete();
+
+            return;
+        }
 
         g_iPickingTeam = TEAM_RED;
 
@@ -87,6 +89,12 @@ void OnPick(client) {
         Format(formattedName, sizeof(formattedName), "{red}%s", name);
         CPrintToChat(g_iFightRedLeader, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Selected-ToLeader", formattedName)
         CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Selected-ToPlayer", "{red}BLU");
+
+        if(count == 0 || players >= (GetConVarInt(g_hcTeamSize) * 2)) {
+            PickingComplete();
+
+            return;
+        }
 
         g_iPickingTeam = TEAM_BLU;
 
@@ -112,10 +120,21 @@ void PickingComplete() {
 
     ResetPickMenuRetries();
     ClearPlusOne();
-    RollingReset();
+
+    g_iRollStatus = STATE_POST;
 
     HudSetColor(0, 255, 0);
     HudSetText("Rolling Complete!");
+
+    DebugLog("Executing roll end config");
+
+    char config[128], cmd[256];
+    GetConVarString(config, sizeof(config), g_hcOnCompleteConfig);
+    Format(cmd, sizeof(cmd), "exec %s.cfg", config);
+
+    ServerCommand(cmd);
+
+    CPrintToChatAll("{green}Rolling Complete! Good Luck and Have Fun!")
 }
 
 PickingReset() {

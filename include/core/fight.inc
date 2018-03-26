@@ -22,9 +22,10 @@ FightingStart(Handle RolledPlayers) {
 }
 
 FightingComplete(winner, loser) {
+    PickingStart(winner, loser, g_iFightRolledPlayers);
+
     CPrintToChat(winner, "%s[%s] %t", COLOR_TAG, TAG, "Fight-Winner");
     CPrintToChat(loser, "%s[%s] %t", COLOR_TAG, TAG, "Fight-Loser");
-    PickingStart(winner, loser, g_iFightRolledPlayers);
 }
 
 SetLeaders() {

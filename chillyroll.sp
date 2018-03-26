@@ -1,15 +1,17 @@
-#define PLUGIN_VERSION  "3.1.0"
+#define PLUGIN_VERSION  "3.1.5.6"
 #define UPDATE_URL      "http://cdn.chillypunch.com/chillyroll.updater.txt"
-#define TAG             "ChillyPuG"
+#define TAG             "CHILLY"
 #define COLOR_TAG       "{orange}"
 #define TEAM_NIL 0
 #define TEAM_RED 2
 #define TEAM_BLU 3
 #define TEAM_SPC 4
 #define MAX_PLAYERS 24
+#define STATE_INITIAL  0
 #define STATE_ROLLING  1
 #define STATE_FIGHTING 2
 #define STATE_PICKING  3
+#define STATE_POST     4
 #define DEBUG
 
 //=========================================================================
@@ -43,7 +45,7 @@ int       g_iPlayerCounter                = 0;        //Number of Players in the
 bool      g_bRollingSequence              = false;    //Has the Rolling Sequence started
 bool      g_bPlayerPenalty[MAX_PLAYERS]   = false;    //Dose Player has roll Penalty
 
-//=========================================================================
+//=========================================================================s
 //        R O L L I N G         V A R I A B L E S
 //=========================================================================
 

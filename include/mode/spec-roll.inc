@@ -88,6 +88,10 @@ public Action:SpecRollTeamConditions(client, team) {
 
                 return Plugin_Handled;
             }
+        } else if (team == TEAM_NIL) {
+            CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Rolling-Condition-WaitForPick");
+
+            return Plugin_Handled;
         } else if (team == TEAM_BLU && GetArrayCell(g_hPlayerPicked, client) == TEAM_RED) {
             CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Rolling-Condition-PickedByOtherTeam", "{red}RED", "{blue}BLU");
 

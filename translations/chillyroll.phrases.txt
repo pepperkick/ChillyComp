@@ -47,7 +47,7 @@
 
     "Rolling-Condition-PickedByOtherTeam"
     {
-        "#format"   "{1:s} {2:s}"
+        "#format"   "{1:s}{2:s}"
         "en"        "{orange}You cannot join {2}{orange} team as you are picked by {1}{orange} team."
     }
 
@@ -73,7 +73,7 @@
 
     "Fight-Start-MSG"
     {
-        "#format"   "{1:s} {2:s}"
+        "#format"   "{1:s}{2:s}"
         "en"        "{green}Team captains are\n{blue}BLU: {1}\n{red}RED: {2}"
     }
 

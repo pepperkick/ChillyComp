@@ -80,7 +80,7 @@ public Action:Command_PickList(client, args) {
     char message[8192];
     char name[1024];
 
-    Format(message, sizeof(message), "%s[%s] %t\n", COLOR_TAG, TAG, "Pick-List-Heading");
+    Format(message, sizeof(message), "%s[%s] %t\n{yellow}", COLOR_TAG, TAG, "Pick-List-Heading");
 
     for(int i = 0; i < MAX_PLAYERS; i++) {
         bool isRolled = IsPlayerRolled(i);        // Is player rolled
@@ -90,18 +90,18 @@ public Action:Command_PickList(client, args) {
 
         GetClientName(i, name, sizeof(name));
 
-        Format(message, sizeof(message), "%s%d: %s (+1), ", message, i, name);
+        Format(message, sizeof(message), "%s%d: %s (+1)\n", message, i, name);
     }
 
     for(int i = 0; i < MAX_PLAYERS; i++) {
         bool isRolled = IsPlayerRolled(i);        // Is player rolled
         bool isPlusOne = IsPlayerPlusOne(i);      // Is player plus one marked
 
-        if (!isPlusOne || isRolled) continue;
+        if (!isRolled || isPlusOne) continue;
 
         GetClientName(i, name, sizeof(name));
 
-        Format(message, sizeof(message), "%s%d: %s, ", message, i, name);
+        Format(message, sizeof(message), "%s%d: %s\n", message, i, name);
     }
 
     CPrintToChat(client, "%s", message);

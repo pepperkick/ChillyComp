@@ -39,11 +39,13 @@ RollingReset() {
 
     HudSetColor(127, 255, 127);
 
+    g_iRollStatus = STATE_INITIAL;
+
     for(int i = 0; i < MAX_PLAYERS; i++) {
         PushArrayCell(g_hPlayerPicked, 0);
     }
 
-    g_hcPlayerCountTimer = CreateTimer(0.75, Timer_CheckPlayerCount, _, TIMER_REPEAT);
+    g_hcPlayerCountTimer = CreateTimer(2.00, Timer_CheckPlayerCount, _, TIMER_REPEAT);
 }
 
 public Action:RollingConditions(client, String:arg[]) {
@@ -110,7 +112,7 @@ public Action:Timer_CheckPlayerCount(Handle timer) {
 
     if (l_iAutoStartMode == 0) {
         return Plugin_Continue;
-    } else if (l_iAutoStartMode == 1) {
+    } else if (l_iAutoStartMode == 1 && g_iRollStatus == STATE_INITIAL) {
         if(l_iPlayerCounter >= (GetConVarInt(g_hcTeamSize) * 2)) {
             RollingStart();
 
@@ -130,7 +132,7 @@ public Handle_RollModeChange(Handle:convar, const String:oldValue[], const Strin
 public Action:Command_StartRolling(client, args) {
     int l_iAutoStartMode = GetConVarInt(g_hcAutoStart);
 
-    if (l_iAutoStartMode == 1) {
+    if (l_iAutoStartMode == 1 && g_iRollStatus == STATE_INITIAL) {
         CPrintToChat(client, "%s[%s] {{orange}}Rolling is set to auto enable, you cannot start manually.", COLOR_TAG, TAG);
 
         return Plugin_Continue;

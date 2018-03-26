@@ -11,14 +11,6 @@ PickingShowPlayerMenu(client, Handle players) {
 
     DebugLog("[MENU] Showing menu to client %d", client);
 
-    #if defined DEBUG
-        DebugLog("Players List");
-        for(int i = 0; i < GetArraySize(players); i++) {
-            int rolled = GetArrayCell(players, i);
-            DebugLog("%d - %d", i, rolled);
-        }
-    #endif
-
     for(int i = 0; i < GetArraySize(players); i++) {
         bool isRolled = GetArrayCell(players, i);       // Is player rolled
         bool isPlusOne = IsPlayerPlusOne(i);            // Is player plus one marked
@@ -70,7 +62,7 @@ public PickPanelHandler(Menu:menu, MenuAction:action, param1, param2) {
     } else if (action == MenuAction_Cancel) {
         DebugLog("[ROLL] Client %d's menu was cancelled. Reason: %d", param1, param2);
 
-        if (param2 != -1 && retry[param1] < 5) {
+        if (!(param2 == -1 || param2 == -4) && retry[param1] < 5) {
             retry[param1]++;
 
             PickingShowPlayerMenu(param1, g_hPickRolledPlayers);
