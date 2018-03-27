@@ -55,7 +55,7 @@ public Action:CapRollTeamConditions(client, team) {
     DebugLog("[CAPROLL] Handling %d joining team %d", client, team);
 
     if (g_iCapRollPreRollDone) {
-        if (CountPlayersInTeam() >= 2) {
+        if (CountPlayersInAnyTeam() >= 2) {
             CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Rolling-Condition-CaptainDecided");
 
             return Plugin_Handled;
@@ -82,7 +82,7 @@ CapRollCheckPlayer(client) {
 }
 
 public Action:Timer_CapRollCheckCounter(Handle timer) {
-    if(CountPlayersInTeam() >= 2) {
+    if(CountPlayersInAnyTeam() >= 2) {
         DebugLog("[CAPROLL] Rolling Complete");
 
         Handle RolledPlayers = CreateArray();

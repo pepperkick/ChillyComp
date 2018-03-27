@@ -5,9 +5,9 @@ SetChatPickClient(client) {
 }
 
 public Action:Command_PickPlayer(client, args) {
-    DebugLog("Recieved Pick Player Command during state %d", g_iRollStatus);
+    DebugLog("Recieved Pick Player Command during state %d", GetStatus());
 
-    if (g_iRollStatus != STATE_PICKING) {
+    if (GetStatus() != STATE_PICKING) {
         CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Chat-Disabled");
 
         return Plugin_Handled;
@@ -71,7 +71,7 @@ public Action:Command_PickPlayer(client, args) {
 }
 
 public Action:Command_PickList(client, args) {
-    if (g_iRollStatus != STATE_PICKING) {
+    if (GetStatus() != STATE_PICKING) {
         CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Chat-Disabled");
 
         return Plugin_Handled;

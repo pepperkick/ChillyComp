@@ -22,7 +22,7 @@ void PickingStart(winner, loser, Handle RolledPlayers) {
 
     g_iPickingTeam = GetClientTeam(g_iPickingWinner);
 
-    g_iRollStatus = STATE_PICKING;
+    SetStatus(STATE_PICKING);
 
     if(g_iPickingTeam == TEAM_RED) {
         HudSetColor(244, 67, 54);
@@ -33,7 +33,7 @@ void PickingStart(winner, loser, Handle RolledPlayers) {
     }
 
     int count = GetArrayTrueCount(g_hPickRolledPlayers);
-    int players = CountPlayersInTeam();
+    int players = CountPlayersInAnyTeam();
 
     DebugLog("Roll Count: %d, Players in team: %d", count, players);
 
@@ -51,7 +51,7 @@ void OnPick(client) {
     SetArrayCell(g_hPickRolledPlayers, client, false);
 
     int count = GetArrayTrueCount(g_hPickRolledPlayers);
-    int players = CountPlayersInTeam();
+    int players = CountPlayersInAnyTeam();
 
     DebugLog("Roll Count: %d, Players in team: %d", count, players);
 
@@ -116,12 +116,11 @@ void PickingComplete() {
     g_iPickingTeam   = TEAM_NIL;
     g_iPickingWinner = 0;
     g_iPickingLoser  = 0;
-    g_iRollStatus    = 0;
 
     ResetPickMenuRetries();
     ClearPlusOne();
 
-    g_iRollStatus = STATE_POST;
+    SetStatus(STATE_SETUP);
 
     CPrintToChatAll("%s[%s] %t", COLOR_TAG, TAG, "Pick-Complete");
 
@@ -199,7 +198,7 @@ PickingReset(complete) {
 public Action:Command_RestartPicking(client, args) {
     DebugLog("Recieved Command to Restart Picking Process");
 
-    if (g_iRollStatus != STATE_PICKING) {
+    if (GetStatus() != STATE_PICKING) {
         CPrintToChat(client, "%s[%s] {matPurple}Cannot reset picking until picking has started!");
 
         return Plugin_Handled;

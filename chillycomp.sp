@@ -1,4 +1,4 @@
-#define PLUGIN_VERSION  "3.2.2"
+#define PLUGIN_VERSION  "4.0.0"
 #define UPDATE_URL      "http://cdn.chillypunch.com/chillyroll.updater.txt"
 #define TAG             "CHILLY"
 #define COLOR_TAG       "{matAmber}"
@@ -9,16 +9,8 @@
 //        P L U G I N S         V A R I A B L E S
 //=========================================================================
 
-Handle    g_hcEnabled                     = INVALID_HANDLE;    //CVar to check if the plugin is enabled
-Handle    g_hcTeamSize                    = INVALID_HANDLE;    //CVar to store the value of team size
-Handle    g_hcOnCompleteConfig            = INVALID_HANDLE;    //CVar to store the name of config to run on complete
-Handle    g_hcPlayerPenaltyEnable         = INVALID_HANDLE;    //CVar to check if player penalty is enabled
-Handle    g_hcPlayerPenaltyTime           = INVALID_HANDLE;    //CVar to store number of seconds for penalty
 Handle    g_hcDebuggingEnable             = INVALID_HANDLE;    //CVar to check if debugging logs is enabled
 Handle    g_hcMapTime                     = INVALID_HANDLE;    //CVar to store the map time limit
-Handle    g_hcRollMode                    = INVALID_HANDLE;    //CVar to store the rolling mode
-Handle    g_hcAutoStart                   = INVALID_HANDLE;    //CVar to check if rolling is auto enabled
-Handle    g_hcFightHealth                 = INVALID_HANDLE;    //CVar to store health of captains during melee fight
 
 Handle    g_hoHud                         = INVALID_HANDLE;    //Handle for HUD text display
 Handle    g_hoAdminMenu                   = INVALID_HANDLE;    //Handle for Custom Admin Menu
@@ -42,7 +34,6 @@ bool      g_bPlayerPenalty[MAX_PLAYERS]   = false;    //Dose Player has roll Pen
 
 int       g_iRollingSeconds               = 0;        //Number of seconds before roll starts
 int       g_iMapTimeLimit                 = 0;        //Map Time Limit from mp_timelimit
-int       g_iRollStatus                   = 0;        //Current status of rolling
 
 bool      g_bRollingPick                  = false;    //Has the Rolling Pick started
 bool      g_bCheckCounter                 = false;    //Has the timer to Check Counter started
@@ -87,9 +78,9 @@ int       g_iTeamLimitSize                = 0;                //Team Limit Size 
 //============================================
 
 public Plugin:myinfo = {
-    name = "ChillyRoll",
+    name = "ChillyComp",
     author = "PepperKick",
-    description = "A plugin made to make rolling process of PuGs easier",
+    description = "A plugin to manage competitive matches",
     version = PLUGIN_VERSION,
     url = ""
 }
@@ -102,7 +93,7 @@ public Plugin:myinfo = {
 //============================================
 
 public OnPluginStart() {
-    LoadTranslations("chillyroll.phrases");
+    LoadTranslations("chillycomp.phrases");
     DebugLog("Loaded Translation Files");
 
     //Set CVars
@@ -144,6 +135,8 @@ public OnPluginStart() {
     // Attach cvar change hooks
     HookConVarChange(g_hcRollMode, Handle_RollModeChange);
 
+    HookEvent("teamplay_round_start", Event_RoundStart);
+
     DebugLog("Loaded ChillyRoll plugin, Version %s", PLUGIN_VERSION);
 }
 
@@ -159,7 +152,7 @@ public OnPluginStart() {
 //============================================
 
 public OnClientDisconnect(client) {
-    if(g_iRollStatus > STATE_INITIAL && (client == g_iBluTeamLeader || client == g_iRedTeamLeader)) {
+    if(GetStatus() > STATE_INITIAL && GetStatus() < STATE_SETUP && (client == g_iBluTeamLeader || client == g_iRedTeamLeader)) {
         //If a team leader leaves while picking is going on
 
         new String:hudmsg[128];
@@ -172,7 +165,7 @@ public OnClientDisconnect(client) {
         RollingReset();                        //Reset Rolling
 
         return;
-    } else if(g_iRollStatus > STATE_INITIAL && RollingCheckPlayer(client) && CountPlayersInTeam() < (GetConVarInt(g_hcTeamSize) * 2)) {
+    } else if(GetStatus() > STATE_INITIAL && GetStatus() < STATE_SETUP && RollingCheckPlayer(client) && CountPlayersInAnyTeam() < (GetConVarInt(g_hcTeamSize) * 2)) {
         //If a player leaves while either rolling sequence or team picking is going on and there are not enough players
 
         new String:hudmsg[128];
@@ -208,6 +201,8 @@ public OnAllPluginsLoaded() {
 
 public OnMapStart() {
     Match_OnMapStart();
+
+    SetStatus(STATE_INITIAL);
 
     DebugLog("Map Started");
 }
@@ -269,7 +264,24 @@ ResetMatch() {
 EndMatch(bool:endedMidgame) {
     DebugLog("Match Ended");
 
-    RollingReset();
+	SetStatus(STATE_POST);
+}
+
+public Action:Command_JoinTeam(client, const String:command[], argc) {
+    char team[128];
+    GetCmdArg(1, team, sizeof(team));
+
+    if (GetStatus() > STATE_INITIAL && GetStatus() < STATE_SETUP) {
+        return RollingConditions(client, team);
+    } else if (GetStatus() > STATE_LIVE && GetStatus() < STATE_POST) {
+        return TeamLimitConditions(client, team);
+    }
+
+    return Plugin_Continue;
+}
+
+public void Event_RoundStart(Event event, const char[] name, bool dontBroadcast) {
+    SetStatus(STATE_LIVE);
 }
 
 //        E V E N T     F U N C T I O N S     E N D
@@ -278,22 +290,27 @@ EndMatch(bool:endedMidgame) {
 //=========================================================================
 //        R O L L I N G     F U N C T I O N S     S T A R T
 
-public bool RollAutoEnable() {
-    if(g_bAutoDisable) {
-        PrintToServer("[ROLL] Auto Enabling Plugin");
+//============================================
+//    SetStatus
+//        Sets the status of the game
+//     Parameters
+//        int     Status of the game
+//============================================
 
-        g_bAutoDisable = false;
+public void SetStatus(int status) {
+	DebugLog("Setting status to %s", status);
 
-        SetConVarInt(g_hcEnabled, 1, false, false);
-    }
+	SetConVarInt(g_hcGameStatus, status, false, false);
+}
 
-    if(GetConVarInt(g_hcEnabled) == 1) {
-        RollingReset();
+//============================================
+//    GetStatus
+//        Returns the status of the game
+//     Returns int
+//============================================
 
-        return true;
-    }
-
-    return false;
+public int GetStatus() {
+    return GetConVarInt(g_hcGameStatus);
 }
 
 //        R O L L I N G     F U N C T I O N S     E N D
@@ -316,6 +333,6 @@ public DebugLog(const char[] myString, any ...) {
         char[] myFormattedString = new char[len];
         VFormat(myFormattedString, len, myString, 2);
 
-        PrintToServer("[ROLL] %s", myFormattedString);
+        PrintToServer("[COMP] %s", myFormattedString);
     #endif
 }

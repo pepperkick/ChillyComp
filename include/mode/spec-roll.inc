@@ -85,7 +85,7 @@ public Action:SpecRollTeamConditions(client, team) {
 
     if (g_iSpecRollPreRollDone) {
         if (team == TEAM_SPC) {
-            if (CountPlayersInTeam() > 2) {
+            if (CountPlayersInAnyTeam() > 2) {
                 g_bSpecRollPlayer[client] = true;
 
                 CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Rolling-Condition-Success");
@@ -139,7 +139,7 @@ public Action:Timer_PrintToHud(Handle timer) {
 }
 
 public Action:Timer_SpecRollCheckCounter(Handle timer) {
-    if(CountPlayersInTeam() <= 2) {
+    if(CountPlayersInAnyTeam() <= 2) {
         DebugLog("[SPECROLL] Rolling Complete");
 
         Handle RolledPlayers = CreateArray();

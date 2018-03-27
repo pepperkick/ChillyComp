@@ -10,7 +10,7 @@ FightingStart(Handle RolledPlayers) {
 
     g_iFightRolledPlayers = RolledPlayers;
 
-    g_iRollStatus = STATE_FIGHTING;
+    SetStatus(STATE_FIGHTING);
 
     SetLeaders();
 
@@ -42,7 +42,7 @@ SetLeaders() {
     bool l_bTeamLeaders  = false;
 
     for(new i = 1; i <= MaxClients; i++) {
-        if(IsClientInTeam(i)) {
+        if(IsClientInAnyTeam(i)) {
             if(l_bTeamLeaders) {
                 ChangeClientTeam(i, TEAM_SPC);
             }

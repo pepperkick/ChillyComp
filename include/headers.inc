@@ -7,7 +7,11 @@
 #define STATE_ROLLING  1
 #define STATE_FIGHTING 2
 #define STATE_PICKING  3
-#define STATE_POST     4
+#define STATE_SETUP    4
+#define STATE_WARMUP   5
+#define STATE_LIVE     6
+#define STATE_POST     7
+
 #define CLASS_UNKNOWN  0
 #define CLASS_SCOUT	   1
 #define CLASS_SNIPER   2
@@ -26,6 +30,12 @@
 #include <tf2>
 #include <tf2_stocks>
 #include <match>
+
+#include <cvars>
+
+// Library Includes
+#include <libs/hud>
+#include <libs/colors>
 
 // Module Includes
 #include <core/roll>
@@ -46,13 +56,11 @@
 #include <pick/chat>
 #include <pick/menu>
 
-// Library Includes
-#include <libs/hud>
-#include <libs/colors>
+// Module Includes
+#include <modules/teamlimit>
 
 // Utils Includes
 #include <player>
-#include <cvars>
 #include <utils>
 
 #undef REQUIRE_PLUGIN

@@ -20,7 +20,7 @@ RollingStart() {
 
     Handle CountedPlayers = GetCountedPlayersArray();
 
-    g_iRollStatus = STATE_ROLLING;
+    SetStatus(STATE_ROLLING);
 
     DebugLog("Rolling Mode is: %d", l_iMode);
 
@@ -34,12 +34,12 @@ RollingStart() {
 }
 
 RollingReset() {
+    SetStatus(STATE_INITIAL);
+
     SpecRollReset();
     CapRollReset();
 
     g_iLastPlayerCount = 0;
-
-    g_iRollStatus = STATE_INITIAL;
 
     g_hcPlayerCountTimer = CreateTimer(2.00, Timer_CheckPlayerCount, _, TIMER_REPEAT);
 
@@ -54,7 +54,7 @@ public Action:RollingConditions(client, String:arg[]) {
 
     if (GetConVarInt(g_hcEnabled) == 0) return Plugin_Continue;
 
-    if(g_iRollStatus >= 1) {
+    if(GetStatus() >= STATE_ROLLING && GetStatus() < STATE_SETUP) {
         if(l_iMode == 1) {
             return SpecRollTeamConditions(client, l_iTeam);
         } else if(l_iMode == 2) {
@@ -100,7 +100,7 @@ public Action:Timer_CheckPlayerCount(Handle timer) {
 
     if (GetConVarInt(g_hcAutoStart) == 0) return Plugin_Continue;
 
-    int l_iPlayerCounter = CountPlayersInTeam();
+    int l_iPlayerCounter = CountPlayersInAnyTeam();
 
     #if defined DEBUG
         if(g_iLastPlayerCount != l_iPlayerCounter) {
@@ -109,7 +109,7 @@ public Action:Timer_CheckPlayerCount(Handle timer) {
         }
     #endif
 
-    if (g_iRollStatus == STATE_INITIAL) {
+    if (GetStatus() == STATE_INITIAL) {
         if(l_iPlayerCounter >= (GetConVarInt(g_hcTeamSize) * 2)) {
             RollingStart();
 
@@ -135,7 +135,7 @@ public Action:Command_StartRolling(client, args) {
         return Plugin_Continue;
     }
 
-    if (g_iRollStatus != STATE_INITIAL) {
+    if (GetStatus() != STATE_INITIAL) {
         CPrintToChat(client, "%s[%s] {{matPurple}}Rolling has already started.", COLOR_TAG, TAG);
 
         return Plugin_Continue;
@@ -146,12 +146,6 @@ public Action:Command_StartRolling(client, args) {
     RollingStart();
 
     return Plugin_Continue;
-}
-
-public Action:Command_JoinTeam(client, const String:command[], argc) {
-    char arg[128];
-    GetCmdArg(1, arg, sizeof(arg));
-    return RollingConditions(client, arg);
 }
 
 public Action:Command_JoinSpec(client, const String:command[], argc) {

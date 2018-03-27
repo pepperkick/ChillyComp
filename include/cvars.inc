@@ -1,81 +1,110 @@
+Handle g_hcEnabled              = INVALID_HANDLE;
+Handle g_hcAutoStart            = INVALID_HANDLE;
+Handle g_hcOnCompleteConfig     = INVALID_HANDLE;
+Handle g_hcPlayerPenaltyEnable  = INVALID_HANDLE;
+Handle g_hcPlayerPenaltyTime    = INVALID_HANDLE;
+Handle g_hcFightHealth          = INVALID_HANDLE;
+Handle g_hcRollMode             = INVALID_HANDLE;
+Handle g_hcGameStatus           = INVALID_HANDLE;
+Handle g_hcTeamSize             = INVALID_HANDLE;
+Handle g_hcTeamLimitEnable      = INVALID_HANDLE;
+
 public CreateCvars() {
     //Plugin Version ConVar
     CreateConVar(
-        "rolling_version",
+        "chillycomp_version",
         PLUGIN_VERSION,
-        "ChillyRoll Plugin Version",
+        "ChillyComp Plugin Version",
         FCVAR_SPONLY | FCVAR_REPLICATED | FCVAR_NOTIFY
     );
 
-    //Enabled ConVar
+    // CVar to store if plugin is enabled
     g_hcEnabled =
         CreateConVar(
-            "sm_rolling_enable",
+            "cc_enable",
             "1",
-            "0=Disable Rolling, 1=Enable Rolling",
+            "0=Disable\n1=Enable",
             FCVAR_NOTIFY | FCVAR_DONTRECORD
         );
 
-    //Team Size ConVar
-    g_hcTeamSize =
-        CreateConVar(
-            "sm_rolling_team_size",
-            "6",
-            "Number of Players for each team before rolling starts",
-            FCVAR_DONTRECORD
-        );
-
-    // Auto start eolling ConVar
+    // CVar to store if rolling should auto start when enough players are in
     g_hcAutoStart =
         CreateConVar(
-            "sm_rolling_autostart",
+            "cc_rolling_autostart",
             "0",
             "0=Disable auto start, 1=Enable auto start",
             FCVAR_NOTIFY | FCVAR_DONTRECORD
         );
 
-    //On Complete Config ConVar
+    // CVar to store the config's name that gets executed when rolling completes
     g_hcOnCompleteConfig =
         CreateConVar(
-            "sm_rolling_on_complete",
+            "cc_rolling_on_complete",
             "rolled",
-            "Execute config on roll complete",
+            "Execute config when roll completes",
             FCVAR_DONTRECORD
         );
 
-    //Penalty Enable ConVar
+    // CVar to store if penalty is enabled
     g_hcPlayerPenaltyEnable =
         CreateConVar(
-            "sm_rolling_penalty_enable",
+            "cc_rolling_penalty_enable",
             "0",
             "Should players get penalty for trying to join spectator before the roll message",
             FCVAR_NOTIFY | FCVAR_DONTRECORD
         );
 
-    //Penalty Time ConVar
+    // CVar to store the time of penalty
     g_hcPlayerPenaltyTime =
         CreateConVar(
-            "sm_rolling_penalty_time",
+            "cc_rolling_penalty_time",
             "2",
             "Number of seconds of penalty",
             FCVAR_DONTRECORD
         );
 
-    //Melee Fight Health
+    // CVar to store the health of leaders during melee fight
     g_hcFightHealth =
         CreateConVar(
-            "sm_rolling_fight_health",
+            "cc_rolling_fight_health",
             "150",
             "Health of captains during melee fighting process (Default: 150)",
             FCVAR_DONTRECORD
         );
 
-    //Mode ConVar
+    // CVar to store the mode that rolling will follow
     g_hcRollMode =
         CreateConVar(
-            "sm_rolling_mode",
+            "cc_rolling_mode",
             "1",
             "1: Spec Roll (Last 2 players become captain)\n2: Captain (All players are moved to spec, 2 players voluntarily join to become captains)",
+            FCVAR_DONTRECORD
+        );
+
+    // CVar to store the status of the game
+    g_hcGameStatus =
+        CreateConVar(
+            "cc_match_status",
+            "0",
+            "Status of the match",
+            FCVAR_NOTIFY | FCVAR_DONTRECORD
+        );
+
+    // CVar to store the number of players per team
+    g_hcTeamSize =
+        CreateConVar(
+            "cc_match_teamsize",
+            "6",
+            "Number of Players for each team",
+            FCVAR_DONTRECORD
+        );
+
+    // CVar to store if teams should be limited during match
+    g_hcTeamLimitEnable =
+        CreateConVar(
+            "cc_match_teamlimit",
+            "1",
+            "0=Disable\n1=Enable",
             FCVAR_DONTRECORD
         );
 }

@@ -1,22 +1,36 @@
 //============================================
-//    CountPlayersInTeam
+//    CountPlayersInAnyTeam
 //        Checks the number of players in server
 //        Only countes players in a team
 //         Sets counted players
 //============================================
 
-public int CountPlayersInTeam() {
+public int CountPlayersInAnyTeam() {
     int l_iPlayers = 0;
 
     for(new i = 1; i <= MaxClients; i++)
-        if(IsClientInTeam(i))
+        if(IsClientInAnyTeam(i))
             l_iPlayers++;
 
     return l_iPlayers;
 }
 
-public bool IsClientInTeam(client) {
+public int CountPlayersInTeam(int team) {
+    int l_iPlayers = 0;
+
+    for(new i = 1; i <= MaxClients; i++)
+        if(IsClientInTeam(i, team))
+            l_iPlayers++;
+
+    return l_iPlayers;
+}
+
+public bool IsClientInAnyTeam(client) {
     return IsClientProper(client) ? (GetClientTeam(client) == TEAM_BLU || GetClientTeam(client) == TEAM_RED) : false;
+}
+
+public bool IsClientInTeam(client, team) {
+    return IsClientProper(client) ? (GetClientTeam(client) == team) : false;
 }
 
 public bool IsClientProper(client) {
@@ -44,7 +58,7 @@ public Handle:GetCountedPlayersArray() {
     Handle CountedPlayers = CreateArray();
 
     for(int i = 0; i < MaxClients; i++) {
-        PushArrayCell(CountedPlayers, IsClientInTeam(i));
+        PushArrayCell(CountedPlayers, IsClientInAnyTeam(i));
     }
 
     return CountedPlayers;
