@@ -71,6 +71,16 @@
         "en"        "{matPurple}The captains have been decided, you cannot join now."
     }
 
+    "Roll-Command-ErrorAutoEnabled"
+    {
+        "en"        "{matPurple}Rolling is set to auto enable, you cannot start manually."
+    }
+
+    "Roll-Command-ErrorAlreadyStarted"
+    {
+        "en"        "{matPurple}Rolling has already started.."
+    }
+
     "Fight-Start-MSG"
     {
         "#format"   "{1:s}{2:s}"
@@ -150,5 +160,11 @@
     "Pick-Complete"
     {
         "en"        "{matGreen}Picking Complete! Good Luck and Have Fun!"
+    }
+
+    "TeamLimit-Full"
+    {
+        "#format"   "{1:s}"
+        "en"        "{1} {matPurple} team is currently full!"
     }
 }

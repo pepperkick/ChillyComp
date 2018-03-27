@@ -130,13 +130,13 @@ public Action:Command_StartRolling(client, args) {
     int l_iAutoStartMode = GetConVarInt(g_hcAutoStart);
 
     if (l_iAutoStartMode == 1) {
-        CPrintToChat(client, "%s[%s] {{matPurple}}Rolling is set to auto enable, you cannot start manually.", COLOR_TAG, TAG);
+        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Roll-Command-ErrorAutoEnabled");
 
         return Plugin_Continue;
     }
 
     if (GetStatus() != STATE_INITIAL) {
-        CPrintToChat(client, "%s[%s] {{matPurple}}Rolling has already started.", COLOR_TAG, TAG);
+        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Roll-Command-ErrorAlreadyStarted");
 
         return Plugin_Continue;
     }

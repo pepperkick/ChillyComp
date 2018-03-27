@@ -42,6 +42,9 @@
 #include <core/fight>
 #include <core/pick>
 
+// Module Includes
+#include <core/modules/teamlimit>
+
 // Admin Module Includes
 #include <admin/markplusone>
 
@@ -55,9 +58,6 @@
 // Pick Module Includes
 #include <pick/chat>
 #include <pick/menu>
-
-// Module Includes
-#include <modules/teamlimit>
 
 // Utils Includes
 #include <player>
