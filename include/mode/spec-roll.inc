@@ -38,7 +38,9 @@ public SpecRollStart(Handle:CountedPlayers) {
     new String:hudmsg[128];
     Format(hudmsg, sizeof(hudmsg), "%T", "Rolling-Ready-HUD", LANG_SERVER);
 
+    HudSetColor(139, 195, 74);
     HudSetText(hudmsg);
+
     CPrintToChatAll("%s[%s] %t", COLOR_TAG, TAG, "Rolling-Ready-MSG")
 }
 
@@ -52,9 +54,15 @@ SpecRollReset() {
     for(int i = 0; i < MAX_PLAYERS; i++) {
         g_bSpecRollPlayer[i] = false;
 
-        if(g_bSpecRollCount == INVALID_HANDLE) continue;
+        if (g_bSpecRollCount != INVALID_HANDLE) {
+            int size = GetArraySize(g_bSpecRollCount);
 
-        SetArrayCell(g_bSpecRollCount, i, false);
+            if (size <= i) {
+                PushArrayCell(g_bSpecRollCount, false)
+            } else {
+                SetArrayCell(g_bSpecRollCount, i, false);
+            }
+        }
     }
 
     DebugLog("Reset Spec Roll");
@@ -100,7 +108,7 @@ public Action:SpecRollTeamConditions(client, team) {
             CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Rolling-Condition-PickedByOtherTeam", "{blue}BLU", "{red}RED");
 
             return Plugin_Handled;
-        } else if ((team == TEAM_BLU || team == TEAM_RED) && GetArrayCell(g_hPlayerPicked, client) == 0) {
+        } else if ((team == TEAM_BLU || team == TEAM_RED) && GetArrayCell(g_hPlayerPicked, client) == TEAM_NIL) {
             CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Rolling-Condition-WaitForPick");
 
             return Plugin_Handled;
@@ -124,7 +132,9 @@ public Action:Timer_PrintToHud(Handle timer) {
     new String:hudmsg[128];
     Format(hudmsg, sizeof(hudmsg), "%T", "Rolling-Start-HUD", LANG_SERVER);
 
+    HudSetColor(139, 195, 74);
     HudSetText(hudmsg);
+
     CPrintToChatAll("%s[%s] %t", COLOR_TAG, TAG, "Rolling-Start-MSG")
 }
 

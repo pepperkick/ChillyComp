@@ -31,7 +31,7 @@ MeleeFightStart(bluLeader, redLeader) {
     HookEvent("player_death", Event_PlayerDeath);        // Hook Player Death Event
     HookEvent("player_class", Event_PlayerClassChange);  // Hook Player Class Change Event
 
-    HudSetColor(0, 255, 0);
+    HudSetColor(139, 195, 74);
     HudSetText("Fight as Medics!");
 
     char bluLeaderName[1024];
@@ -41,6 +41,11 @@ MeleeFightStart(bluLeader, redLeader) {
     GetClientName(redLeader, redLeaderName, sizeof(redLeaderName));
 
     CPrintToChatAll("%s[%s] %t", COLOR_TAG, TAG, "Fight-Start-MSG", bluLeaderName, redLeaderName)
+}
+
+MeleeFightReset() {
+    g_iMeleeFightBluLeader = 0;
+    g_iMeleeFightRedLeader = 0;
 }
 
 public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroadcast) {
@@ -64,10 +69,10 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
 }
 
 public Action:Event_PlayerClassChange(Handle:event, const String:name[], bool:dontBroadcast) {
-    new client = GetClientOfUserId(GetEventInt(event, "userid"));
-    new class = GetEventInt(event, "class");
+    int client = GetClientOfUserId(GetEventInt(event, "userid"));
+    int class = GetEventInt(event, "class");
 
-    if (class != TFClass_Medic) {
+    if (class != CLASS_MEDIC) {
         SDKHooks_TakeDamage(client, client, client, 1000.0);
     }
  }

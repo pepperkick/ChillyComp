@@ -25,10 +25,10 @@ void PickingStart(winner, loser, Handle RolledPlayers) {
     g_iRollStatus = STATE_PICKING;
 
     if(g_iPickingTeam == TEAM_RED) {
-        HudSetColor(255, 127, 127);
+        HudSetColor(244, 67, 54);
         HudSetText("RED Pick!");
     } else if(g_iPickingTeam == TEAM_BLU) {
-        HudSetColor(127, 127, 255);
+        HudSetColor(33, 150, 244);
         HudSetText("BLU Pick!");
     }
 
@@ -64,9 +64,9 @@ void OnPick(client) {
         ChangeClientTeam(client, TEAM_BLU);
         SetArrayCell(g_hPlayerPicked, client, TEAM_BLU);
 
-        Format(formattedName, sizeof(formattedName), "{blue}%s", name);
+        Format(formattedName, sizeof(formattedName), "{matBlue}%s", name);
         CPrintToChat(g_iFightBluLeader, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Selected-ToLeader", formattedName)
-        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Selected-ToPlayer", "{blue}BLU");
+        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Selected-ToPlayer", "{matBlue}BLU");
 
         if(count == 0 || players >= (GetConVarInt(g_hcTeamSize) * 2)) {
             PickingComplete();
@@ -86,9 +86,9 @@ void OnPick(client) {
         ChangeClientTeam(client, TEAM_RED);
         SetArrayCell(g_hPlayerPicked, client, TEAM_RED);
 
-        Format(formattedName, sizeof(formattedName), "{red}%s", name);
+        Format(formattedName, sizeof(formattedName), "{matRed}%s", name);
         CPrintToChat(g_iFightRedLeader, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Selected-ToLeader", formattedName)
-        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Selected-ToPlayer", "{red}BLU");
+        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Selected-ToPlayer", "{matRed}RED");
 
         if(count == 0 || players >= (GetConVarInt(g_hcTeamSize) * 2)) {
             PickingComplete();
@@ -123,50 +123,89 @@ void PickingComplete() {
 
     g_iRollStatus = STATE_POST;
 
-    HudSetColor(0, 255, 0);
-    HudSetText("Rolling Complete!");
+    CPrintToChatAll("%s[%s] %t", COLOR_TAG, TAG, "Pick-Complete");
 
-    DebugLog("Executing roll end config");
-
-    char config[128], cmd[256];
-    GetConVarString(config, sizeof(config), g_hcOnCompleteConfig);
-    Format(cmd, sizeof(cmd), "exec %s.cfg", config);
-
-    ServerCommand(cmd);
-
-    CPrintToChatAll("{green}Rolling Complete! Good Luck and Have Fun!")
+    OnRollComplete();
 }
 
-PickingReset() {
-    DebugLog("Reset Picking");
+PickingReset(complete) {
+    DebugLog("Reset Picking - %d", complete);
 
-    g_iPickingTeam = GetClientTeam(g_iPickingWinner);
+    if (complete) {
+        delete g_mPickMenu;
 
-    if(g_iPickingTeam == TEAM_RED) {
-        HudSetColor(255, 127, 127);
-        HudSetText("RED Pick!");
-    } else if(g_iPickingTeam == TEAM_BLU) {
-        HudSetColor(127, 127, 255);
-        HudSetText("BLU Pick!");
-    }
+        g_iPickingTeam = TEAM_NIL;
+        g_iPickingWinner = 0;
+        g_iPickingLoser = 0;
 
-    for (int i = 0; i < MaxClients; i++) {
-        bool rolled = GetArrayCell(g_hIntitalPickRolledPlayers, i);
+        for(int i = 0; i < MAX_PLAYERS; i++) {
+            if (g_hPickRolledPlayers != INVALID_HANDLE) {
+                int size = GetArraySize(g_hPickRolledPlayers);
 
-        SetArrayCell(g_hPickRolledPlayers, i, rolled);
+                if (size <= i) {
+                    PushArrayCell(g_hPickRolledPlayers, false)
+                } else {
+                    SetArrayCell(g_hPickRolledPlayers, i, false);
+                }
+            }
 
-        if (rolled) {
-            ChangeClientTeam(i, TEAM_SPC);
+            if (g_hIntitalPickRolledPlayers != INVALID_HANDLE) {
+                int size = GetArraySize(g_hIntitalPickRolledPlayers);
 
-            PrintToChat(i, "[CHILLYROLL] Picking was restarted, you were moved to spec");
+                if (size <= i) {
+                    PushArrayCell(g_hIntitalPickRolledPlayers, TEAM_NIL)
+                } else {
+                    SetArrayCell(g_hIntitalPickRolledPlayers, i, TEAM_NIL);
+                }
+            }
+
+            if (g_hPlayerPicked != INVALID_HANDLE) {
+                int size = GetArraySize(g_hPlayerPicked);
+
+                if (size <= i) {
+                    PushArrayCell(g_hPlayerPicked, TEAM_NIL)
+                } else {
+                    SetArrayCell(g_hPlayerPicked, i, TEAM_NIL);
+                }
+            }
         }
-    }
+    } else {
+        g_iPickingTeam = GetClientTeam(g_iPickingWinner);
 
-    PickingShowPlayerMenu(g_iPickingWinner, g_hPickRolledPlayers);
+        if(g_iPickingTeam == TEAM_RED) {
+            HudSetColor(255, 127, 127);
+            HudSetText("RED Pick!");
+        } else if(g_iPickingTeam == TEAM_BLU) {
+            HudSetColor(127, 127, 255);
+            HudSetText("BLU Pick!");
+        }
+
+        for (int i = 0; i < MaxClients; i++) {
+            bool rolled = GetArrayCell(g_hIntitalPickRolledPlayers, i);
+
+            SetArrayCell(g_hPickRolledPlayers, i, rolled);
+
+            if (rolled) {
+                ChangeClientTeam(i, TEAM_SPC);
+
+                CPrintToChat(i, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Restart-Moved");
+            }
+        }
+
+        PickingShowPlayerMenu(g_iPickingWinner, g_hPickRolledPlayers);
+    }
 }
 
 public Action:Command_RestartPicking(client, args) {
     DebugLog("Recieved Command to Restart Picking Process");
 
-    PickingReset();
+    if (g_iRollStatus != STATE_PICKING) {
+        CPrintToChat(client, "%s[%s] {matPurple}Cannot reset picking until picking has started!");
+
+        return Plugin_Handled;
+    }
+
+    PickingReset(false);
+
+    return Plugin_Continue;
 }

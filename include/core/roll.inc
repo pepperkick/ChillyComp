@@ -37,15 +37,13 @@ RollingReset() {
     SpecRollReset();
     CapRollReset();
 
-    HudSetColor(127, 255, 127);
+    g_iLastPlayerCount = 0;
 
     g_iRollStatus = STATE_INITIAL;
 
-    for(int i = 0; i < MAX_PLAYERS; i++) {
-        PushArrayCell(g_hPlayerPicked, 0);
-    }
-
     g_hcPlayerCountTimer = CreateTimer(2.00, Timer_CheckPlayerCount, _, TIMER_REPEAT);
+
+    FightReset();
 }
 
 public Action:RollingConditions(client, String:arg[]) {
@@ -100,8 +98,9 @@ OnRollingComplete(Handle RolledPlayers) {
 public Action:Timer_CheckPlayerCount(Handle timer) {
     if (GetConVarInt(g_hcEnabled) == 0) return Plugin_Continue;
 
+    if (GetConVarInt(g_hcAutoStart) == 0) return Plugin_Continue;
+
     int l_iPlayerCounter = CountPlayersInTeam();
-    int l_iAutoStartMode = GetConVarInt(g_hcAutoStart);
 
     #if defined DEBUG
         if(g_iLastPlayerCount != l_iPlayerCounter) {
@@ -110,9 +109,7 @@ public Action:Timer_CheckPlayerCount(Handle timer) {
         }
     #endif
 
-    if (l_iAutoStartMode == 0) {
-        return Plugin_Continue;
-    } else if (l_iAutoStartMode == 1 && g_iRollStatus == STATE_INITIAL) {
+    if (g_iRollStatus == STATE_INITIAL) {
         if(l_iPlayerCounter >= (GetConVarInt(g_hcTeamSize) * 2)) {
             RollingStart();
 
@@ -132,8 +129,14 @@ public Handle_RollModeChange(Handle:convar, const String:oldValue[], const Strin
 public Action:Command_StartRolling(client, args) {
     int l_iAutoStartMode = GetConVarInt(g_hcAutoStart);
 
-    if (l_iAutoStartMode == 1 && g_iRollStatus == STATE_INITIAL) {
-        CPrintToChat(client, "%s[%s] {{orange}}Rolling is set to auto enable, you cannot start manually.", COLOR_TAG, TAG);
+    if (l_iAutoStartMode == 1) {
+        CPrintToChat(client, "%s[%s] {{matPurple}}Rolling is set to auto enable, you cannot start manually.", COLOR_TAG, TAG);
+
+        return Plugin_Continue;
+    }
+
+    if (g_iRollStatus != STATE_INITIAL) {
+        CPrintToChat(client, "%s[%s] {{matPurple}}Rolling has already started.", COLOR_TAG, TAG);
 
         return Plugin_Continue;
     }

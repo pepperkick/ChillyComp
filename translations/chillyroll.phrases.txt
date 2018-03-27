@@ -7,12 +7,12 @@
 
     "Rolling-Canceled-MSG-LeaderLeft"
     {
-        "en"        "{white}A team leader has left the game, Rolling has been canceled"
+        "en"        "{matPurple}A team leader has left the game, Rolling has been canceled"
     }
 
     "Rolling-Canceled-MSG-PlayerLeft"
     {
-        "en"        "{white}A rolled player has left the game and there are not enough rolled players, Rolling has been canceled"
+        "en"        "{matPurple}A rolled player has left the game and there are not enough rolled players, Rolling has been canceled"
     }
 
     "Rolling-Ready-HUD"
@@ -22,7 +22,7 @@
 
     "Rolling-Ready-MSG"
     {
-        "en"        "{white}Pre-Rolling has started, Get ready to join spectators when '{green}ROLL{white}' message appears.\nIf you are in spectator, you can still join a team to roll."
+        "en"        "{matCyan}Pre-Rolling has started, Get ready to join spectators when '{matLGreen}ROLL{matCyan}' message appears.\nIf you are in spectator, you can still join a team to roll."
     }
 
     "Rolling-Start-HUD"
@@ -32,113 +32,123 @@
 
     "Rolling-Start-MSG"
     {
-        "en"        "{white}Rolling has started, join spectators NOW!\nLast 2 players who don't join spectators will become the team captains."
+        "en"        "{matCyan}Rolling has started, join spectators NOW!\nLast 2 players who don't join spectators will become the team captains."
     }
 
     "Rolling-Condition-Success"
     {
-        "en"        "{green}You have successfully rolled."
+        "en"        "{matGreen}You have successfully rolled."
     }
 
     "Rolling-Condition-Last2Blocked"
     {
-        "en"        "{orange}Last 2 players cannot join spectators."
+        "en"        "{matPurple}Last 2 players cannot join spectators."
     }
 
     "Rolling-Condition-PickedByOtherTeam"
     {
         "#format"   "{1:s}{2:s}"
-        "en"        "{orange}You cannot join {2}{orange} team as you are picked by {1}{orange} team."
+        "en"        "{matPurple}You cannot join {2}{matPurple} team as you are picked by {1}{matPurple} team."
     }
 
     "Rolling-Condition-WaitForPick"
     {
-        "en"        "{orange}You have to wait until you are picked before joining a team."
+        "en"        "{matPurple}You have to wait until you are picked before joining a team."
     }
 
     "Rolling-Condition-WaitForPick"
     {
-        "en"        "{orange}Please wait until you are picked by a team captain before joining a team."
+        "en"        "{matPurple}Please wait until you are picked by a team captain before joining a team."
     }
 
     "Rolling-Condition-CannotJoinSpec"
     {
-        "en"        "{orange}You cannot join spectators yet."
+        "en"        "{matPurple}You cannot join spectators yet."
     }
 
     "Rolling-Condition-CaptainDecided"
     {
-        "en"        "{orange}The captains have been decided, you cannot join now."
+        "en"        "{matPurple}The captains have been decided, you cannot join now."
     }
 
     "Fight-Start-MSG"
     {
         "#format"   "{1:s}{2:s}"
-        "en"        "{green}Team captains are\n{blue}BLU: {1}\n{red}RED: {2}"
+        "en"        "{matGreen}Team captains are\n{blue}BLU: {1}\n{red}RED: {2}"
     }
 
     "Fight-Winner"
     {
-        "en"        "{green}You have won and get to pick first!"
+        "en"        "{matGreen}You have won and get to pick first!"
     }
 
     "Fight-Loser"
     {
-        "en"        "{green}You have lost and get to pick second, better luck next time!"
+        "en"        "{matGreen}You have lost and get to pick second, better luck next time!"
     }
 
     "Pick-Turn"
     {
-        "en"        "{green}It's your turn to pick!"
+        "en"        "{matGreen}It's your turn to pick!"
     }
 
     "Pick-Chat-Disabled"
     {
-        "en"        "{orange}This command can only be used during picking process"
+        "en"        "{matPurple}This command can only be used during picking process"
     }
 
     "Pick-Chat-NotUsable"
     {
-        "en"        "{orange}Only current picker can use this command"
+        "en"        "{matPurple}Only current picker can use this command"
     }
 
     "Pick-Chat-NotFound"
     {
         "#format"   "{1:s}"
-        "en"        "{orange}No player found with the name or number {yellow}{1}\n{orange}You can use {green}!list {orange}command to show the list of players"
+        "en"        "{matPurple}No player found with the name or number {matYellow}{1}\n{matPurple}You can use {matOrange}!list {matPurple}command to show the list of players"
     }
 
     "Pick-Chat-ManyFound"
     {
         "#format"   "{1:s}"
-        "en"        "{orange}Too many players found with the name {yellow}{1}{orange}. Please be more specific or use player number from the list\n{orange}You can use {green}!list {orange}command to show the list of players"
+        "en"        "{matPurple}Too many players found with the name {matYellow}{1}{matPurple}. Please be more specific or use player number from the list\n{matPurple}You can use {matOrange}!list {matPurple}command to show the list of players"
     }
 
     "Pick-Chat-NotRolled"
     {
         "#format"   "{1:s}"
-        "en"        "{orange}The player {yellow}{1}{orange} has not rolled\n{orange}You can use {green}!list {orange}command to show the list of players"
+        "en"        "{matPurple}The player {matYellow}{1}{matPurple} has not rolled\n{matPurple}You can use {matOrange}!list {matPurple}command to show the list of players"
     }
 
     "Pick-List-Heading"
     {
-        "en"        "{green}Player List"
+        "en"        "{matGreen}Player List"
     }
 
     "Pick-Selected-ToLeader"
     {
         "#format"   "{1:s}"
-        "en"        "{green}You picked {1}"
+        "en"        "{matGreen}You picked {1}"
     }
 
     "Pick-Selected-ToPlayer"
     {
         "#format"   "{1:s}"
-        "en"        "{green}You were picked by {1} {green} team"
+        "en"        "{matGreen}You were picked by {1} {matGreen} team"
     }
 
     "Pick-Menu-FailedToShow"
     {
-        "en"        "{darkred}Due to internal error the picking menu failed to show up. Please use {green}!list {darkred}and {green}!pick or !p <name> {darkred} commands to view players list and pick players"
+        "en"        "{matDOrange}Due to internal error the picking menu failed to show up. Please use {matOrange}!list {matDOrange}and {matOrange}!pick or !p <name> {matDOrange} commands to view players list and pick players"
+    }
+
+    "Pick-Restart-Moved"
+    {
+        "en"        "{matPurple}Picking was restarted, you were moved to spec"
+    }
+
+    "Pick-Complete"
+    {
+        "en"        "{matGreen}Picking Complete! Good Luck and Have Fun!"
     }
 }

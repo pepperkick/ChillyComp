@@ -80,7 +80,7 @@ public Action:Command_PickList(client, args) {
     char message[8192];
     char name[1024];
 
-    Format(message, sizeof(message), "%s[%s] %t\n{yellow}", COLOR_TAG, TAG, "Pick-List-Heading");
+    Format(message, sizeof(message), "%s[%s]\n%t\n{matYellow}", COLOR_TAG, TAG, "Pick-List-Heading");
 
     for(int i = 0; i < MAX_PLAYERS; i++) {
         bool isRolled = IsPlayerRolled(i);        // Is player rolled

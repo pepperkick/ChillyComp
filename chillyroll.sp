@@ -1,17 +1,8 @@
-#define PLUGIN_VERSION  "3.1.5.6"
+#define PLUGIN_VERSION  "3.2.2"
 #define UPDATE_URL      "http://cdn.chillypunch.com/chillyroll.updater.txt"
 #define TAG             "CHILLY"
-#define COLOR_TAG       "{orange}"
-#define TEAM_NIL 0
-#define TEAM_RED 2
-#define TEAM_BLU 3
-#define TEAM_SPC 4
+#define COLOR_TAG       "{matAmber}"
 #define MAX_PLAYERS 24
-#define STATE_INITIAL  0
-#define STATE_ROLLING  1
-#define STATE_FIGHTING 2
-#define STATE_PICKING  3
-#define STATE_POST     4
 #define DEBUG
 
 //=========================================================================
@@ -121,11 +112,13 @@ public OnPluginStart() {
         Updater_AddPlugin(UPDATE_URL)
 
     //Initialize Plus One Block List
-    g_hcPlusOnePlayerID = CreateArray(32);
-    g_hPlayerPicked = CreateArray();
+    g_hPlayerPicked = CreateArray(MAX_PLAYERS);
 
     //Attach HUD Handle
     g_hoHud = HudInit(127, 255, 127);
+
+    // Add Extra Colors
+    AddColors();
 
     //Set CommandListeners
     AddCommandListener(Command_JoinTeam, "jointeam");    //Attach Listener to "jointeam" command
@@ -166,24 +159,26 @@ public OnPluginStart() {
 //============================================
 
 public OnClientDisconnect(client) {
-    if(g_bRollingPick && (client == g_iBluTeamLeader || client == g_iRedTeamLeader)) {
+    if(g_iRollStatus > STATE_INITIAL && (client == g_iBluTeamLeader || client == g_iRedTeamLeader)) {
         //If a team leader leaves while picking is going on
 
         new String:hudmsg[128];
         Format(hudmsg, sizeof(hudmsg), "%T", "Rolling-Canceled-HUD", LANG_SERVER);
 
+        HudSetColor(255, 152, 0);
         HudSetText(hudmsg);
         CPrintToChatAll("%s[%s] %t", COLOR_TAG, TAG, "Rolling-Canceled-MSG-LeaderLeft");
 
         RollingReset();                        //Reset Rolling
 
         return;
-    } else if((g_bRollingSequence || g_bRollingPick) && RollingCheckPlayer(client) && g_iPlayerCounter < (GetConVarInt(g_hcTeamSize) * 2)) {
+    } else if(g_iRollStatus > STATE_INITIAL && RollingCheckPlayer(client) && CountPlayersInTeam() < (GetConVarInt(g_hcTeamSize) * 2)) {
         //If a player leaves while either rolling sequence or team picking is going on and there are not enough players
 
         new String:hudmsg[128];
         Format(hudmsg, sizeof(hudmsg), "%T", "Rolling-Canceled-HUD", LANG_SERVER);
 
+        HudSetColor(255, 152, 0);
         HudSetText(hudmsg);
         CPrintToChatAll("%s[%s] %t", COLOR_TAG, TAG, "Rolling-Canceled-MSG-PlayerLeft");
 
@@ -223,14 +218,10 @@ public OnMapStart() {
 //============================================
 
 public void OnRollComplete() {
-    if(FindConVar("sm_teamlimit_version") != INVALID_HANDLE) {
-        DebugLog("Reset team limit size", g_iTeamLimitSize);
+    char config[128];
+    GetConVarString(g_hcOnCompleteConfig, config, sizeof(config));
 
-        ClearArray(g_hcPlusOnePlayerID);
-        g_hcPlusOnePlayerID = CreateArray(32);
-
-        SetConVarInt(g_hcTeamLimitSize, g_iTeamLimitSize, false, false);
-    }
+    ServerCommand("exec %s.cfg", config);
 }
 
 //============================================
@@ -307,7 +298,6 @@ public bool RollAutoEnable() {
 
 //        R O L L I N G     F U N C T I O N S     E N D
 //=========================================================================
-
 
 //=========================================================================
 //         U P D A T E R   F U N C T I O N S    S T A R T

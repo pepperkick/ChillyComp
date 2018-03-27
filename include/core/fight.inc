@@ -21,6 +21,15 @@ FightingStart(Handle RolledPlayers) {
     }
 }
 
+FightReset() {
+    MeleeFightReset();
+
+    g_iFightBluLeader = 0;
+    g_iFightRedLeader = 0;
+
+    PickingReset(true);
+}
+
 FightingComplete(winner, loser) {
     PickingStart(winner, loser, g_iFightRolledPlayers);
 

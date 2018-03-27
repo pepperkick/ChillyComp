@@ -19,7 +19,8 @@ CapRollStart(Handle:CountedPlayers) {
 
     CreateTimer(0.1, Timer_SpecRollCheckCounter,  _, TIMER_REPEAT);
 
-    HudSetText("Moved everyone to Spectators!\nJoin in to become captain");
+    HudSetColor(139, 195, 74);
+    HudSetText("Everyone has been moved to Spectators!\nJoin a team to become captain");
 }
 
 CapRollReset() {
@@ -36,7 +37,12 @@ CapMoveAllToSpec() {
     for(int i = 0; i < MAX_PLAYERS; i++) {
         if(IsClientProper(i)) {
             TF2_ChangeClientTeam(i, TFTeam_Spectator);
+
             g_bCapRollPlayer[i] = true;
+
+            CPrintToChat(i, "%s[%s] %t", COLOR_TAG, TAG, "Rolling-Condition-Success");
+
+            return Plugin_Continue;
         }
     }
 
@@ -51,7 +57,6 @@ public Action:CapRollTeamConditions(client, team) {
     if (g_iCapRollPreRollDone) {
         if (CountPlayersInTeam() >= 2) {
             CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Rolling-Condition-CaptainDecided");
-            PrintToChat(client, "[ChillyRoll] The leaders are decided!");
 
             return Plugin_Handled;
         } else if (team == TEAM_BLU && GetArrayCell(g_hPlayerPicked, client) == TEAM_RED) {
