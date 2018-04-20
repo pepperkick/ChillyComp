@@ -1,5 +1,5 @@
 #define PLUGIN_VERSION  "4.0.0"
-#define UPDATE_URL      "http://cdn.chillypunch.com/chillyroll.updater.txt"
+#define UPDATE_URL      ""
 #define TAG             "CHILLY"
 #define COLOR_TAG       "{matAmber}"
 #define MAX_PLAYERS 24
@@ -134,6 +134,7 @@ public OnPluginStart() {
 
     // Attach cvar change hooks
     HookConVarChange(g_hcRollMode, Handle_RollModeChange);
+	HookConVarChange(g_hcGameStatus, Hande_GameStatusChanged);
 
     HookEvent("teamplay_round_start", Event_RoundStart);
 
@@ -208,18 +209,6 @@ public OnMapStart() {
 }
 
 //============================================
-//    OnRollComplete
-//        Executed when roll completed
-//============================================
-
-public void OnRollComplete() {
-    char config[128];
-    GetConVarString(g_hcOnCompleteConfig, config, sizeof(config));
-
-    ServerCommand("exec %s.cfg", config);
-}
-
-//============================================
 //    OnMapEnd
 //        Executed when a map ends
 //============================================
@@ -281,7 +270,23 @@ public Action:Command_JoinTeam(client, const String:command[], argc) {
 }
 
 public void Event_RoundStart(Event event, const char[] name, bool dontBroadcast) {
-    SetStatus(STATE_LIVE);
+    if (!g_bWarmupRestartChecked) {
+         CheckWarmupRestart();
+    }
+
+    if (g_bWarmupRestartRequired && g_bWarmupRestartCounter > 0) {
+        DoWarmupRestart();
+    } else {
+        ResetWarmupResatrt();
+
+        SetStatus(STATE_LIVE);
+    }
+}
+
+public void Hande_GameStatusChanged(ConVar convar, const char[] oldValue, const char[] newValue) {
+    int value = StringToInt(newValue);
+
+    CheckStatusChange(value);
 }
 
 //        E V E N T     F U N C T I O N S     E N D

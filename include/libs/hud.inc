@@ -14,6 +14,20 @@ HudSetColor(l_iR, l_iG, l_iB) {
     g_iHudB = l_iB;
 }
 
+PrintToHudAll(String:str[]) {
+    for (new i = 1; i < MaxClients; i++) {
+        PrintToHud(i, str);
+    }
+}
+
+PrintToHud(client, String:str[]) {
+    SetHudTextParams(-1.0, -1.0, 20.0, g_iHudR, g_iHudG, g_iHudB, 255);
+
+    if (IsClientValid(client)) {
+        ShowSyncHudText(client, g_hoHud, "%s", str);
+    }
+}
+
 HudSetText(String:str[]) {
     SetHudTextParams(-1.0, -1.0, 20.0, g_iHudR, g_iHudG, g_iHudB, 255);
 

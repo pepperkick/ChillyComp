@@ -1,6 +1,6 @@
 Handle g_hcEnabled              = INVALID_HANDLE;
 Handle g_hcAutoStart            = INVALID_HANDLE;
-Handle g_hcOnCompleteConfig     = INVALID_HANDLE;
+Handle g_hcConfigPath           = INVALID_HANDLE;
 Handle g_hcPlayerPenaltyEnable  = INVALID_HANDLE;
 Handle g_hcPlayerPenaltyTime    = INVALID_HANDLE;
 Handle g_hcFightHealth          = INVALID_HANDLE;
@@ -8,6 +8,8 @@ Handle g_hcRollMode             = INVALID_HANDLE;
 Handle g_hcGameStatus           = INVALID_HANDLE;
 Handle g_hcTeamSize             = INVALID_HANDLE;
 Handle g_hcTeamLimitEnable      = INVALID_HANDLE;
+Handle g_hcLiveRestarts         = INVALID_HANDLE;
+Handle g_hcRestartGameCvar      = INVALID_HANDLE;
 
 public CreateCvars() {
     //Plugin Version ConVar
@@ -37,11 +39,11 @@ public CreateCvars() {
         );
 
     // CVar to store the config's name that gets executed when rolling completes
-    g_hcOnCompleteConfig =
+    g_hcConfigPath =
         CreateConVar(
-            "cc_rolling_on_complete",
-            "rolled",
-            "Execute config when roll completes",
+            "cc_config_path",
+            "compconfigs",
+            "Execute configs depending on events",
             FCVAR_DONTRECORD
         );
 
@@ -107,4 +109,14 @@ public CreateCvars() {
             "0=Disable\n1=Enable",
             FCVAR_DONTRECORD
         );
+
+    g_hcLiveRestarts =
+        CreateConVar(
+            "cc_liverestart",
+            "1",
+            "Restart the match number of times in spawn",
+            FCVAR_NOTIFY | FCVAR_DONTRECORD
+        );
+
+    g_hcRestartGameCvar = FindConVar("mp_restartgame");
 }

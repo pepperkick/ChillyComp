@@ -35,6 +35,7 @@
 
 // Library Includes
 #include <libs/hud>
+#include <libs/minhud>
 #include <libs/colors>
 
 // Module Includes
@@ -43,7 +44,9 @@
 #include <core/pick>
 
 // Module Includes
-#include <core/modules/teamlimit>
+#include <core/modules/team_limit>
+#include <core/modules/warmup_restart>
+#include <core/modules/config>
 
 // Admin Module Includes
 #include <admin/markplusone>

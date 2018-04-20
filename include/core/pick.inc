@@ -123,8 +123,6 @@ void PickingComplete() {
     SetStatus(STATE_SETUP);
 
     CPrintToChatAll("%s[%s] %t", COLOR_TAG, TAG, "Pick-Complete");
-
-    OnRollComplete();
 }
 
 PickingReset(complete) {
