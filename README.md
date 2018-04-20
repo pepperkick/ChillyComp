@@ -59,3 +59,34 @@ Use these commands to have full control over the plugin.
 | changecaptainred | changecapred, ccr | Admin (Ban)  | Fighting           | Allows admin to switch the captain for RED team with another rolled player                                                                 |
 | changecaptainblu | changecapblu, ccb | Admin (Ban)  | Fighting           | Allows admin to switch the captain for BLU team with another rolled player                                                                 |
 | changeroll       | -                 | Admin (Ban)  | Fighting - Picking | Allows admin to change the roll status of a player                                                                                         |
+
+## Checklist
+### Testing
+- [ ] Rolling Stage
+    - [ ] Spectator Roll Mode
+    - [ ] Plus One Marking (Admin Command)
+    - [ ] Early Penalty
+- [ ] Fighting Stage
+    - [ ] Change Player Roll Status (Admin Command)
+    - [ ] Swap Captain (Admin Command)
+    - [ ] Change Player Health
+- [ ] Picking Stage
+    - [ ] Menu Picking
+    - [ ] Chat Picking
+- [ ] Features
+    - [ ] Auto Start
+    - [ ] Team Limit
+    - [ ] Status Config
+    - [ ] Warmup Restart
+- [ ] Others
+    - [ ] 6v6 Match
+    - [ ] Highlander Match
+
+### Todo
+- [x] Match Status
+- [x] Per Status Config
+- [x] Warmup Restarts
+- [ ] Per Player Ready Up Command
+- [ ] Substitute Command
+- [ ] Discord Logging
+- [ ] Match End Cooldown Period

@@ -2,7 +2,7 @@ Menu g_mChangeRollStatusMenu;
 
 int g_iServingChangeRollStatusMenu = -1;
 
-public ChangeRollStatusMenu(client, team) {
+public ChangeRollStatusMenu(client) {
     g_mChangeRollStatusMenu = new Menu(ChangeRollStatusHandler);
 
     g_mChangeRollStatusMenu.SetTitle("Pick Player to change roll status");
@@ -32,10 +32,10 @@ public ChangeRollStatusHandler(Menu:menu, MenuAction:action, param1, param2) {
         menu.GetItem(param2, clientId, sizeof(clientId));
         int client = StringToInt(clientId, 10);
 
-        if (IsPlayerRolled(client) {
-            SetPlayRolled(client, false);
+        if (IsPlayerRolled(client)) {
+            SetPlayerRolled(client, false);
         } else {
-            SetPlayRolled(client, true);
+            SetPlayerRolled(client, true);
         }
 
         if (g_iServingChangeRollStatusMenu > -1) {
@@ -62,4 +62,6 @@ public Action:Command_ChangeRollStatus(client, args) {
     }
 
     ChangeRollStatusMenu(client);
+    
+    return Plugin_Continue;
 }
