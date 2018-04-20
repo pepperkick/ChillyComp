@@ -49,7 +49,8 @@
 #include <core/modules/config>
 
 // Admin Module Includes
-#include <admin/markplusone>
+#include <admin/mark_plusone>
+#include <admin/change_captain>
 
 // Mode Module Includes
 #include <mode/spec-roll>

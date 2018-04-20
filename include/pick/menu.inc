@@ -12,8 +12,8 @@ PickingShowPlayerMenu(client, Handle players) {
     DebugLog("[MENU] Showing menu to client %d", client);
 
     for(int i = 0; i < GetArraySize(players); i++) {
-        bool isRolled = GetArrayCell(players, i);       // Is player rolled
-        bool isPlusOne = IsPlayerPlusOne(i);            // Is player plus one marked
+        bool isRolled = IsPlayerRolled(i);       // Is player rolled
+        bool isPlusOne = IsPlayerPlusOne(i);     // Is player plus one marked
 
         if (!isPlusOne || !isRolled) continue;
 
@@ -30,8 +30,8 @@ PickingShowPlayerMenu(client, Handle players) {
     }
 
     for(int i = 0; i < GetArraySize(players); i++) {
-        bool isRolled = GetArrayCell(players, i);       // Is player rolled
-        bool isPlusOne = IsPlayerPlusOne(i);            // Is player plus one marked
+        bool isRolled = IsPlayerRolled(i);       // Is player rolled
+        bool isPlusOne = IsPlayerPlusOne(i);     // Is player plus one marked
 
         if (!isRolled || isPlusOne) continue;
 

@@ -41,8 +41,16 @@ public bool IsPlayerPlusOne(client) {
     return g_bMarkedPlusOnePlayers[client];
 }
 
+public bool SetPlayerPlusOne(client, boolean) {
+    g_bMarkedPlusOnePlayers[client] = boolean;
+}
+
 public bool IsPlayerRolled(client) {
     return GetArrayCell(g_hPickRolledPlayers, client);
+}
+
+public bool SetPlayerRolled(client, boolean) {
+    SetArrayCell(g_hPickRolledPlayers, client, boolean);
 }
 
 public int GetArgTeam(char[] arg) {

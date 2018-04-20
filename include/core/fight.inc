@@ -1,5 +1,5 @@
-int g_iFightBluLeader = 0;
-int g_iFightRedLeader = 0;
+int g_iFightBluLeader = -1;
+int g_iFightRedLeader = -1;
 
 Handle g_iFightRolledPlayers = INVALID_HANDLE;
 
@@ -24,8 +24,8 @@ FightingStart(Handle RolledPlayers) {
 FightReset() {
     MeleeFightReset();
 
-    g_iFightBluLeader = 0;
-    g_iFightRedLeader = 0;
+    g_iFightBluLeader = -1;
+    g_iFightRedLeader = -1;
 
     PickingReset(true);
 }

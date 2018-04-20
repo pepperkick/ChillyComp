@@ -25,7 +25,7 @@ public CreateCvars() {
         CreateConVar(
             "cc_enable",
             "1",
-            "0=Disable\n1=Enable",
+            "Enables or disables the whole plugin\n0 = Disabled\n1 = Enabled",
             FCVAR_NOTIFY | FCVAR_DONTRECORD
         );
 

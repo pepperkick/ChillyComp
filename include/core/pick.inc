@@ -48,7 +48,7 @@ void PickingStart(winner, loser, Handle RolledPlayers) {
 }
 
 void OnPick(client) {
-    SetArrayCell(g_hPickRolledPlayers, client, false);
+    SetPlayerRolled(client, false);
 
     int count = GetArrayTrueCount(g_hPickRolledPlayers);
     int players = CountPlayersInAnyTeam();

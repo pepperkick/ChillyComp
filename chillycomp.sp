@@ -121,10 +121,19 @@ public OnPluginStart() {
     RegConsoleCmd("list", Command_PickList,   "Shows the list of rolled and plus one players during picking process");
 
     // Set Admin Commands
-    RegAdminCmd("startroll",      Command_StartRolling,   ADMFLAG_BAN, "Start rolling process");
-    RegAdminCmd("mark",           Command_MarkPlusOne,    ADMFLAG_BAN, "Mark a player as plus one");
-    RegAdminCmd("restartpicking", Command_RestartPicking, ADMFLAG_BAN, "Restart the picking stage of rolling");
-    RegAdminCmd("rspicking",      Command_RestartPicking, ADMFLAG_BAN, "Restart the picking stage of rolling");
+    RegAdminCmd("startroll",        Command_StartRolling,       ADMFLAG_BAN, "Start rolling process");
+    RegAdminCmd("mark",             Command_MarkPlusOne,        ADMFLAG_BAN, "Mark a player as plus one");
+    RegAdminCmd("restartpicking",   Command_RestartPicking,     ADMFLAG_BAN, "Restart the picking stage of rolling");
+    RegAdminCmd("rspicking",        Command_RestartPicking,     ADMFLAG_BAN, "Restart the picking stage of rolling");
+    RegAdminCmd("changecaptainred", Command_SwapCaptainRed,     ADMFLAG_BAN, "Change RED team captain");
+    RegAdminCmd("changecapred",     Command_SwapCaptainRed,     ADMFLAG_BAN, "Change RED team captain");
+    RegAdminCmd("chgcapred",        Command_SwapCaptainRed,     ADMFLAG_BAN, "Change RED team captain");
+    RegAdminCmd("ccr",              Command_SwapCaptainRed,     ADMFLAG_BAN, "Change RED team captain");
+    RegAdminCmd("changecaptainblu", Command_SwapCaptainBlu,     ADMFLAG_BAN, "Change BLU team captain");
+    RegAdminCmd("changecapblu",     Command_SwapCaptainBlu,     ADMFLAG_BAN, "Change BLU team captain");
+    RegAdminCmd("chgcapblu",        Command_SwapCaptainBlu,     ADMFLAG_BAN, "Change BLU team captain");
+    RegAdminCmd("ccb",              Command_SwapCaptainBlu,     ADMFLAG_BAN, "Change BLU team captain");
+    RegAdminCmd("changeroll",       Command_ChangeRollStatus,   ADMFLAG_BAN, "Change the roll status for a player");
 
     //Match Function
     Match_OnPluginStart();
