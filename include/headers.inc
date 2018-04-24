@@ -47,6 +47,7 @@
 #include <core/modules/team_limit>
 #include <core/modules/warmup_restart>
 #include <core/modules/config>
+#include <core/modules/chat-control>
 
 // Admin Module Includes
 #include <admin/mark_plusone>
@@ -54,8 +55,8 @@
 #include <admin/change_rollstatus>
 
 // Mode Module Includes
-#include <mode/spec-roll>
-#include <mode/captain>
+#include <roll/spec-roll>
+#include <roll/captain>
 
 // Fight Module Includes
 #include <fight/melee>

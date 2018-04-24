@@ -1,4 +1,4 @@
-#define PLUGIN_VERSION  "4.0.0"
+#define PLUGIN_VERSION  "4.0.2"
 #define UPDATE_URL      ""
 #define TAG             "CHILLY"
 #define COLOR_TAG       "{matAmber}"
@@ -102,8 +102,10 @@ public OnPluginStart() {
     if (LibraryExists("updater"))
         Updater_AddPlugin(UPDATE_URL)
 
-    //Initialize Plus One Block List
-    g_hPlayerPicked = CreateArray(MAX_PLAYERS);
+    //Initialize Array Handles
+    g_hPlayerPicked         = CreateArray(MAX_PLAYERS);
+    g_bMarkedPlusOnePlayers = CreateArray(MAX_PLAYERS);
+    g_bRolledPlayers        = CreateArray(MAX_PLAYERS);
 
     //Attach HUD Handle
     g_hoHud = HudInit(127, 255, 127);
@@ -145,7 +147,12 @@ public OnPluginStart() {
     HookConVarChange(g_hcRollMode, Handle_RollModeChange);
 	HookConVarChange(g_hcGameStatus, Hande_GameStatusChanged);
 
+    HookEvent("server_cvar", Event_ServerCvar, EventHookMode_Pre);
     HookEvent("teamplay_round_start", Event_RoundStart);
+    
+	AddCommandListener(OnSayCommand, "say");
+	AddCommandListener(OnSayCommand, "say2");
+	AddCommandListener(OnSayCommand, "say_team");
 
     DebugLog("Loaded ChillyRoll plugin, Version %s", PLUGIN_VERSION);
 }
@@ -296,6 +303,19 @@ public void Hande_GameStatusChanged(ConVar convar, const char[] oldValue, const 
     int value = StringToInt(newValue);
 
     CheckStatusChange(value);
+}
+
+public Action:OnSayCommand(client, const String:command[], argc) {
+    decl String:text[192];
+    GetCmdArgString(text, sizeof(text));
+
+    if (FilterColorChat(client, text)) { 
+        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Module-ChatControl-ColorChatBlocked");
+
+        return Plugin_Handled;
+    }
+
+	return Plugin_Continue;
 }
 
 //        E V E N T     F U N C T I O N S     E N D

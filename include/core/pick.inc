@@ -9,13 +9,13 @@ int    g_iPickingTeam   = TEAM_NIL;
 int    g_iPickingWinner = 0;
 int    g_iPickingLoser  = 0;
 
-void PickingStart(winner, loser, Handle RolledPlayers) {
+void PickingStart(winner, loser) {
     DebugLog("Started Picking");
 
     g_sPickMenuTitle = "Pick a Player";
 
-    g_hPickRolledPlayers = RolledPlayers;
-    g_hIntitalPickRolledPlayers = RolledPlayers;
+    g_hPickRolledPlayers = g_bRolledPlayers;
+    g_hIntitalPickRolledPlayers = g_bRolledPlayers;
 
     g_iPickingWinner = winner;
     g_iPickingLoser  = loser;
@@ -32,7 +32,7 @@ void PickingStart(winner, loser, Handle RolledPlayers) {
         HudSetText("BLU Pick!");
     }
 
-    int count = GetArrayTrueCount(g_hPickRolledPlayers);
+    int count = TotalPlayersRolled();
     int players = CountPlayersInAnyTeam();
 
     DebugLog("Roll Count: %d, Players in team: %d", count, players);
@@ -43,14 +43,14 @@ void PickingStart(winner, loser, Handle RolledPlayers) {
         return;
     }
 
-    PickingShowPlayerMenu(g_iPickingWinner, g_hPickRolledPlayers);
+    PickingShowPlayerMenu(g_iPickingWinner);
     SetChatPickClient(g_iPickingWinner);
 }
 
 void OnPick(client) {
     SetPlayerRolled(client, false);
 
-    int count = GetArrayTrueCount(g_hPickRolledPlayers);
+    int count = TotalPlayersRolled();
     int players = CountPlayersInAnyTeam();
 
     DebugLog("Roll Count: %d, Players in team: %d", count, players);
@@ -80,7 +80,7 @@ void OnPick(client) {
         HudSetText("RED Pick!");
 
         CPrintToChat(g_iFightRedLeader, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Turn");
-        PickingShowPlayerMenu(g_iFightRedLeader, g_hPickRolledPlayers);
+        PickingShowPlayerMenu(g_iFightRedLeader);
         SetChatPickClient(g_iFightRedLeader);
     } else if(g_iPickingTeam == TEAM_RED) {
         ChangeClientTeam(client, TEAM_RED);
@@ -102,7 +102,7 @@ void OnPick(client) {
         HudSetText("BLU Pick!");
 
         CPrintToChat(g_iFightBluLeader, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Turn");
-        PickingShowPlayerMenu(g_iFightBluLeader, g_hPickRolledPlayers);
+        PickingShowPlayerMenu(g_iFightBluLeader);
         SetChatPickClient(g_iFightBluLeader);
     }
 }
@@ -189,7 +189,7 @@ PickingReset(complete) {
             }
         }
 
-        PickingShowPlayerMenu(g_iPickingWinner, g_hPickRolledPlayers);
+        PickingShowPlayerMenu(g_iPickingWinner);
     }
 }
 
@@ -197,7 +197,7 @@ public Action:Command_RestartPicking(client, args) {
     DebugLog("Recieved Command to Restart Picking Process");
 
     if (GetStatus() != STATE_PICKING) {
-        CPrintToChat(client, "%s[%s] {matPurple}Cannot reset picking until picking has started!");
+        CPrintToChat(client, "%s[%s] {matPurple}Cannot reset picking until picking has started!", COLOR_TAG, TAG);
 
         return Plugin_Handled;
     }

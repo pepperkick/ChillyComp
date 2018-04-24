@@ -1,6 +1,6 @@
 int retry[MAX_PLAYERS] = 0;
 
-PickingShowPlayerMenu(client, Handle players) {
+PickingShowPlayerMenu(client) {
     g_mPickMenu = new Menu(PickPanelHandler);
 
     char clientId[128];
@@ -11,7 +11,7 @@ PickingShowPlayerMenu(client, Handle players) {
 
     DebugLog("[MENU] Showing menu to client %d", client);
 
-    for(int i = 0; i < GetArraySize(players); i++) {
+    for(int i = 0; i < MAX_PLAYERS; i++) {
         bool isRolled = IsPlayerRolled(i);       // Is player rolled
         bool isPlusOne = IsPlayerPlusOne(i);     // Is player plus one marked
 
@@ -29,7 +29,7 @@ PickingShowPlayerMenu(client, Handle players) {
         g_mPickMenu.AddItem(clientId, itemName);
     }
 
-    for(int i = 0; i < GetArraySize(players); i++) {
+    for(int i = 0; i < MAX_PLAYERS; i++) {
         bool isRolled = IsPlayerRolled(i);       // Is player rolled
         bool isPlusOne = IsPlayerPlusOne(i);     // Is player plus one marked
 
@@ -65,7 +65,7 @@ public PickPanelHandler(Menu:menu, MenuAction:action, param1, param2) {
         if (!(param2 == -1 || param2 == -4) && retry[param1] < 5) {
             retry[param1]++;
 
-            PickingShowPlayerMenu(param1, g_hPickRolledPlayers);
+            PickingShowPlayerMenu(param1);
         } else {
             DebugLog("[ROLL] Failed to show pick menu properly to client %d!", param1)
 

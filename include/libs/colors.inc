@@ -10,4 +10,13 @@ public AddColors() {
     CAddColor("matDOrange", 0xFF5722);  // Error Color
     CAddColor("matYellow",  0xFFEB3B);  // List Color
     CAddColor("matWhite",   0xFAFAFA);  // White Color
+
+    CAddColor("ColorSuccess",  0x4CAF50);
+    CAddColor("ColorCommand",  0xFF9800);
+    CAddColor("ColorInfo",     0x00BCD4);
+    CAddColor("ColorError",    0xFF5722);
+    CAddColor("ColorWarning",  0x9C27B0);
+    CAddColor("ColorBluTeam",  0x2196F3);
+    CAddColor("ColorRedTeam",  0xF44336);
+    CAddColor("ColorChat",     0xFAFAFA);
 }

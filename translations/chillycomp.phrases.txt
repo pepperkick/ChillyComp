@@ -7,12 +7,12 @@
 
     "Rolling-Canceled-MSG-LeaderLeft"
     {
-        "en"        "{matPurple}A team leader has left the game, Rolling has been canceled"
+        "en"        "{ColorWarning}A team leader has left the game, Rolling has been canceled"
     }
 
     "Rolling-Canceled-MSG-PlayerLeft"
     {
-        "en"        "{matPurple}A rolled player has left the game and there are not enough rolled players, Rolling has been canceled"
+        "en"        "{ColorWarning}A rolled player has left the game and there are not enough rolled players, Rolling has been canceled"
     }
 
     "Rolling-Ready-HUD"
@@ -22,7 +22,7 @@
 
     "Rolling-Ready-MSG"
     {
-        "en"        "{matCyan}Pre-Rolling has started, Get ready to join spectators when '{matLGreen}ROLL{matCyan}' message appears.\nIf you are in spectator, you can still join a team to roll."
+        "en"        "{ColorInfo}Pre-Rolling has started, Get ready to join spectators when '{matLGreen}ROLL{ColorInfo}' message appears.\nIf you are in spectator, you can still join a team to roll."
     }
 
     "Rolling-Start-HUD"
@@ -32,139 +32,159 @@
 
     "Rolling-Start-MSG"
     {
-        "en"        "{matCyan}Rolling has started, join spectators NOW!\nLast 2 players who don't join spectators will become the team captains."
+        "en"        "{ColorInfo}Rolling has started, join spectators NOW!\nLast 2 players who don't join spectators will become the team captains."
     }
 
     "Rolling-Condition-Success"
     {
-        "en"        "{matGreen}You have successfully rolled."
+        "en"        "{ColorSuccess}You have successfully rolled."
     }
 
     "Rolling-Condition-Last2Blocked"
     {
-        "en"        "{matPurple}Last 2 players cannot join spectators."
+        "en"        "{ColorWarning}Last 2 players cannot join spectators."
     }
 
     "Rolling-Condition-PickedByOtherTeam"
     {
         "#format"   "{1:s}{2:s}"
-        "en"        "{matPurple}You cannot join {2}{matPurple} team as you are picked by {1}{matPurple} team."
+        "en"        "{ColorWarning}You cannot join {2}{ColorWarning} team as you are picked by {1}{ColorWarning} team."
     }
 
     "Rolling-Condition-WaitForPick"
     {
-        "en"        "{matPurple}You have to wait until you are picked before joining a team."
+        "en"        "{ColorWarning}You have to wait until you are picked before joining a team."
     }
 
     "Rolling-Condition-WaitForPick"
     {
-        "en"        "{matPurple}Please wait until you are picked by a team captain before joining a team."
+        "en"        "{ColorWarning}Please wait until you are picked by a team captain before joining a team."
     }
 
     "Rolling-Condition-CannotJoinSpec"
     {
-        "en"        "{matPurple}You cannot join spectators yet."
+        "en"        "{ColorWarning}You cannot join spectators yet."
     }
 
     "Rolling-Condition-CaptainDecided"
     {
-        "en"        "{matPurple}The captains have been decided, you cannot join now."
+        "en"        "{ColorWarning}The captains have been decided, you cannot join now."
     }
 
     "Roll-Command-ErrorAutoEnabled"
     {
-        "en"        "{matPurple}Rolling is set to auto enable, you cannot start manually."
+        "en"        "{ColorWarning}Rolling is set to auto enable, you cannot start manually."
     }
 
     "Roll-Command-ErrorAlreadyStarted"
     {
-        "en"        "{matPurple}Rolling has already started.."
+        "en"        "{ColorWarning}Rolling has already started.."
     }
 
     "Fight-Start-MSG"
     {
         "#format"   "{1:s}{2:s}"
-        "en"        "{matGreen}Team captains are\n{blue}BLU: {1}\n{red}RED: {2}"
+        "en"        "{ColorSuccess}Team captains are\n{blue}BLU: {1}\n{red}RED: {2}"
     }
 
     "Fight-Winner"
     {
-        "en"        "{matGreen}You have won and get to pick first!"
+        "en"        "{ColorSuccess}You have won and get to pick first!"
     }
 
     "Fight-Loser"
     {
-        "en"        "{matGreen}You have lost and get to pick second, better luck next time!"
+        "en"        "{ColorSuccess}You have lost and get to pick second, better luck next time!"
     }
 
     "Pick-Turn"
     {
-        "en"        "{matGreen}It's your turn to pick!"
+        "en"        "{ColorSuccess}It's your turn to pick!"
     }
 
     "Pick-Chat-Disabled"
     {
-        "en"        "{matPurple}This command can only be used during picking process"
+        "en"        "{ColorWarning}This command can only be used during picking process"
     }
 
     "Pick-Chat-NotUsable"
     {
-        "en"        "{matPurple}Only current picker can use this command"
+        "en"        "{ColorWarning}Only current picker can use this command"
     }
 
     "Pick-Chat-NotFound"
     {
         "#format"   "{1:s}"
-        "en"        "{matPurple}No player found with the name or number {matYellow}{1}\n{matPurple}You can use {matOrange}!list {matPurple}command to show the list of players"
+        "en"        "{ColorWarning}No player found with the name or number {ColorInfo}{1}\n{ColorWarning}You can use {ColorCommand}!list {ColorWarning}command to show the list of players"
     }
 
     "Pick-Chat-ManyFound"
     {
         "#format"   "{1:s}"
-        "en"        "{matPurple}Too many players found with the name {matYellow}{1}{matPurple}. Please be more specific or use player number from the list\n{matPurple}You can use {matOrange}!list {matPurple}command to show the list of players"
+        "en"        "{ColorWarning}Too many players found with the name {ColorInfo}{1}{ColorWarning}. Please be more specific or use player number from the list\n{ColorWarning}You can use {ColorCommand}!list {ColorWarning}command to show the list of players"
     }
 
     "Pick-Chat-NotRolled"
     {
         "#format"   "{1:s}"
-        "en"        "{matPurple}The player {matYellow}{1}{matPurple} has not rolled\n{matPurple}You can use {matOrange}!list {matPurple}command to show the list of players"
+        "en"        "{ColorWarning}The player {ColorInfo}{1}{ColorWarning} has not rolled\n{ColorWarning}You can use {ColorCommand}!list {ColorWarning}command to show the list of players"
     }
 
     "Pick-List-Heading"
     {
-        "en"        "{matGreen}Player List"
+        "en"        "{ColorSuccess}Player List"
     }
 
     "Pick-Selected-ToLeader"
     {
         "#format"   "{1:s}"
-        "en"        "{matGreen}You picked {1}"
+        "en"        "{ColorSuccess}You picked {1}"
     }
 
     "Pick-Selected-ToPlayer"
     {
         "#format"   "{1:s}"
-        "en"        "{matGreen}You were picked by {1} {matGreen} team"
+        "en"        "{ColorSuccess}You were picked by {1} {ColorSuccess} team"
     }
 
     "Pick-Menu-FailedToShow"
     {
-        "en"        "{matDOrange}Due to internal error the picking menu failed to show up. Please use {matOrange}!list {matDOrange}and {matOrange}!pick or !p <name> {matDOrange} commands to view players list and pick players"
+        "en"        "{ColorError}Due to internal error the picking menu failed to show up. Please use {ColorCommand}!list {ColorError}and {ColorCommand}!pick or !p <name> {ColorError} commands to view players list and pick players"
     }
 
     "Pick-Restart-Moved"
     {
-        "en"        "{matPurple}Picking was restarted, you were moved to spec"
+        "en"        "{ColorWarning}Picking was restarted, you were moved to spec"
     }
 
     "Pick-Complete"
     {
-        "en"        "{matGreen}Picking Complete! Good Luck and Have Fun!"
+        "en"        "{ColorSuccess}Picking Complete! Good Luck and Have Fun!"
     }
 
     "TeamLimit-Full"
     {
         "#format"   "{1:s}"
-        "en"        "{1} {matPurple} team is currently full!"
+        "en"        "{1} {ColorWarning} team is currently full!"
+    }
+
+    "Module-ChatControl-ColorChatBlocked"
+    {
+        "en"        "{ColorWarning}Color chat is not allowed!"
+    }
+
+    "Module-Admin-MarkPlusOne-CommandBlocked"
+    {
+        "en"        "{ColorWarning}Plusone marks cannot be changed now"
+    }
+
+    "Module-Admin-ChangeCaptain-CommandBlocked"
+    {
+        "en"        "{ColorWarning}Captain can be only changed during fighting stage"
+    }
+
+    "Module-Admin-ChangeRollStatus-CommandBlocked"
+    {
+        "en"        "{ColorWarning}Roll Status cannot be changed now"
     }
 }

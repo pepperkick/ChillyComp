@@ -8,14 +8,18 @@ public ChangeCaptainMenu(client, team) {
 
     g_mChangeCaptainMenu.SetTitle("Pick Player to swap as captain");
 
-    for(int i = 1; i < MaxClients; i++) {
-        if(IsClientInGame(i) && !IsFakeClient(i) && IsPlayerRolled(i)) {
+    DebugLog("Creating captain swap menu");
+
+    for(int i = 1; i < MaxClients; i++) {        
+        DebugLog("Checking player %d: %d", i, IsPlayerRolled(i));
+        
+        if(IsClientInGame(i) && IsPlayerRolled(i)) {
             char name[1024], clientId[4];
 
             GetClientName(i, name, sizeof(name));
             IntToString(i, clientId, sizeof(clientId));
 
-            g_mPlusOneMenu.AddItem(clientId, name);
+            g_mChangeCaptainMenu.AddItem(clientId, name);
         }
     }
 
@@ -55,7 +59,7 @@ public Action:Command_SwapCaptainRed(client, args) {
     DebugLog("Recieved Command to Change Captain for RED team");
 
     if (GetStatus() != STATE_FIGHTING) {
-        CPrintToChat(client, "%s[%s] {matPurple}Captain can be only changed during fighting stage");
+        CPrintToChat(client, "%s[%s] {matPurple}Captain can be only changed during fighting stage", COLOR_TAG, TAG);
 
         return Plugin_Handled;
     }
@@ -69,7 +73,7 @@ public Action:Command_SwapCaptainBlu(client, args) {
     DebugLog("Recieved Command to Change Captain for BLU team");
 
     if (GetStatus() != STATE_FIGHTING) {
-        CPrintToChat(client, "%s[%s] {matPurple}Captain can be only changed during fighting stage");
+        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Module-Admin-ChangeCaptain-CommandBlocked");
 
         return Plugin_Handled;
     }
@@ -79,9 +83,7 @@ public Action:Command_SwapCaptainBlu(client, args) {
     return Plugin_Continue;
 }
 
-SwapTeamCaptain(client, team) {  
-    FightReset();
-
+SwapTeamCaptain(client, team) {
     if (team == TEAM_RED) {
         ChangeClientTeam(g_iFightRedLeader, TEAM_SPC);      
         ChangeClientTeam(client, TEAM_RED);      
@@ -95,6 +97,7 @@ SwapTeamCaptain(client, team) {
         SetPlayerRolled(g_iFightBluLeader, true);
         SetPlayerRolled(client, false)
     }
-
-    FightingStart(g_iFightRolledPlayers);
+ 
+    FightReset();
+    FightingStart();
 }

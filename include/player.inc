@@ -38,19 +38,30 @@ public bool IsClientProper(client) {
 }
 
 public bool IsPlayerPlusOne(client) {
-    return g_bMarkedPlusOnePlayers[client];
+    return GetArrayCell(g_bMarkedPlusOnePlayers, client);
 }
 
 public bool SetPlayerPlusOne(client, boolean) {
-    g_bMarkedPlusOnePlayers[client] = boolean;
+    SetArrayCell(g_bMarkedPlusOnePlayers, client, boolean);
 }
 
 public bool IsPlayerRolled(client) {
-    return GetArrayCell(g_hPickRolledPlayers, client);
+    return GetArrayCell(g_bRolledPlayers, client);
 }
 
 public bool SetPlayerRolled(client, boolean) {
-    SetArrayCell(g_hPickRolledPlayers, client, boolean);
+    SetArrayCell(g_bRolledPlayers, client, boolean);
+}
+
+public int TotalPlayersRolled() {
+    int count = 0;
+
+    for (int i = 0; i < MAX_PLAYERS; i++) {
+        if (IsPlayerRolled(i)) 
+            count++;
+    }
+
+    return count;
 }
 
 public int GetArgTeam(char[] arg) {

@@ -15,7 +15,7 @@ public ChangeRollStatusMenu(client) {
             IntToString(i, clientId, sizeof(clientId));
             Format(listName, sizeof(listName), "%s (%s)", name, IsPlayerRolled(i) ? "o" : "x");
 
-            g_mPlusOneMenu.AddItem(clientId, name);
+            g_mChangeRollStatusMenu.AddItem(clientId, name);
         }
     }
 
@@ -56,7 +56,7 @@ public ChangeRollStatusHandler(Menu:menu, MenuAction:action, param1, param2) {
 
 public Action:Command_ChangeRollStatus(client, args) {
     if (GetStatus() > STATE_ROLLING && GetStatus() < STATE_SETUP) {
-        CPrintToChat(client, "%s[%s] {matPurple}Roll Status cannot be changed now");
+        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Module-Admin-ChangeRollStatus-CommandBlocked");
 
         return Plugin_Handled;
     }

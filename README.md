@@ -12,6 +12,22 @@ This plugin was made to be modular and easily configurable, to help it the plugi
 - **Easily Configurable**: The plugin is filled with convars and commands to allow full control over the plugin to make the perfect match for you.
 - **Warmup Restart**: The plugin restarts the match during warmup period to help players warmup.
 - **Team Limit**: The plugin enforces team size restrictions so that other players cannot join a team for unfair match.
+- **Chat Control**: The plugin filters the chat for unnecessary things like cvar change notifications and color chat exploit.
+
+## Steps
+- Step 1: Plugin waits for enough players in each team depending on cc_match_teamsize
+- Step 2: Plugin goes into rolling mode
+    - Step 2.1: Sends roll message randomly to all players and counts how many players went to team spectator
+    - Step 2.2: Last 2 players are made captain for each team
+- Step 3: Plugin makes the 2 captains fight
+    - Step 3.1 Winner of the fight gets to pick first
+- Step 4: Plugin allows captains to pick players via menu or chat
+- Step 5: Once enough players are picked or once all players are picked then picking is complete
+- Step 6: Wait for players to ready up and start the match
+- Step 7: Plugin restarts the match for warmup depending on cc_liverestart
+- Step 8: Once all restarts are complete then the match is marked as LIVE
+- Step 9: Waits for the match to end
+- Step 10: Resets itself once match ends for next match
 
 ## Status and Configs
 Plugin will automatically execute configs when the status of the match changes, so use the config however you like to control the match.<br>
@@ -20,16 +36,16 @@ The config path is configurable with cc_config_path.<br>
 **Example**: If cc_config_path is conpconfig then config path is<br>
 "cfg/compconfig/status_live.cfg|
 
-| Status | File Name | Description |
-| --- | --- | --- |
-| Initial | status_initial | Initial period of the match |
-| Rolling | status_rolling | Rolling period of the match |
-| Fighting | status_fighting | Fighting period of the match |
-| Picking | status_picking | Picking period of the match |
-| Setup | status_setup | After the teams are picked and teams are doing preparation |
-| Warmup | status_warmup | Match is being restarted for player warmup |
-| Live | status_live | Match is live! |
-| Post | status_post | Post match completion | 
+| Status   | File Name       | Description                                                |
+| -------- | --------------- | ---------------------------------------------------------- |
+| Initial  | status_initial  | Initial period of the match                                |
+| Rolling  | status_rolling  | Rolling period of the match                                |
+| Fighting | status_fighting | Fighting period of the match                               |
+| Picking  | status_picking  | Picking period of the match                                |
+| Setup    | status_setup    | After the teams are picked and teams are doing preparation |
+| Warmup   | status_warmup   | Match is being restarted for player warmup                 |
+| Live     | status_live     | Match is live!                                             |
+| Post     | status_post     | Post match completion                                      |
 
 ## Convars
 Use this variables in config files to control your match how you want.
@@ -44,21 +60,23 @@ Use this variables in config files to control your match how you want.
 | cc_rolling_fight_health   | 150         | How much health should the captain have during the fight                                                                                                                                        |
 | cc_match_status           | 0           | The current status of the match, this is for other plugins to know the status. Do not change this by yourself                                                                                   |
 | cc_match_teamsize         | 6           | How many players should each team have for the match                                                                                                                                            |
-| cc_match_teamlimit        | 1           | Should the teams be limited by the team size (value from cc_match_teamsize)<br>0 = Disabled<br>1 = Enabled                                                                                       |
+| cc_match_teamlimit        | 1           | Should the teams be limited by the team size (value from cc_match_teamsize)<br>0 = Disabled<br>1 = Enabled                                                                                      |
 | cc_liverestart            | 1           | How many times should the match restart during the warmup process                                                                                                                               |
+| cc_blockcvarchat          | 1           | Blocks all the cvar change notify chat<br>0 = Disabled<br>1 = Enabled                                                                                                                           |
+| cc_blockcolorchat         | 1           | Blocks all the color chats that can be sent by players due to SCP or CCP exploit<br>0 = Allows color chat<br>1 = Allows only for Admins<br>2 = Blocks for everyone                              |
 
 ## Commands
 Use these commands to have full control over the plugin.
-| Name             | Alias            | Permission   | Stage              | Description                                                                                                                                |
-| ---------------- | ----------------- | ------------ | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| pick             | p                 | Team Captain | Picking            | Allows the team captain to pick a player.<br>Usage: pick {player name / player ID}<br>**NOTE**: *Player ID can be found with list command* |
-| list             | -                 | Any Player   | Picking            | Allows the player to see the list of players that have rolled for the match                                                                |
-| startroll        | -                 | Admin (Ban)  | Initial            | Allows admin to manually start a roll<br>**NOTE**: *This command will not work if auto start feature is enabled*                           |
-| mark             | -                 | Admin (Ban)  | Initial - Picking   | Allows admin to mark a player is plus one                                                                                                  |
-| restartpicking   | rspicking         | Admin (Ban)  | Picking            | Allows admin to restart the picking stage                                                                                                  |
-| changecaptainred | changecapred, ccr | Admin (Ban)  | Fighting           | Allows admin to switch the captain for RED team with another rolled player                                                                 |
-| changecaptainblu | changecapblu, ccb | Admin (Ban)  | Fighting           | Allows admin to switch the captain for BLU team with another rolled player                                                                 |
-| changeroll       | -                 | Admin (Ban)  | Fighting - Picking | Allows admin to change the roll status of a player                                                                                         |
+| Name             | Alias             | Permission   | Stage              | Description                                                                                                                                 |
+| ---------------- | ----------------- | ------------ | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| pick             | p                 | Team Captain | Picking            | Allows the team captain to pick a player.<br>Usage: pick  {player name / player ID}<br>**NOTE**: *Player ID can be found with list command* |
+| list             | -                 | Any Player   | Picking            | Allows the player to see the list of players that have rolled for the match                                                                 |
+| startroll        | -                 | Admin (Ban)  | Initial            | Allows admin to manually start a roll<br>**NOTE**: *This command will not work if auto start feature is enabled*                            |
+| mark             | -                 | Admin (Ban)  | Initial - Picking  | Allows admin to mark a player is plus one                                                                                                   |
+| restartpicking   | rspicking         | Admin (Ban)  | Picking            | Allows admin to restart the picking stage                                                                                                   |
+| changecaptainred | changecapred, ccr | Admin (Ban)  | Fighting           | Allows admin to switch the captain for RED team with another rolled player                                                                  |
+| changecaptainblu | changecapblu, ccb | Admin (Ban)  | Fighting           | Allows admin to switch the captain for BLU team with another rolled player                                                                  |
+| changeroll       | -                 | Admin (Ban)  | Fighting - Picking | Allows admin to change the roll status of a player                                                                                          |
 
 ## Checklist
 ### Testing
@@ -86,7 +104,20 @@ Use these commands to have full control over the plugin.
 - [x] Match Status
 - [x] Per Status Config
 - [x] Warmup Restarts
+- [x] Chat Control
 - [ ] Per Player Ready Up Command
 - [ ] Substitute Command
 - [ ] Discord Logging
-- [ ] Match End Cooldown Period
+- [ ] Match End Cool down Period
+
+## Changelog
+- 4.0.2
+    - Added cvar change chat filter
+    - Added color chat filter 
+    - Changed how colors are handled in translations file
+    - Moved command block error messages to translation file
+- 4.0.1
+    - Fixed commands not replying with error messages when used at wrong stage
+    - Fixed rolled players not being detected for swap captain menu
+    - Changed how rolled players and plus one players are managed
+- 4.0.0

@@ -10,6 +10,8 @@ Handle g_hcTeamSize             = INVALID_HANDLE;
 Handle g_hcTeamLimitEnable      = INVALID_HANDLE;
 Handle g_hcLiveRestarts         = INVALID_HANDLE;
 Handle g_hcRestartGameCvar      = INVALID_HANDLE;
+Handle g_hcBlockCvarChangeChat  = INVALID_HANDLE;
+Handle g_hcBlockColorChat       = INVALID_HANDLE;
 
 public CreateCvars() {
     //Plugin Version ConVar
@@ -115,6 +117,22 @@ public CreateCvars() {
             "cc_liverestart",
             "1",
             "Restart the match number of times in spawn",
+            FCVAR_NOTIFY | FCVAR_DONTRECORD
+        );
+        
+    g_hcBlockCvarChangeChat =
+        CreateConVar(
+            "cc_blockcvarchat",
+            "1",
+            "Blocks cvar change chat (Only blocks cvars with 'cc_' prefix)",
+            FCVAR_NOTIFY | FCVAR_DONTRECORD
+        );        
+
+    g_hcBlockColorChat =
+        CreateConVar(
+            "cc_blockcolorchat",
+            "1",
+            "Blocks color chats that can be used by players due to an expliot with SCP and CCP\n0 = Allow All Chat\n1 = Allow only for Admins\n2 = Completely Disable",
             FCVAR_NOTIFY | FCVAR_DONTRECORD
         );
 

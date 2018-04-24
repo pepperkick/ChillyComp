@@ -8,6 +8,7 @@
 int    g_iLastPlayerCount   = 0;        //Last count of Players before recheck for new Players
 
 Handle g_hcPlayerCountTimer = INVALID_HANDLE;
+Handle g_bRolledPlayers = INVALID_HANDLE;
 
 RollingStart() {
     DebugLog("Started Rolling");
@@ -92,7 +93,12 @@ OnRollingComplete(Handle RolledPlayers) {
         }
     #endif
 
-    FightingStart(RolledPlayers);
+    for(int i = 0; i < MAX_PLAYERS; i++) {
+        bool rolled = GetArrayCell(RolledPlayers, i);
+        SetPlayerRolled(i, rolled);
+    }
+
+    FightingStart();
 }
 
 public Action:Timer_CheckPlayerCount(Handle timer) {

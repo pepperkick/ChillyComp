@@ -1,14 +1,10 @@
 int g_iFightBluLeader = -1;
 int g_iFightRedLeader = -1;
 
-Handle g_iFightRolledPlayers = INVALID_HANDLE;
-
-FightingStart(Handle RolledPlayers) {
+FightingStart() {
     DebugLog("Started Fighting");
 
     int l_iMode  = 1;
-
-    g_iFightRolledPlayers = RolledPlayers;
 
     SetStatus(STATE_FIGHTING);
 
@@ -31,7 +27,7 @@ FightReset() {
 }
 
 FightingComplete(winner, loser) {
-    PickingStart(winner, loser, g_iFightRolledPlayers);
+    PickingStart(winner, loser);
 
     CPrintToChat(winner, "%s[%s] %t", COLOR_TAG, TAG, "Fight-Winner");
     CPrintToChat(loser, "%s[%s] %t", COLOR_TAG, TAG, "Fight-Loser");
