@@ -47,12 +47,11 @@
 #include <core/modules/team_limit>
 #include <core/modules/warmup_restart>
 #include <core/modules/config>
-#include <core/modules/chat-control>
-
-// Admin Module Includes
-#include <admin/mark_plusone>
-#include <admin/change_captain>
-#include <admin/change_rollstatus>
+#include <core/modules/chat_control>
+#include <core/modules/mark_plusone>
+#include <core/modules/change_captain>
+#include <core/modules/change_rollstatus>
+#include <core/modules/player_readyup>
 
 // Mode Module Includes
 #include <roll/spec-roll>

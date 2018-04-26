@@ -1,4 +1,4 @@
-#define PLUGIN_VERSION  "4.0.2"
+#define PLUGIN_VERSION  "4.0.5"
 #define UPDATE_URL      ""
 #define TAG             "CHILLY"
 #define COLOR_TAG       "{matAmber}"
@@ -103,9 +103,10 @@ public OnPluginStart() {
         Updater_AddPlugin(UPDATE_URL)
 
     //Initialize Array Handles
-    g_hPlayerPicked         = CreateArray(MAX_PLAYERS);
-    g_bMarkedPlusOnePlayers = CreateArray(MAX_PLAYERS);
-    g_bRolledPlayers        = CreateArray(MAX_PLAYERS);
+    g_hPlayerPicked         = CreateArray(4, MAX_PLAYERS);
+    g_bMarkedPlusOnePlayers = CreateArray(4, MAX_PLAYERS);
+    g_bPlayerRollStatus     = CreateArray(4, MAX_PLAYERS);
+    g_bPlayerReadyStatus    = CreateArray(4, MAX_PLAYERS);
 
     //Attach HUD Handle
     g_hoHud = HudInit(127, 255, 127);
@@ -118,9 +119,11 @@ public OnPluginStart() {
     AddCommandListener(Command_JoinSpec, "spectate");    //Attach Listener to "spectate" command
 
     // Set Console Commands
-    RegConsoleCmd("pick", Command_PickPlayer, "Pick player through chat during picking process");
-    RegConsoleCmd("p",    Command_PickPlayer, "Pick player through chat during picking process");
-    RegConsoleCmd("list", Command_PickList,   "Shows the list of rolled and plus one players during picking process");
+    RegConsoleCmd("pick",    Command_PickPlayer,    "Pick player through chat during picking process");
+    RegConsoleCmd("p",       Command_PickPlayer,    "Pick player through chat during picking process");
+    RegConsoleCmd("list",    Command_PickList,      "Shows the list of rolled and plus one players during picking process");
+    RegConsoleCmd("ready",   Command_PlayerReady,   "Set status as ready for match");
+    RegConsoleCmd("unready", Command_PlayerUnReady, "Set status as not ready for match");
 
     // Set Admin Commands
     RegAdminCmd("startroll",        Command_StartRolling,       ADMFLAG_BAN, "Start rolling process");
@@ -148,6 +151,7 @@ public OnPluginStart() {
 	HookConVarChange(g_hcGameStatus, Hande_GameStatusChanged);
 
     HookEvent("server_cvar", Event_ServerCvar, EventHookMode_Pre);
+    HookEvent("tournament_stateupdate", Event_TournamentStateUpdate, EventHookMode_Pre);
     HookEvent("teamplay_round_start", Event_RoundStart);
     
 	AddCommandListener(OnSayCommand, "say");
@@ -234,6 +238,8 @@ public void OnMapEnd() {
 
     Match_OnMapEnd();
 
+    if (GetConVarInt(g_hcEnabled) == 0) return;
+    
     RollingReset();
 }
 
@@ -256,6 +262,8 @@ StartMatch() {
 ResetMatch() {
     DebugLog("Match Reset");
 
+    if (GetConVarInt(g_hcEnabled) == 0) return;
+
     RollingReset();
 }
 
@@ -270,6 +278,10 @@ EndMatch(bool:endedMidgame) {
     DebugLog("Match Ended");
 
 	SetStatus(STATE_POST);
+
+    if (GetConVarInt(g_hcEnabled) == 0) return;
+
+    CreateTimer(GetConVarInt(g_hcPostMatchCoolDownTime) * 1.0, Timer_PostMatchCoolDown);
 }
 
 public Action:Command_JoinTeam(client, const String:command[], argc) {
@@ -286,6 +298,10 @@ public Action:Command_JoinTeam(client, const String:command[], argc) {
 }
 
 public void Event_RoundStart(Event event, const char[] name, bool dontBroadcast) {
+    if (GetConVarInt(g_hcEnabled) == 0) return Plugin_Continue;
+
+    if (GetConVarInt(g_hcTournamentModeCvar) == 0) return Plugin_Continue;
+
     if (!g_bWarmupRestartChecked) {
          CheckWarmupRestart();
     }
@@ -297,6 +313,8 @@ public void Event_RoundStart(Event event, const char[] name, bool dontBroadcast)
 
         SetStatus(STATE_LIVE);
     }
+
+    return Plugin_Continue;
 }
 
 public void Hande_GameStatusChanged(ConVar convar, const char[] oldValue, const char[] newValue) {
@@ -316,6 +334,14 @@ public Action:OnSayCommand(client, const String:command[], argc) {
     }
 
 	return Plugin_Continue;
+}
+
+public Action:Timer_PostMatchCoolDown(Handle timer) {
+    if (GetStatus() == STATE_POST) {
+        RollingReset();
+    }
+
+    return Plugin_Stop;
 }
 
 //        E V E N T     F U N C T I O N S     E N D

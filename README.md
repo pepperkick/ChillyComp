@@ -3,16 +3,17 @@
 A sourcemod plugin to handle all the tasks for a tf2 competitive match.
 
 ## Introduction
-This plugin was made to be modular and easily configurable, to help it the plugin is filled with configurable convars and commands. To keep all the commands and convars in one place, "cc_" prefix is used instead of "sm_".
+This plugin was made to be modular and easily configurable, to help it the plugin is filled with configurable cvars and commands. To keep all the commands and cvars in one place, "cc_" prefix is used instead of "sm_".
 
 ## Features
 - **Match Status**: The plugin fully manages the status of the match which can be used to execute configs according to the status. Also the status can be used by other plugins.
 - **Modular**: The plugin is really modular, each stage can have multiple features or a stage can be done in different ways by just changing a convar.
 - **Automated**: The aim of the plugin is to make the matches completely automated without any admin involvement.
-- **Easily Configurable**: The plugin is filled with convars and commands to allow full control over the plugin to make the perfect match for you.
+- **Easily Configurable**: The plugin is filled with cvars and commands to allow full control over the plugin to make the perfect match for you.
 - **Warmup Restart**: The plugin restarts the match during warmup period to help players warmup.
 - **Team Limit**: The plugin enforces team size restrictions so that other players cannot join a team for unfair match.
 - **Chat Control**: The plugin filters the chat for unnecessary things like cvar change notifications and color chat exploit.
+- **Per Player Ready Up**: The plugin forces each player to ready up to ensure no player is inactive.
 
 ## Steps
 - Step 1: Plugin waits for enough players in each team depending on cc_match_teamsize
@@ -61,9 +62,11 @@ Use this variables in config files to control your match how you want.
 | cc_match_status           | 0           | The current status of the match, this is for other plugins to know the status. Do not change this by yourself                                                                                   |
 | cc_match_teamsize         | 6           | How many players should each team have for the match                                                                                                                                            |
 | cc_match_teamlimit        | 1           | Should the teams be limited by the team size (value from cc_match_teamsize)<br>0 = Disabled<br>1 = Enabled                                                                                      |
-| cc_liverestart            | 1           | How many times should the match restart during the warmup process                                                                                                                               |
-| cc_blockcvarchat          | 1           | Blocks all the cvar change notify chat<br>0 = Disabled<br>1 = Enabled                                                                                                                           |
-| cc_blockcolorchat         | 1           | Blocks all the color chats that can be sent by players due to SCP or CCP exploit<br>0 = Allows color chat<br>1 = Allows only for Admins<br>2 = Blocks for everyone                              |
+| cc_match_postcooldown     | 30          | How many seconds should the plugin wait after the match has ended before starting new match (in seconds)                                                                                        |
+| cc_warmup_liverestart     | 1           | How many times should the match restart during the warmup process                                                                                                                               |
+| cc_chat_blockcolorchat    | 1           | Blocks all the cvar change notify chat<br>0 = Disabled<br>1 = Enabled                                                                                                                           |
+| cc_chat_blockcolorchat    | 1           | Blocks all the color chats that can be sent by players due to SCP or CCP exploit<br>0 = Allows color chat<br>1 = Allows only for Admins<br>2 = Blocks for everyone                              |
+| cc_setup_perplayerreadyup | 0           | Should each player ready up before the team can ready up<br>0 = Disabled<br>1 = Enabled                                                                                                         |
 
 ## Commands
 Use these commands to have full control over the plugin.
@@ -71,6 +74,8 @@ Use these commands to have full control over the plugin.
 | ---------------- | ----------------- | ------------ | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | pick             | p                 | Team Captain | Picking            | Allows the team captain to pick a player.<br>Usage: pick  {player name / player ID}<br>**NOTE**: *Player ID can be found with list command* |
 | list             | -                 | Any Player   | Picking            | Allows the player to see the list of players that have rolled for the match                                                                 |
+| ready            | -                 | Any Player   | Setup              | Allows the player to set his status as ready<br>**NOTE**: *This command is only allowed if cc_setup_perplayerreadyup is set to 1*           |
+| unready          | -                 | Any Player   | Setup              | Allows the player to set his status as unready<br>**NOTE**: *This command is only allowed if cc_setup_perplayerreadyup is set to 1*         |
 | startroll        | -                 | Admin (Ban)  | Initial            | Allows admin to manually start a roll<br>**NOTE**: *This command will not work if auto start feature is enabled*                            |
 | mark             | -                 | Admin (Ban)  | Initial - Picking  | Allows admin to mark a player is plus one                                                                                                   |
 | restartpicking   | rspicking         | Admin (Ban)  | Picking            | Allows admin to restart the picking stage                                                                                                   |
@@ -96,24 +101,46 @@ Use these commands to have full control over the plugin.
     - [ ] Team Limit
     - [ ] Status Config
     - [ ] Warmup Restart
+    - [ ] Chat Control
+        - [x] Block Cvar Change Notifications
+        - [ ] Block Color Chats
+    - [ ] Per Player Ready Up
+        - [ ] Team Ready Up Disabled
+        - [ ] Auto Team Ready Up
+- [ ] Disconnect Handling
+    - [ ] When Captain Disconnects
+    - [ ] When Player Disconnects (Total Rolled Players <= 12)
+    - [ ] When Player Disconnects (Total Rolled Players > 12)
 - [ ] Others
     - [ ] 6v6 Match
     - [ ] Highlander Match
 
-### Todo
+### Todo (v4.1.0)
 - [x] Match Status
 - [x] Per Status Config
 - [x] Warmup Restarts
 - [x] Chat Control
-- [ ] Per Player Ready Up Command
+- [x] Per Player Ready Up Command
+- [x] Match End Cool down Period
 - [ ] Substitute Command
 - [ ] Discord Logging
-- [ ] Match End Cool down Period
 
 ## Changelog
+- 4.0.5
+    - Fixed an issue where the plugin sets the match state as live when server starts
+    - Fixed command block not being read fromm translation file
+- 4.0.4
+    - Fixed an issue where players were not counted as rolled due to an array issue
+    - Fixed captains not being swapped with selected player
+    - Added a new condition to startroll command
+    - Added post match cooldown timer
+- 4.0.3
+    - Added per player ready up feature
+    - Added new cvar to enable or disable per player ready up
 - 4.0.2
     - Added cvar change chat filter
     - Added color chat filter 
+    - Added new cvars to control chat filters
     - Changed how colors are handled in translations file
     - Moved command block error messages to translation file
 - 4.0.1

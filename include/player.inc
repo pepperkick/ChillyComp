@@ -42,15 +42,48 @@ public bool IsPlayerPlusOne(client) {
 }
 
 public bool SetPlayerPlusOne(client, boolean) {
+    DebugLog("Setting Player %d PlusOne Status: %d", client, boolean);
     SetArrayCell(g_bMarkedPlusOnePlayers, client, boolean);
 }
 
 public bool IsPlayerRolled(client) {
-    return GetArrayCell(g_bRolledPlayers, client);
+    return GetArrayCell(g_bPlayerRollStatus, client);
 }
 
 public bool SetPlayerRolled(client, boolean) {
-    SetArrayCell(g_bRolledPlayers, client, boolean);
+    DebugLog("Setting Player %d Roll Status: %d", client, boolean);
+    SetArrayCell(g_bPlayerRollStatus, client, boolean);
+}
+
+public bool IsPlayerReady(client) {
+    return GetArrayCell(g_bPlayerReadyStatus, client);
+}
+
+public bool SetPlayerReady(client, boolean) {
+    DebugLog("Setting Player %d Ready Status: %d", client, boolean);
+    SetArrayCell(g_bPlayerReadyStatus, client, boolean);
+}
+
+public int TotalPlayersReadyInTeam(team) {
+    int count = 0;
+
+    for (int i = 0; i < MAX_PLAYERS; i++) {
+        if (IsPlayerReady(i) && IsClientInTeam(i, team)) 
+            count++;
+    }
+
+    return count;
+}
+
+public int TotalPlayersReady() {
+    int count = 0;
+
+    for (int i = 0; i < MAX_PLAYERS; i++) {
+        if (IsPlayerReady(i)) 
+            count++;
+    }
+
+    return count;
 }
 
 public int TotalPlayersRolled() {

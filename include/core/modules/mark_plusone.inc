@@ -1,4 +1,4 @@
-bool g_bMarkedPlusOnePlayers = INVALID_HANDLE;
+Handle g_bMarkedPlusOnePlayers = INVALID_HANDLE;
 
 int g_iServingMarkMenu = -1;
 
@@ -68,7 +68,7 @@ ClearPlusOne() {
 
 public Action:Command_MarkPlusOne(client, args) {
     if (GetStatus() > STATE_INITIAL && GetStatus() < STATE_PICKING) {
-        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Module-Admin-MarkPlusOne-CommandBlocked");
+        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Module-MarkPlusOne-CommandBlocked");
 
         return Plugin_Handled;
     }

@@ -56,7 +56,7 @@ public ChangeRollStatusHandler(Menu:menu, MenuAction:action, param1, param2) {
 
 public Action:Command_ChangeRollStatus(client, args) {
     if (GetStatus() > STATE_ROLLING && GetStatus() < STATE_SETUP) {
-        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Module-Admin-ChangeRollStatus-CommandBlocked");
+        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Module-ChangeRollStatus-CommandBlocked");
 
         return Plugin_Handled;
     }

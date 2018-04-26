@@ -91,7 +91,7 @@ public Action:Timer_CapRollCheckCounter(Handle timer) {
             PushArrayCell(RolledPlayers, g_bCapRollPlayer[i]);
         }
 
-        OnRollingComplete(RolledPlayers);
+        OnRollingComplete();
 
         return Plugin_Stop;
     }

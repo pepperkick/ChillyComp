@@ -7,8 +7,8 @@
 
 int    g_iLastPlayerCount   = 0;        //Last count of Players before recheck for new Players
 
-Handle g_hcPlayerCountTimer = INVALID_HANDLE;
-Handle g_bRolledPlayers = INVALID_HANDLE;
+Handle g_hcPlayerCountTimer  = INVALID_HANDLE;
+Handle g_bPlayerRollStatus   = INVALID_HANDLE;
 
 RollingStart() {
     DebugLog("Started Rolling");
@@ -80,23 +80,18 @@ RollingCheckPlayer(client) {
     }
 }
 
-OnRollingComplete(Handle RolledPlayers) {
+OnRollingComplete() {
     DebugLog("Rolling Complete");
 
     g_hcPlayerCountTimer = INVALID_HANDLE;
 
     #if defined DEBUG
         DebugLog("Rolled Player List");
-        for(int i = 0; i < GetArraySize(RolledPlayers); i++) {
-            int rolled = GetArrayCell(RolledPlayers, i);
+        for(int i = 0; i < MAX_PLAYERS; i++) {
+            int rolled = IsPlayerRolled(i);
             DebugLog("%d - %d", i, rolled);
         }
     #endif
-
-    for(int i = 0; i < MAX_PLAYERS; i++) {
-        bool rolled = GetArrayCell(RolledPlayers, i);
-        SetPlayerRolled(i, rolled);
-    }
 
     FightingStart();
 }
@@ -143,6 +138,12 @@ public Action:Command_StartRolling(client, args) {
 
     if (GetStatus() != STATE_INITIAL) {
         CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Roll-Command-ErrorAlreadyStarted");
+
+        return Plugin_Continue;
+    }
+
+    if (CountPlayersInAnyTeam() < 2) {
+        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Roll-Command-ErrorNotEnoughPlayers");
 
         return Plugin_Continue;
     }

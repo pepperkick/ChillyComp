@@ -76,6 +76,11 @@
         "en"        "{ColorWarning}Rolling is set to auto enable, you cannot start manually."
     }
 
+    "Roll-Command-ErrorNotEnoughPlayers"
+    {
+        "en"       "{ColorWarning}At least 2 players needed to start the rolling process."
+    }
+
     "Roll-Command-ErrorAlreadyStarted"
     {
         "en"        "{ColorWarning}Rolling has already started.."
@@ -173,17 +178,57 @@
         "en"        "{ColorWarning}Color chat is not allowed!"
     }
 
-    "Module-Admin-MarkPlusOne-CommandBlocked"
+    "Module-PlayerReadyUp-CommandBlocked"
     {
-        "en"        "{ColorWarning}Plusone marks cannot be changed now"
+        "en"        "{ColorWarning}Ready status can be only changed during setup stage"
     }
 
-    "Module-Admin-ChangeCaptain-CommandBlocked"
+    "Module-PlayerReadyUp-CommandDisabled"
+    {
+        "en"        "{ColorWarning}Command is currently disabled"
+    }
+
+    "Module-PlayerReadyUp-AlreadyReady"
+    {
+        "en"        "{ColorWarning}Your status is already ready"
+    }
+    
+    "Module-PlayerReadyUp-AlreadyUnReady"
+    {
+        "en"        "{ColorWarning}Your status is already unready"
+    }
+
+    "Module-PlayerReadyUp-NotPicked"
+    {
+        "en"        "{ColorWarning}You have not been picked in the match"
+    }
+
+    "Module-PlayerReadyUp-TeamReady-RED"
+    {
+        "en"        "{ColorSuccess}Everyone in {matRed}RED {ColorSuccess}team is ready"
+    }
+
+    "Module-PlayerReadyUp-AllReady"
+    {
+        "en"        "{ColorSuccess}Everyone in {matBlue}BLU {ColorSuccess}team is ready"
+    }
+
+    "Module-MarkPlusOne-CommandBlocked"
+    {
+        "en"        "{ColorWarning}+1 marks cannot be changed now"
+    }
+
+    "Module-ChangeCaptain-CommandBlocked"
     {
         "en"        "{ColorWarning}Captain can be only changed during fighting stage"
     }
 
-    "Module-Admin-ChangeRollStatus-CommandBlocked"
+    "Module-RequestSwapCaptain-CommandBlocked"
+    {
+        "en"        "{ColorWarning}Captain can be only changed during fighting stage"
+    }
+
+    "Module-ChangeRollStatus-CommandBlocked"
     {
         "en"        "{ColorWarning}Roll Status cannot be changed now"
     }

@@ -14,8 +14,8 @@ void PickingStart(winner, loser) {
 
     g_sPickMenuTitle = "Pick a Player";
 
-    g_hPickRolledPlayers = g_bRolledPlayers;
-    g_hIntitalPickRolledPlayers = g_bRolledPlayers;
+    g_hPickRolledPlayers = g_bPlayerRollStatus;
+    g_hIntitalPickRolledPlayers = g_bPlayerRollStatus;
 
     g_iPickingWinner = winner;
     g_iPickingLoser  = loser;

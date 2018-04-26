@@ -59,7 +59,7 @@ public Action:Command_SwapCaptainRed(client, args) {
     DebugLog("Recieved Command to Change Captain for RED team");
 
     if (GetStatus() != STATE_FIGHTING) {
-        CPrintToChat(client, "%s[%s] {matPurple}Captain can be only changed during fighting stage", COLOR_TAG, TAG);
+        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Module-ChangeCaptain-CommandBlocked");
 
         return Plugin_Handled;
     }
@@ -73,7 +73,7 @@ public Action:Command_SwapCaptainBlu(client, args) {
     DebugLog("Recieved Command to Change Captain for BLU team");
 
     if (GetStatus() != STATE_FIGHTING) {
-        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Module-Admin-ChangeCaptain-CommandBlocked");
+        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Module-ChangeCaptain-CommandBlocked");
 
         return Plugin_Handled;
     }
@@ -85,13 +85,13 @@ public Action:Command_SwapCaptainBlu(client, args) {
 
 SwapTeamCaptain(client, team) {
     if (team == TEAM_RED) {
-        ChangeClientTeam(g_iFightRedLeader, TEAM_SPC);      
+        TF2_ChangeClientTeam(g_iFightRedLeader, TFTeam_Spectator);
         ChangeClientTeam(client, TEAM_RED);      
 
         SetPlayerRolled(g_iFightRedLeader, true);
         SetPlayerRolled(client, false);
     } else if (team == TEAM_BLU) {
-        ChangeClientTeam(g_iFightBluLeader, TEAM_SPC);      
+        TF2_ChangeClientTeam(g_iFightBluLeader, TFTeam_Spectator);  
         ChangeClientTeam(client, TEAM_BLU);      
 
         SetPlayerRolled(g_iFightBluLeader, true);

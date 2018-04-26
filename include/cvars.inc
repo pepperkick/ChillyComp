@@ -1,17 +1,20 @@
-Handle g_hcEnabled              = INVALID_HANDLE;
-Handle g_hcAutoStart            = INVALID_HANDLE;
-Handle g_hcConfigPath           = INVALID_HANDLE;
-Handle g_hcPlayerPenaltyEnable  = INVALID_HANDLE;
-Handle g_hcPlayerPenaltyTime    = INVALID_HANDLE;
-Handle g_hcFightHealth          = INVALID_HANDLE;
-Handle g_hcRollMode             = INVALID_HANDLE;
-Handle g_hcGameStatus           = INVALID_HANDLE;
-Handle g_hcTeamSize             = INVALID_HANDLE;
-Handle g_hcTeamLimitEnable      = INVALID_HANDLE;
-Handle g_hcLiveRestarts         = INVALID_HANDLE;
-Handle g_hcRestartGameCvar      = INVALID_HANDLE;
-Handle g_hcBlockCvarChangeChat  = INVALID_HANDLE;
-Handle g_hcBlockColorChat       = INVALID_HANDLE;
+Handle g_hcEnabled               = INVALID_HANDLE;
+Handle g_hcAutoStart             = INVALID_HANDLE;
+Handle g_hcConfigPath            = INVALID_HANDLE;
+Handle g_hcPlayerPenaltyEnable   = INVALID_HANDLE;
+Handle g_hcPlayerPenaltyTime     = INVALID_HANDLE;
+Handle g_hcFightHealth           = INVALID_HANDLE;
+Handle g_hcRollMode              = INVALID_HANDLE;
+Handle g_hcGameStatus            = INVALID_HANDLE;
+Handle g_hcTeamSize              = INVALID_HANDLE;
+Handle g_hcTeamLimitEnable       = INVALID_HANDLE;
+Handle g_hcLiveRestarts          = INVALID_HANDLE;
+Handle g_hcBlockCvarChangeChat   = INVALID_HANDLE;
+Handle g_hcBlockColorChat        = INVALID_HANDLE;
+Handle g_hcPerPlayerReady        = INVALID_HANDLE;
+Handle g_hcPostMatchCoolDownTime = INVALID_HANDLE;
+Handle g_hcRestartGameCvar       = INVALID_HANDLE;
+Handle g_hcTournamentModeCvar    = INVALID_HANDLE;
 
 public CreateCvars() {
     //Plugin Version ConVar
@@ -101,7 +104,7 @@ public CreateCvars() {
             "6",
             "Number of Players for each team",
             FCVAR_DONTRECORD
-        );
+        );        
 
     // CVar to store if teams should be limited during match
     g_hcTeamLimitEnable =
@@ -112,17 +115,25 @@ public CreateCvars() {
             FCVAR_DONTRECORD
         );
 
+    g_hcPostMatchCoolDownTime =
+        CreateConVar(
+            "cc_match_postcooldown",
+            "30",
+            "How many seconds should the plugin wait after the match ended to start a new match",
+            FCVAR_NOTIFY | FCVAR_DONTRECORD
+        );
+
     g_hcLiveRestarts =
         CreateConVar(
-            "cc_liverestart",
+            "cc_warmup_liverestart",
             "1",
             "Restart the match number of times in spawn",
             FCVAR_NOTIFY | FCVAR_DONTRECORD
         );
-        
+
     g_hcBlockCvarChangeChat =
         CreateConVar(
-            "cc_blockcvarchat",
+            "cc_chat_blockcvarchat",
             "1",
             "Blocks cvar change chat (Only blocks cvars with 'cc_' prefix)",
             FCVAR_NOTIFY | FCVAR_DONTRECORD
@@ -130,11 +141,20 @@ public CreateCvars() {
 
     g_hcBlockColorChat =
         CreateConVar(
-            "cc_blockcolorchat",
+            "cc_chat_blockcolorchat",
             "1",
             "Blocks color chats that can be used by players due to an expliot with SCP and CCP\n0 = Allow All Chat\n1 = Allow only for Admins\n2 = Completely Disable",
             FCVAR_NOTIFY | FCVAR_DONTRECORD
         );
+        
+    g_hcPerPlayerReady =
+        CreateConVar(
+            "cc_setup_perplayerreadyup",
+            "0",
+            "Should every player ready up before the whole team can ready up\n0 = Disabled\n1 = Enabled",
+            FCVAR_NOTIFY | FCVAR_DONTRECORD
+        );
 
     g_hcRestartGameCvar = FindConVar("mp_restartgame");
+    g_hcTournamentModeCvar = FindConVar("mp_tournament");
 }

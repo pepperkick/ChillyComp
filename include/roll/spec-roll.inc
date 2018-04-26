@@ -52,8 +52,6 @@ SpecRollReset() {
     g_iSpecRollPreRollDone = false;
 
     for(int i = 0; i < MAX_PLAYERS; i++) {
-        g_bSpecRollPlayer[i] = false;
-
         if (g_bSpecRollCount != INVALID_HANDLE) {
             int size = GetArraySize(g_bSpecRollCount);
 
@@ -86,7 +84,7 @@ public Action:SpecRollTeamConditions(client, team) {
     if (g_iSpecRollPreRollDone) {
         if (team == TEAM_SPC) {
             if (CountPlayersInAnyTeam() > 2) {
-                g_bSpecRollPlayer[client] = true;
+                SetPlayerRolled(client, true);
 
                 CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Rolling-Condition-Success");
 
@@ -142,13 +140,7 @@ public Action:Timer_SpecRollCheckCounter(Handle timer) {
     if(CountPlayersInAnyTeam() <= 2) {
         DebugLog("[SPECROLL] Rolling Complete");
 
-        Handle RolledPlayers = CreateArray();
-
-        for(int i = 0; i < MAX_PLAYERS; i++) {
-            PushArrayCell(RolledPlayers, g_bSpecRollPlayer[i]);
-        }
-
-        OnRollingComplete(RolledPlayers);
+        OnRollingComplete();
 
         return Plugin_Stop;
     }

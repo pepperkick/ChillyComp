@@ -5,6 +5,9 @@ FightingStart() {
     DebugLog("Started Fighting");
 
     int l_iMode  = 1;
+    
+    g_iFightBluLeader = -1;
+    g_iFightRedLeader = -1;
 
     SetStatus(STATE_FIGHTING);
 
@@ -40,7 +43,7 @@ SetLeaders() {
     for(new i = 1; i <= MaxClients; i++) {
         if(IsClientInAnyTeam(i)) {
             if(l_bTeamLeaders) {
-                ChangeClientTeam(i, TEAM_SPC);
+                TF2_ChangeClientTeam(i, TFTeam_Spectator);
             }
 
             if(l_bTeamCheck) {
