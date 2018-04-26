@@ -37,16 +37,16 @@ The config path is configurable with cc_config_path.<br>
 **Example**: If cc_config_path is conpconfig then config path is<br>
 "cfg/compconfig/status_live.cfg|
 
-| Status   | File Name       | Description                                                |
-| -------- | --------------- | ---------------------------------------------------------- |
-| Initial  | status_initial  | Initial period of the match                                |
-| Rolling  | status_rolling  | Rolling period of the match                                |
-| Fighting | status_fighting | Fighting period of the match                               |
-| Picking  | status_picking  | Picking period of the match                                |
-| Setup    | status_setup    | After the teams are picked and teams are doing preparation |
-| Warmup   | status_warmup   | Match is being restarted for player warmup                 |
-| Live     | status_live     | Match is live!                                             |
-| Post     | status_post     | Post match completion                                      |
+| Status   | File Name       | Code | Description                                                |
+| -------- | --------------- | ---- | ---------------------------------------------------------- |
+| Initial  | status_initial  | 0    | Initial period of the match                                |
+| Rolling  | status_rolling  | 1    | Rolling period of the match                                |
+| Fighting | status_fighting | 2    | Fighting period of the match                               |
+| Picking  | status_picking  | 3    | Picking period of the match                                |
+| Setup    | status_setup    | 4    | After the teams are picked and teams are doing preparation |
+| Warmup   | status_warmup   | 5    | Match is being restarted for player warmup                 |
+| Live     | status_live     | 6    | Match is live!                                             |
+| Post     | status_post     | 7    | Post match completion                                      |
 
 ## Convars
 Use this variables in config files to control your match how you want.
