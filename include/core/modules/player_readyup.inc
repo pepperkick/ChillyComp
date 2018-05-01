@@ -99,3 +99,9 @@ public Action:Event_TournamentStateUpdate(Handle:event, const String:name[], boo
 
 	return Plugin_Changed;
 }
+
+ClearReadyStatus() {
+    for (int i = 1; i < MaxClients; i++) {
+        SetPlayerReady(i, false);
+    }
+}

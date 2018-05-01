@@ -13,7 +13,7 @@ public MarkPlusOneMenu(client) {
     g_mPlusOneMenu.SetTitle("Pick Player to toggle Mark");
 
     for(int i = 1; i < MaxClients; i++) {
-        if(IsClientInGame(i) && !IsFakeClient(i)) {
+        if(IsClientProper(i)) {
             GetClientName(i, name, sizeof(name));
             IntToString(i, clientId, sizeof(clientId));
 
@@ -61,7 +61,7 @@ public MarkPlusOneHandler(Menu:menu, MenuAction:action, param1, param2) {
 }
 
 ClearPlusOne() {
-    for (int i = 0; i < MAX_PLAYERS; i++) {
+    for (int i = 1; i < MaxClients; i++) {
         SetPlayerPlusOne(i, false);
     }
 }
@@ -71,6 +71,12 @@ public Action:Command_MarkPlusOne(client, args) {
         CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Module-MarkPlusOne-CommandBlocked");
 
         return Plugin_Handled;
+    }
+
+    if (TotalPlayersRolled() == 0) {
+        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Module-MarkPlusOne-ListEmpty");
+
+        return Plugin_Handled;        
     }
 
     MarkPlusOneMenu(client);

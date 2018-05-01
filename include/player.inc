@@ -34,6 +34,10 @@ public bool IsClientInTeam(client, team) {
 }
 
 public bool IsClientProper(client) {
+    #if defined ALLOWBOT
+        return client != 0 ? IsClientInGame(client) : false;
+    #endif
+
     return client != 0 ? IsClientInGame(client) && !IsFakeClient(client) : false;
 }
 
@@ -67,7 +71,7 @@ public bool SetPlayerReady(client, boolean) {
 public int TotalPlayersReadyInTeam(team) {
     int count = 0;
 
-    for (int i = 0; i < MAX_PLAYERS; i++) {
+    for (int i = 1; i < MaxClients; i++) {
         if (IsPlayerReady(i) && IsClientInTeam(i, team)) 
             count++;
     }
@@ -78,7 +82,7 @@ public int TotalPlayersReadyInTeam(team) {
 public int TotalPlayersReady() {
     int count = 0;
 
-    for (int i = 0; i < MAX_PLAYERS; i++) {
+    for (int i = 0; i < MaxClients; i++) {
         if (IsPlayerReady(i)) 
             count++;
     }
@@ -89,7 +93,7 @@ public int TotalPlayersReady() {
 public int TotalPlayersRolled() {
     int count = 0;
 
-    for (int i = 0; i < MAX_PLAYERS; i++) {
+    for (int i = 1; i < MaxClients; i++) {
         if (IsPlayerRolled(i)) 
             count++;
     }
@@ -109,7 +113,7 @@ public int GetArgTeam(char[] arg) {
 public Handle:GetCountedPlayersArray() {
     Handle CountedPlayers = CreateArray();
 
-    for(int i = 0; i < MaxClients; i++) {
+    for(int i = 1; i < MaxClients; i++) {
         PushArrayCell(CountedPlayers, IsClientInAnyTeam(i));
     }
 

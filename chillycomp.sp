@@ -1,9 +1,11 @@
-#define PLUGIN_VERSION  "4.0.5"
+#define PLUGIN_VERSION  "4.0.7"
 #define UPDATE_URL      ""
 #define TAG             "CHILLY"
 #define COLOR_TAG       "{matAmber}"
-#define MAX_PLAYERS 24
+#define MAX_PLAYERS 36
 #define DEBUG
+#define DEBUG_TAG       "COMP"
+// #define ALLOWBOT
 
 //=========================================================================
 //        P L U G I N S         V A R I A B L E S
@@ -82,7 +84,7 @@ public Plugin:myinfo = {
     author = "PepperKick",
     description = "A plugin to manage competitive matches",
     version = PLUGIN_VERSION,
-    url = ""
+    url = "https://steamcommunity.com/id/pepperkick/"
 }
 
 #include <headers>
@@ -103,10 +105,10 @@ public OnPluginStart() {
         Updater_AddPlugin(UPDATE_URL)
 
     //Initialize Array Handles
-    g_hPlayerPicked         = CreateArray(4, MAX_PLAYERS);
-    g_bMarkedPlusOnePlayers = CreateArray(4, MAX_PLAYERS);
-    g_bPlayerRollStatus     = CreateArray(4, MAX_PLAYERS);
-    g_bPlayerReadyStatus    = CreateArray(4, MAX_PLAYERS);
+    g_hPlayerPicked         = CreateArray(4, MaxClients + 1);
+    g_bMarkedPlusOnePlayers = CreateArray(4, MaxClients + 1);
+    g_bPlayerRollStatus     = CreateArray(4, MaxClients + 1);
+    g_bPlayerReadyStatus    = CreateArray(4, MaxClients + 1);
 
     //Attach HUD Handle
     g_hoHud = HudInit(127, 255, 127);
@@ -143,8 +145,8 @@ public OnPluginStart() {
     //Match Function
     Match_OnPluginStart();
 
-    //Rest Rolling
-    RollingReset();
+    //Reset Plugin
+    PluginReset();
 
     // Attach cvar change hooks
     HookConVarChange(g_hcRollMode, Handle_RollModeChange);
@@ -158,7 +160,7 @@ public OnPluginStart() {
 	AddCommandListener(OnSayCommand, "say2");
 	AddCommandListener(OnSayCommand, "say_team");
 
-    DebugLog("Loaded ChillyRoll plugin, Version %s", PLUGIN_VERSION);
+    DebugLog("Loaded ChillyComp plugin, Version %s", PLUGIN_VERSION);
 }
 
 //        P L U G I N    E V E N T    F U N C T I O N S     E N D
@@ -264,7 +266,7 @@ ResetMatch() {
 
     if (GetConVarInt(g_hcEnabled) == 0) return;
 
-    RollingReset();
+    PluginReset();
 }
 
 //============================================
@@ -284,6 +286,14 @@ EndMatch(bool:endedMidgame) {
     CreateTimer(GetConVarInt(g_hcPostMatchCoolDownTime) * 1.0, Timer_PostMatchCoolDown);
 }
 
+PluginReset() {
+    ClearPlusOne();
+    ClearRollStatus();
+    ClearReadyStatus();
+
+    RollingReset();
+}
+
 public Action:Command_JoinTeam(client, const String:command[], argc) {
     char team[128];
     GetCmdArg(1, team, sizeof(team));
@@ -298,9 +308,11 @@ public Action:Command_JoinTeam(client, const String:command[], argc) {
 }
 
 public void Event_RoundStart(Event event, const char[] name, bool dontBroadcast) {
-    if (GetConVarInt(g_hcEnabled) == 0) return Plugin_Continue;
+    if (GetConVarInt(g_hcEnabled) == 0) return;
 
-    if (GetConVarInt(g_hcTournamentModeCvar) == 0) return Plugin_Continue;
+    if (GetConVarInt(g_hcTournamentModeCvar) == 0) return;
+    
+    if (GetStatus() != STATE_SETUP) return;
 
     if (!g_bWarmupRestartChecked) {
          CheckWarmupRestart();
@@ -314,7 +326,7 @@ public void Event_RoundStart(Event event, const char[] name, bool dontBroadcast)
         SetStatus(STATE_LIVE);
     }
 
-    return Plugin_Continue;
+    return;
 }
 
 public void Hande_GameStatusChanged(ConVar convar, const char[] oldValue, const char[] newValue) {
@@ -393,6 +405,6 @@ public DebugLog(const char[] myString, any ...) {
         char[] myFormattedString = new char[len];
         VFormat(myFormattedString, len, myString, 2);
 
-        PrintToServer("[COMP] %s", myFormattedString);
+        PrintToServer("[%s] %s", DEBUG_TAG, myFormattedString);
     #endif
 }

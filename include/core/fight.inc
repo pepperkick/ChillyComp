@@ -43,7 +43,7 @@ SetLeaders() {
     for(new i = 1; i <= MaxClients; i++) {
         if(IsClientInAnyTeam(i)) {
             if(l_bTeamLeaders) {
-                TF2_ChangeClientTeam(i, TFTeam_Spectator);
+                ChangeClientTeam(i, TEAM_SPE);
             }
 
             if(l_bTeamCheck) {

@@ -135,7 +135,7 @@ PickingReset(complete) {
         g_iPickingWinner = 0;
         g_iPickingLoser = 0;
 
-        for(int i = 0; i < MAX_PLAYERS; i++) {
+        for(int i = 0; i < MaxClients; i++) {
             if (g_hPickRolledPlayers != INVALID_HANDLE) {
                 int size = GetArraySize(g_hPickRolledPlayers);
 

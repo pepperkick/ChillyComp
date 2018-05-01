@@ -11,7 +11,9 @@ PickingShowPlayerMenu(client) {
 
     DebugLog("[MENU] Showing menu to client %d", client);
 
-    for(int i = 0; i < MAX_PLAYERS; i++) {
+    for(int i = 1; i < MaxClients; i++) {
+        if (!IsClientProper(i)) continue;
+
         bool isRolled = IsPlayerRolled(i);       // Is player rolled
         bool isPlusOne = IsPlayerPlusOne(i);     // Is player plus one marked
 
@@ -29,7 +31,9 @@ PickingShowPlayerMenu(client) {
         g_mPickMenu.AddItem(clientId, itemName);
     }
 
-    for(int i = 0; i < MAX_PLAYERS; i++) {
+    for(int i = 1; i < MaxClients; i++) {
+        if (!IsClientProper(i)) continue;
+
         bool isRolled = IsPlayerRolled(i);       // Is player rolled
         bool isPlusOne = IsPlayerPlusOne(i);     // Is player plus one marked
 
@@ -75,7 +79,7 @@ public PickPanelHandler(Menu:menu, MenuAction:action, param1, param2) {
 }
 
 ResetPickMenuRetries() {
-    for (int i = 0; i < MAX_PLAYERS; i++) {
+    for (int i = 0; i < MaxClients; i++) {
         retry[i] = 0;
     }
 }

@@ -47,6 +47,12 @@ RollingReset() {
     FightReset();
 }
 
+ClearRollStatus() {
+    for (int i = 1; i < MaxClients; i++) {
+        SetPlayerRolled(i, false);
+    }
+}
+
 public Action:RollingConditions(client, String:arg[]) {
     int l_iMode     = GetConVarInt(g_hcRollMode);
     int l_iTeam     = GetArgTeam(arg);
@@ -87,8 +93,8 @@ OnRollingComplete() {
 
     #if defined DEBUG
         DebugLog("Rolled Player List");
-        for(int i = 0; i < MAX_PLAYERS; i++) {
-            int rolled = IsPlayerRolled(i);
+        for(int i = 0; i < MaxClients; i++) {
+            bool rolled = IsPlayerRolled(i);
             DebugLog("%d - %d", i, rolled);
         }
     #endif

@@ -1,5 +1,7 @@
 Menu g_mChangeCaptainMenu;
 
+bool g_bWasCaptainSwapped = false;
+
 int g_iServingChangeCaptainMenu = -1;
 int g_iServingChangeCaptainTeam = -1;
 
@@ -63,6 +65,12 @@ public Action:Command_SwapCaptainRed(client, args) {
 
         return Plugin_Handled;
     }
+        
+    if (TotalPlayersRolled() == 0) {
+        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Module-ChangeCaptain-ListEmpty");
+
+        return Plugin_Handled;        
+    }
 
     ChangeCaptainMenu(client, TEAM_RED);
 
@@ -77,6 +85,12 @@ public Action:Command_SwapCaptainBlu(client, args) {
 
         return Plugin_Handled;
     }
+    
+    if (TotalPlayersRolled() == 0) {
+        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Module-ChangeCaptain-ListEmpty");
+
+        return Plugin_Handled;        
+    }
 
     ChangeCaptainMenu(client, TEAM_BLU);
 
@@ -84,20 +98,24 @@ public Action:Command_SwapCaptainBlu(client, args) {
 }
 
 SwapTeamCaptain(client, team) {
+    DebugLog("Switching Captain to %d for team %d", client, team);
+ 
     if (team == TEAM_RED) {
-        TF2_ChangeClientTeam(g_iFightRedLeader, TFTeam_Spectator);
+        ChangeClientTeam(g_iFightRedLeader, TEAM_SPE);
         ChangeClientTeam(client, TEAM_RED);      
 
         SetPlayerRolled(g_iFightRedLeader, true);
         SetPlayerRolled(client, false);
     } else if (team == TEAM_BLU) {
-        TF2_ChangeClientTeam(g_iFightBluLeader, TFTeam_Spectator);  
+        ChangeClientTeam(g_iFightBluLeader, TEAM_SPE);
         ChangeClientTeam(client, TEAM_BLU);      
 
         SetPlayerRolled(g_iFightBluLeader, true);
         SetPlayerRolled(client, false)
     }
  
+    g_bWasCaptainSwapped = true;
+
     FightReset();
     FightingStart();
 }

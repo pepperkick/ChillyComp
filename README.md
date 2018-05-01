@@ -2,6 +2,18 @@
 
 A sourcemod plugin to handle all the tasks for a tf2 competitive match.
 
+- [ChillyComp](#chillycomp)
+    - [Introduction](#introduction)
+    - [Features](#features)
+    - [Steps](#steps)
+    - [Status and Configs](#status-and-configs)
+    - [Convars](#convars)
+    - [Commands](#commands)
+    - [Checklist](#checklist)
+        - [Testing](#testing)
+        - [Todo (v4.1.0)](#todo-v410)
+    - [Changelog](#changelog)
+
 ## Introduction
 This plugin was made to be modular and easily configurable, to help it the plugin is filled with configurable cvars and commands. To keep all the commands and cvars in one place, "cc_" prefix is used instead of "sm_".
 
@@ -126,6 +138,15 @@ Use these commands to have full control over the plugin.
 - [ ] Discord Logging
 
 ## Changelog
+- 4.0.7
+    - Fixed an issue where different amount of server slots would cause an error
+    - Added error messages for empty player list and menu commands
+- 4.0.6
+    - Fixed an crash where the plugin tries to check client 0's name and fails
+    - Fixed an crash where the plugin tries to check client's name which had special characters
+    - Added proper reset methods which caused the plugin to crash after fight
+    - Fixed typo in translation file
+    - Added ALLOWBOT define to allow bots to take part (for debugging and testing only)
 - 4.0.5
     - Fixed an issue where the plugin sets the match state as live when server starts
     - Fixed command block not being read fromm translation file

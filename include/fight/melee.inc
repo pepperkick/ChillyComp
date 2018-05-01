@@ -54,7 +54,7 @@ public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroa
     new team   = GetClientTeam(killer);
 
     if(victim == killer) {
-        DebugLog("[MELEEFIGHT] Captain Died due to unknow reason, switching teams!");
+        DebugLog("[MELEEFIGHT] Captain Died due to unknow reason, patching captains!");
 
         team = team == 3 ? 2 : 3;
 

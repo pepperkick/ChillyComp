@@ -83,7 +83,7 @@
 
     "Roll-Command-ErrorAlreadyStarted"
     {
-        "en"        "{ColorWarning}Rolling has already started.."
+        "en"        "{ColorWarning}Rolling has already started."
     }
 
     "Fight-Start-MSG"
@@ -133,6 +133,11 @@
     {
         "#format"   "{1:s}"
         "en"        "{ColorWarning}The player {ColorInfo}{1}{ColorWarning} has not rolled\n{ColorWarning}You can use {ColorCommand}!list {ColorWarning}command to show the list of players"
+    }
+
+    "Pick-Chat-ListEmpty"
+    {
+        "en"        "{ColorWarning}The player list is empty"
     }
 
     "Pick-List-Heading"
@@ -218,9 +223,19 @@
         "en"        "{ColorWarning}+1 marks cannot be changed now"
     }
 
+    "Module-MarkPlusOne-ListEmpty"
+    {
+        "en"        "{ColorWarning}There are no players to mark as plus one"
+    }
+
     "Module-ChangeCaptain-CommandBlocked"
     {
         "en"        "{ColorWarning}Captain can be only changed during fighting stage"
+    }
+
+    "Module-ChangeCaptain-ListEmpty"
+    {
+        "en"        "{ColorWarning}There are no other players to swap captain with"
     }
 
     "Module-RequestSwapCaptain-CommandBlocked"

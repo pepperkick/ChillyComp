@@ -26,7 +26,7 @@ CapRollStart(Handle:CountedPlayers) {
 CapRollReset() {
     g_iCapRollPreRollDone = false;
 
-    for(int i = 0; i < MAX_PLAYERS; i++) {
+    for(int i = 0; i < MaxClients; i++) {
         g_bCapRollPlayer[i] = false;
     }
 
@@ -34,7 +34,7 @@ CapRollReset() {
 }
 
 CapMoveAllToSpec() {
-    for(int i = 0; i < MAX_PLAYERS; i++) {
+    for(int i = 0; i < MaxClients; i++) {
         if(IsClientProper(i)) {
             TF2_ChangeClientTeam(i, TFTeam_Spectator);
 
@@ -87,7 +87,7 @@ public Action:Timer_CapRollCheckCounter(Handle timer) {
 
         Handle RolledPlayers = CreateArray();
 
-        for(int i = 0; i < MAX_PLAYERS; i++) {
+        for(int i = 0; i < MaxClients; i++) {
             PushArrayCell(RolledPlayers, g_bCapRollPlayer[i]);
         }
 

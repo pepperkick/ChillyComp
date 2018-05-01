@@ -51,7 +51,7 @@ SpecRollReset() {
     g_iSpecRollBluLeader   = 0;
     g_iSpecRollPreRollDone = false;
 
-    for(int i = 0; i < MAX_PLAYERS; i++) {
+    for(int i = 0; i < MaxClients; i++) {
         if (g_bSpecRollCount != INVALID_HANDLE) {
             int size = GetArraySize(g_bSpecRollCount);
 

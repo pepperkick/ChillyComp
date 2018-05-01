@@ -32,7 +32,7 @@ public Action:Command_PickPlayer(client, args) {
         int targets[MAX_PLAYERS];
         bool tn_is_ml;
 
-        int traget_count = ProcessTargetString(arg, client, targets, MAX_PLAYERS, COMMAND_FILTER_NO_BOTS, target_name, sizeof(target_name), tn_is_ml);
+        int traget_count = ProcessTargetString(arg, client, targets, MaxClients, COMMAND_FILTER_NO_BOTS, target_name, sizeof(target_name), tn_is_ml);
 
         if (traget_count == 0) {
             CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Chat-NotFound", arg);
@@ -77,12 +77,20 @@ public Action:Command_PickList(client, args) {
         return Plugin_Handled;
     }
 
+    if (TotalPlayersRolled() == 0) {
+        CPrintToChat(client, "%s[%s] %t", COLOR_TAG, TAG, "Pick-Chat-ListEmpty");
+
+        return Plugin_Handled;        
+    }
+
     char message[8192];
     char name[1024];
 
     Format(message, sizeof(message), "%s[%s]\n%t\n{matYellow}", COLOR_TAG, TAG, "Pick-List-Heading");
 
-    for(int i = 0; i < MAX_PLAYERS; i++) {
+    for (int i = 1; i < MaxClients; i++) {
+        if (!IsClientProper(i)) continue;
+
         bool isRolled = IsPlayerRolled(i);        // Is player rolled
         bool isPlusOne = IsPlayerPlusOne(i);      // Is player plus one marked
 
@@ -93,7 +101,9 @@ public Action:Command_PickList(client, args) {
         Format(message, sizeof(message), "%s%d: %s (+1)\n", message, i, name);
     }
 
-    for(int i = 0; i < MAX_PLAYERS; i++) {
+    for (int i = 1; i < MaxClients; i++) {
+        if (!IsClientProper(i)) continue;
+
         bool isRolled = IsPlayerRolled(i);        // Is player rolled
         bool isPlusOne = IsPlayerPlusOne(i);      // Is player plus one marked
 
