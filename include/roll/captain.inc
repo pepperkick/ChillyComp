@@ -12,7 +12,7 @@
 bool g_iCapRollPreRollDone             = false;
 bool g_bCapRollPlayer[MAX_PLAYERS]     = false;
 
-CapRollStart(Handle:CountedPlayers) {
+CapRollStart() {
     DebugLog("Started Captain Roll Sequence");
 
     CapMoveAllToSpec();
@@ -42,7 +42,7 @@ CapMoveAllToSpec() {
 
             CPrintToChat(i, "%s[%s] %t", COLOR_TAG, TAG, "Rolling-Condition-Success");
 
-            return Plugin_Continue;
+            return;
         }
     }
 

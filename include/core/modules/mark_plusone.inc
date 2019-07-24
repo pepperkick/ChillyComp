@@ -80,4 +80,6 @@ public Action:Command_MarkPlusOne(client, args) {
     }
 
     MarkPlusOneMenu(client);
+
+    return Plugin_Continue;
 }

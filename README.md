@@ -9,6 +9,7 @@ A SourceMod plugin to handle PuGs in TF2
   - [Status and Configs](#status-and-configs)
   - [ConVars](#convars)
   - [Commands](#commands)
+  - [Build](#build)
   - [Changelog](#changelog)
 
 ## Introduction
@@ -97,6 +98,12 @@ Use these commands to have full control over the plugin.
 | changecaptainred | changecapred, ccr | Admin (Ban)  | Fighting           | Allows admin to switch the captain for RED team with another rolled player                                                                  |
 | changecaptainblu | changecapblu, ccb | Admin (Ban)  | Fighting           | Allows admin to switch the captain for BLU team with another rolled player                                                                  |
 | changeroll       | -                 | Admin (Ban)  | Fighting - Picking | Allows admin to change the roll status of a player                                                                                          |
+
+## Build
+
+```bash
+spcomp chillycomp.sp -i include -o dist/chillycomp
+```
 
 ## Changelog
 

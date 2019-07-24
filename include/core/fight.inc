@@ -50,7 +50,7 @@ SetLeaders() {
                 ChangeClientTeam(i, TEAM_RED);
                 g_iFightRedLeader = i;
 
-                DebugLog("[FIGHT] BLU Team Leader %d", i);y
+                DebugLog("[FIGHT] BLU Team Leader %d", i);
 
                 l_bTeamLeaders = true;
             } else {

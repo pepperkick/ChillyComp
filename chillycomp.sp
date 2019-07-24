@@ -34,7 +34,6 @@ bool      g_bPlayerPenalty[MAX_PLAYERS]   = false;    //Dose Player has roll Pen
 //        R O L L I N G         V A R I A B L E S
 //=========================================================================
 
-int       g_iRollingSeconds               = 0;        //Number of seconds before roll starts
 int       g_iMapTimeLimit                 = 0;        //Map Time Limit from mp_timelimit
 
 bool      g_bRollingPick                  = false;    //Has the Rolling Pick started
@@ -69,8 +68,6 @@ bool      g_bPlusOneAllowed[MAX_PLAYERS]  = false;            //Is player allowe
 
 Handle    g_hcTeamLimitSize               = INVALID_HANDLE;    //CVar for team limit size varible from TeamLimit Plugin
 
-int       g_iTeamLimitSize                = 0;                //Team Limit Size from TeamLimit Plugin
-
 //=========================================================================
 //        P L U G I N    E V E N T    F U N C T I O N S     S T A R T
 
@@ -101,7 +98,7 @@ public OnPluginStart() {
     //Set CVars
     CreateCvars();
 
-    AutoExecConfig(true, 'chillycomp');
+    AutoExecConfig(true, "chillycomp");
 
     if (LibraryExists("updater"))
         Updater_AddPlugin(UPDATE_URL)
@@ -152,15 +149,15 @@ public OnPluginStart() {
 
     // Attach cvar change hooks
     HookConVarChange(g_hcRollMode, Handle_RollModeChange);
-	HookConVarChange(g_hcGameStatus, Hande_GameStatusChanged);
+    HookConVarChange(g_hcGameStatus, Hande_GameStatusChanged);
 
     HookEvent("server_cvar", Event_ServerCvar, EventHookMode_Pre);
     HookEvent("tournament_stateupdate", Event_TournamentStateUpdate, EventHookMode_Pre);
     HookEvent("teamplay_round_start", Event_RoundStart);
     
-	AddCommandListener(OnSayCommand, "say");
-	AddCommandListener(OnSayCommand, "say2");
-	AddCommandListener(OnSayCommand, "say_team");
+    AddCommandListener(OnSayCommand, "say");
+    AddCommandListener(OnSayCommand, "say2");
+    AddCommandListener(OnSayCommand, "say_team");
 
     DebugLog("Loaded ChillyComp plugin, Version %s", PLUGIN_VERSION);
 }
@@ -279,7 +276,7 @@ ResetMatch() {
 //============================================
 
 EndMatch(bool:endedMidgame) {
-    DebugLog("Match Ended");
+    DebugLog("Match Ended, Ended MidGame: %d", endedMidgame);
 
 	SetStatus(STATE_POST);
 

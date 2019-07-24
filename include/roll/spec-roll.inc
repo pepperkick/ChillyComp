@@ -9,11 +9,6 @@
             Timer_CheckCounter
 */
 
-int    g_iSpecRollPlayerCount         = 0;
-int    g_iSpecRollSeconds             = 0;
-int    g_iSpecRollRedLeader           = 0;
-int    g_iSpecRollBluLeader           = 0;
-
 bool   g_iSpecRollPreRollDone         = false;
 bool   g_bSpecRollPlayer[MAX_PLAYERS] = false;
 
@@ -45,10 +40,6 @@ public SpecRollStart(Handle:CountedPlayers) {
 }
 
 SpecRollReset() {
-    g_iSpecRollPlayerCount = 0;
-    g_iSpecRollSeconds     = 0;
-    g_iSpecRollRedLeader   = 0;
-    g_iSpecRollBluLeader   = 0;
     g_iSpecRollPreRollDone = false;
 
     for(int i = 0; i < MaxClients; i++) {

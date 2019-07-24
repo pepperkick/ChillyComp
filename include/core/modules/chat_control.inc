@@ -15,12 +15,8 @@ public Action:Event_ServerCvar(Handle:event, const String:name[], bool:dontBroad
 
 public FilterColorChat(client, String:text[]) {
     int enabled = GetConVarInt(g_hcBlockColorChat);
-    int triggerColorCount = 0;
-    bool triggerColorStart = false;
 
-    // ff0000Hffd900e4cff00l00ff8cl0099ffo
-
-	for (new i = 0; i < sizeof(ChatColorCodes); i++) {
+    for (new i = 0; i < sizeof(ChatColorCodes); i++) {
 		if (StrContains(text, ChatColorCodes[i], false) > -1) {
             if (enabled == 0) {
                 return false;

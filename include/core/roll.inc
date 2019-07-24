@@ -28,7 +28,8 @@ RollingStart() {
     if (l_iMode == 1) {
         SpecRollStart(CountedPlayers);
     } else if (l_iMode == 2) {
-        CapRollStart(CountedPlayers);
+        // CapRollStart(CountedPlayers);
+        CapRollStart();
     } else {
         DebugLog("Unknown Rolling Mode! Please check if mode variable is set properly.");
     }

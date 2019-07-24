@@ -71,14 +71,14 @@ public CheckReadyStatus() {
         CPrintToChatAll("%s[%s] %t", COLOR_TAG, TAG, "Module-PlayerReadyUp-AllReady");
     }
 
-	if (TotalPlayersReadyInTeam(TEAM_RED) == GetConVarInt(g_hcTeamSize)) {
+    if (TotalPlayersReadyInTeam(TEAM_RED) == GetConVarInt(g_hcTeamSize)) {
         CPrintToChatAll("%s[%s] %t", COLOR_TAG, TAG, "Module-PlayerReadyUp-TeamReady-RED");
-		GameRules_SetProp("m_bTeamReady", 1, _ , TEAM_RED, true);
+        GameRules_SetProp("m_bTeamReady", 1, _ , TEAM_RED, true);
 	}
 
-	if (TotalPlayersReadyInTeam(TEAM_BLU) == GetConVarInt(g_hcTeamSize)) {
+    if (TotalPlayersReadyInTeam(TEAM_BLU) == GetConVarInt(g_hcTeamSize)) {
         CPrintToChatAll("%s[%s] %t", COLOR_TAG, TAG, "Module-PlayerReadyUp-TeamReady-BLU");
-		GameRules_SetProp("m_bTeamReady", 1, _ , TEAM_BLU, true);
+        GameRules_SetProp("m_bTeamReady", 1, _ , TEAM_BLU, true);
 	}
 }
 
@@ -87,17 +87,17 @@ public Action:Event_TournamentStateUpdate(Handle:event, const String:name[], boo
     
     if (GetConVarInt(g_hcPerPlayerReady) == 0) return Plugin_Continue;
 
-	if (GetEventBool(event, "namechange")) return Plugin_Continue;
+    if (GetEventBool(event, "namechange")) return Plugin_Continue;
 	
-	if (TotalPlayersReadyInTeam(TEAM_RED) == GetConVarInt(g_hcTeamSize)) {
+    if (TotalPlayersReadyInTeam(TEAM_RED) == GetConVarInt(g_hcTeamSize)) {
 		GameRules_SetProp("m_bTeamReady", 0, _ , TEAM_RED, true);
 	}
 
-	if (TotalPlayersReadyInTeam(TEAM_BLU) == GetConVarInt(g_hcTeamSize)) {
+    if (TotalPlayersReadyInTeam(TEAM_BLU) == GetConVarInt(g_hcTeamSize)) {
 		GameRules_SetProp("m_bTeamReady", 0, _ , TEAM_BLU, true);
 	}
 
-	return Plugin_Changed;
+    return Plugin_Changed;
 }
 
 ClearReadyStatus() {

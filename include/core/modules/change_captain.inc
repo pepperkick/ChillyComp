@@ -2,7 +2,6 @@ Menu g_mChangeCaptainMenu;
 
 bool g_bWasCaptainSwapped = false;
 
-int g_iServingChangeCaptainMenu = -1;
 int g_iServingChangeCaptainTeam = -1;
 
 public ChangeCaptainMenu(client, team) {
@@ -25,7 +24,6 @@ public ChangeCaptainMenu(client, team) {
         }
     }
 
-    g_iServingChangeCaptainMenu = client;
     g_iServingChangeCaptainTeam = team;
 
     g_mChangeCaptainMenu.ExitButton = true;
@@ -47,8 +45,6 @@ public ChangeCaptainHandler(Menu:menu, MenuAction:action, param1, param2) {
     } else if (action == MenuAction_Cancel) {
         if (param2 == MenuCancel_Exit) {
             DebugLog("Client %d exited change captain menu", param1);
-
-            g_iServingChangeCaptainMenu = -1;
 
             delete g_mChangeCaptainMenu;
         }
