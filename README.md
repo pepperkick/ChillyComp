@@ -65,6 +65,7 @@ The config path is configurable with cc_config_path.<br>
 ## ConVars
 
 Use this variables in config files to control your match how you want.
+
 | Name                      | Default     | Description                                                                                                                                                                                     |
 | ------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | cc_enable                 | 1           | Enables or disables the whole plugin<br>0 = Disabled<br>1 = Enabled                                                                                                                             |
@@ -86,6 +87,7 @@ Use this variables in config files to control your match how you want.
 ## Commands
 
 Use these commands to have full control over the plugin.
+
 | Name             | Alias             | Permission   | Stage              | Description                                                                                                                                 |
 | ---------------- | ----------------- | ------------ | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | pick             | p                 | Team Captain | Picking            | Allows the team captain to pick a player.<br>Usage: pick  {player name / player ID}<br>**NOTE**: *Player ID can be found with list command* |
