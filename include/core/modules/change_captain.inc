@@ -101,14 +101,14 @@ SwapTeamCaptain(client, team) {
     DebugLog("Switching Captain to %d for team %d", client, team);
  
     if (team == TEAM_RED) {
-        ChangeClientTeam(g_iFightRedLeader, TEAM_SPE);
-        ChangeClientTeam(client, TEAM_RED);      
+        SetEntProp(g_iFightRedLeader, Prop_Send, "m_iTeamNum", TEAM_SPE);
+        SetEntProp(client, Prop_Send, "m_iTeamNum", TEAM_RED);
 
         SetPlayerRolled(g_iFightRedLeader, true);
         SetPlayerRolled(client, false);
     } else if (team == TEAM_BLU) {
-        ChangeClientTeam(g_iFightBluLeader, TEAM_SPE);
-        ChangeClientTeam(client, TEAM_BLU);      
+        SetEntProp(g_iFightBluLeader, Prop_Send, "m_iTeamNum", TEAM_SPE);
+        SetEntProp(client, Prop_Send, "m_iTeamNum", TEAM_BLU);
 
         SetPlayerRolled(g_iFightBluLeader, true);
         SetPlayerRolled(client, false)

@@ -13,7 +13,6 @@ MeleeFightStart(bluLeader, redLeader) {
     g_iMeleeFightRedLeader = redLeader;
 
     // TODO: Strip captians to melee only
-    // TODO: Set captian's health to full if already in proper class
 
     if(TF2_GetPlayerClass(redLeader) != TFClass_Medic) {
         TF2_SetPlayerClass(redLeader, TFClass_Medic);
@@ -46,6 +45,9 @@ MeleeFightStart(bluLeader, redLeader) {
 MeleeFightReset() {
     g_iMeleeFightBluLeader = 0;
     g_iMeleeFightRedLeader = 0;
+
+    UnhookEvent("player_death", Event_PlayerDeath);        // Unhook Player Death Event
+    UnhookEvent("player_class", Event_PlayerClassChange);  // Unhook Player Class Change Event
 }
 
 public Action:Event_PlayerDeath(Handle:event, const String:name[], bool:dontBroadcast) {
@@ -75,4 +77,4 @@ public Action:Event_PlayerClassChange(Handle:event, const String:name[], bool:do
     if (class != CLASS_MEDIC) {
         SDKHooks_TakeDamage(client, client, client, 1000.0);
     }
- }
+}

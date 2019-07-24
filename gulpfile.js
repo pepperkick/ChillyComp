@@ -1,7 +1,7 @@
 const gulp = require("gulp");
 const exec = require('child_process').exec;
 
-var buildCommand = "spcomp chillyroll.sp -i include -o dist/chillyroll";
+var buildCommand = "spcomp chillycomp.sp -i include -o dist/chillycomp";
 
 gulp.task('build', () =>{
     exec(buildCommand, (error, stdout, stderr) => {
@@ -11,6 +11,6 @@ gulp.task('build', () =>{
 });
 
 gulp.task('watch', () => {
-    gulp.watch('chillyroll.sp', ['build']);
+    gulp.watch('chillycomp.sp', ['build']);
     gulp.watch('include/**/*', ['build']);
 });

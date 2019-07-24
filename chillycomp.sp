@@ -1,4 +1,4 @@
-#define PLUGIN_VERSION  "4.0.7"
+#define PLUGIN_VERSION  "1.0.7"
 #define UPDATE_URL      ""
 #define TAG             "CHILLY"
 #define COLOR_TAG       "{matAmber}"
@@ -82,9 +82,9 @@ int       g_iTeamLimitSize                = 0;                //Team Limit Size 
 public Plugin:myinfo = {
     name = "ChillyComp",
     author = "PepperKick",
-    description = "A plugin to manage competitive matches",
+    description = "A plugin to manage pugs",
     version = PLUGIN_VERSION,
-    url = "https://steamcommunity.com/id/pepperkick/"
+    url = "https://pepperkick.com/"
 }
 
 #include <headers>
@@ -100,6 +100,8 @@ public OnPluginStart() {
 
     //Set CVars
     CreateCvars();
+
+    AutoExecConfig(true, 'chillycomp');
 
     if (LibraryExists("updater"))
         Updater_AddPlugin(UPDATE_URL)
@@ -176,7 +178,7 @@ public OnPluginStart() {
 
 public OnClientDisconnect(client) {
     if(GetStatus() > STATE_INITIAL && GetStatus() < STATE_SETUP && (client == g_iBluTeamLeader || client == g_iRedTeamLeader)) {
-        //If a team leader leaves while picking is going on
+        // If a team leader leaves while picking is going on
 
         new String:hudmsg[128];
         Format(hudmsg, sizeof(hudmsg), "%T", "Rolling-Canceled-HUD", LANG_SERVER);
@@ -189,7 +191,7 @@ public OnClientDisconnect(client) {
 
         return;
     } else if(GetStatus() > STATE_INITIAL && GetStatus() < STATE_SETUP && RollingCheckPlayer(client) && CountPlayersInAnyTeam() < (GetConVarInt(g_hcTeamSize) * 2)) {
-        //If a player leaves while either rolling sequence or team picking is going on and there are not enough players
+        // If a player leaves while either rolling sequence or team picking is going on and there are not enough players
 
         new String:hudmsg[128];
         Format(hudmsg, sizeof(hudmsg), "%T", "Rolling-Canceled-HUD", LANG_SERVER);
@@ -315,7 +317,7 @@ public void Event_RoundStart(Event event, const char[] name, bool dontBroadcast)
     if (GetStatus() != STATE_SETUP) return;
 
     if (!g_bWarmupRestartChecked) {
-         CheckWarmupRestart();
+        CheckWarmupRestart();
     }
 
     if (g_bWarmupRestartRequired && g_bWarmupRestartCounter > 0) {
