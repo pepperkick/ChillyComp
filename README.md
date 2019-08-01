@@ -9,6 +9,7 @@ A SourceMod plugin to handle PuGs in TF2
   - [Status and Configs](#status-and-configs)
   - [ConVars](#convars)
   - [Commands](#commands)
+  - [Dependencies](#dependencies)
   - [Build](#build)
   - [Changelog](#changelog)
 
@@ -100,6 +101,12 @@ Use these commands to have full control over the plugin.
 | changecaptainred | changecapred, ccr | Admin (Ban)  | Fighting           | Allows admin to switch the captain for RED team with another rolled player                                                                  |
 | changecaptainblu | changecapblu, ccb | Admin (Ban)  | Fighting           | Allows admin to switch the captain for BLU team with another rolled player                                                                  |
 | changeroll       | -                 | Admin (Ban)  | Fighting - Picking | Allows admin to change the roll status of a player                                                                                          |
+
+## Dependencies
+
+- SourceMod 1.9
+- Match : https://www.teamfortress.tv/13598/?page=1#post-1
+- MoreColors : https://forums.alliedmods.net/showthread.php?t=185016
 
 ## Build
 
